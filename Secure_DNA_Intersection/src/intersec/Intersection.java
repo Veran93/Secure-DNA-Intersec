@@ -33,10 +33,10 @@ public class Intersection {
 		//Bloom Filter
 		
 		double falsePositiveProbability = 0.2;
-		int expectedNumberOfElements = 100;
+		int expectedNumberOfElements = 200000;
 
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
-		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-Intersection/Secure-Intersection/src/Logic/Alice.txt");
+		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice.txt");
 		
 		
 	        for (String line : lines) {
@@ -45,12 +45,12 @@ public class Intersection {
 	        
 	        
 		  int bs = bloomFilter.size(); 
-			System.out.println(bs);
+			//System.out.println(bs);
 			int hs = bloomFilter.getK();
-			System.out.println(hs);
+			//System.out.println(hs);
 		  //Elgamal
 			
-			
+		 
 		  BigInteger[] bigvert = new BigInteger[1];
 		  BigInteger[][] Alicecipher = new BigInteger [2][bs+1];
 		  Elgamal elgamal = new Elgamal(256); 
@@ -79,16 +79,37 @@ public class Intersection {
 			BigInteger gr = ct.getGr();
 			//System.out.println(mhcool.intValue());
 			Elgamal_PlainText pl;
+			
 			pl = elgamal.decrypt(ct);
-			System.out.println(pl);
+			BigInteger plb[] = pl.getPt();
+			//System.out.println(plb[0]);
 			Alicecipher[0][i] = mhcool;
 			Alicecipher[1][i] = gr;
 
 			
 			
 		  }
+		  
+			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
+			String[] linesbob = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Bob.txt");
 			
 			
+		        for (String line : linesbob) {
+		    		bloomFilterbob.add(line);
+		        }
+		        
+		   int bsb = bloomFilterbob.size(); 
+		   int[] bsbnull = new int[bsb+1];
+		   int nullnumb = 0;
+		   for (int i = 1; i<=bsb; i++)
+		   {
+			   boolean bb = bloomFilterbob.getBit(i);
+			   if (bb == true)
+			   {
+				   bsbnull[nullnumb]= i;
+			   }
+		   }
+		  
 		 // /home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input
 		 //BoncyCastle Elgamal
 		/*	
