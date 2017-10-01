@@ -1,0 +1,32 @@
+package elgamal;
+
+import java.math.BigInteger;
+
+/**
+ *
+ * @author oorestisime
+ */
+public class Elgamal_SecretKey {
+   private BigInteger p;
+   private BigInteger x;
+   
+   public Elgamal_SecretKey(BigInteger p,BigInteger x){
+     this.p=p;
+     this.x=x;
+   }
+
+    /**
+     * @return the p
+     */
+    public BigInteger getP() {
+        return p;
+    }
+
+    /**
+     * @return the x
+     */
+    public BigInteger getX() {
+        return x;
+    }
+   
+}

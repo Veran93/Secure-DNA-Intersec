@@ -48,6 +48,9 @@ public class Intersection {
 			//System.out.println(bs);
 			int hs = bloomFilter.getK();
 			//System.out.println(hs);
+			
+			
+			
 		  //Elgamal
 			
 		 
@@ -55,6 +58,8 @@ public class Intersection {
 		  BigInteger[][] Alicecipher = new BigInteger [2][bs+1];
 		  Elgamal elgamal = new Elgamal(256); 
 		  Elgamal_CipherText ct;
+		  BigInteger g = elgamal.geteg();
+		  BigInteger pk = elgamal.getepk();
 		  for (int i = 1; i<=bs ; i++)
 		  {
 			  
@@ -89,7 +94,7 @@ public class Intersection {
 			
 			
 		  }
-		  
+		 //  ge = elgamal.;
 			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
 			String[] linesbob = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Bob.txt");
 			
@@ -107,8 +112,13 @@ public class Intersection {
 			   if (bb == true)
 			   {
 				   bsbnull[nullnumb]= i;
+				   nullnumb = nullnumb +1;
 			   }
+			   
 		   }
+		   
+		   
+		   
 		  
 		 // /home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input
 		 //BoncyCastle Elgamal
