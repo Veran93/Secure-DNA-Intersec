@@ -100,6 +100,14 @@ public class Elgamal implements CipherScheme {
     public BigInteger getepk(){
 	return kset.getPk().getH();
     }
+    
+    public BigInteger getp(){
+	return kset.getPk().getP();
+    }
+    
+    public BigInteger gets(){
+	return kset.getSk().getX();
+    }    
 
     public Elgamal_CipherText encrypt(String s){
         Elgamal_CipherText cipherT;

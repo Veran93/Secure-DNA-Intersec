@@ -33,9 +33,10 @@ public class Intersection {
 		//Bloom Filter
 		
 		double falsePositiveProbability = 0.2;
-		int expectedNumberOfElements = 200000;
+		int bitSetSize = 1000;
+		int expectedNumberOfElements = 200;
 
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
 		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice.txt");
 		
 		
@@ -44,8 +45,8 @@ public class Intersection {
 	        }
 	        
 	        
-		  int bs = bloomFilter.size(); 
-			//System.out.println(bs);
+		  int bs = bloomFilter.size();		  
+		  System.out.println(bs);
 			int hs = bloomFilter.getK();
 			//System.out.println(hs);
 			
@@ -60,7 +61,10 @@ public class Intersection {
 		  Elgamal_CipherText ct;
 		  BigInteger g = elgamal.geteg();
 		  BigInteger pk = elgamal.getepk();
-		  for (int i = 1; i<=bs ; i++)
+		  BigInteger p = elgamal.getp();
+		  BigInteger sk = elgamal.gets();
+		  
+		  for (int i = 0; i<=bs ; i++)
 		  {
 			  
 			boolean b = bloomFilter.getBit(i); 
@@ -82,11 +86,11 @@ public class Intersection {
 			BigInteger mhr[] = ct.getCt();
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
-			//System.out.println(mhcool.intValue());
+			System.out.println(mhcool.intValue());
 			Elgamal_PlainText pl;
 			
-			pl = elgamal.decrypt(ct);
-			BigInteger plb[] = pl.getPt();
+			//pl = elgamal.decrypt(ct);
+			//BigInteger plb[] = pl.getPt();
 			//System.out.println(plb[0]);
 			Alicecipher[0][i] = mhcool;
 			Alicecipher[1][i] = gr;
@@ -95,7 +99,7 @@ public class Intersection {
 			
 		  }
 		 //  ge = elgamal.;
-			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
+			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
 			String[] linesbob = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Bob.txt");
 			
 			
@@ -104,19 +108,46 @@ public class Intersection {
 		        }
 		        
 		   int bsb = bloomFilterbob.size(); 
-		   int[] bsbnull = new int[bsb+1];
-		   int nullnumb = 0;
-		   for (int i = 1; i<=bsb; i++)
+		   System.out.println(bsb);
+		   BigInteger vr = BigInteger.valueOf(1);
+		   BigInteger ws = BigInteger.valueOf(1);
+		   for (int i = 0; i<=bsb; i++)
 		   {
 			   boolean bb = bloomFilterbob.getBit(i);
 			   if (bb == true)
 			   {
-				   bsbnull[nullnumb]= i;
-				   nullnumb = nullnumb +1;
+				   vr = vr.multiply(Alicecipher[0][i]);
+				   ws = ws.multiply(Alicecipher[1][i]);
+
 			   }
 			   
 		   }
+		   System.out.println(vr);
 		   
+	       BigInteger s;
+	       do{
+	           s = new BigInteger(p.bitCount()-1, new SecureRandom());
+	       }while(p.compareTo(s)==-1);
+	        
+	       BigInteger gs = g.modPow(s,p);
+	       System.out.println(gs);
+	       BigInteger pks = pk.modPow(s,p);
+		   BigInteger v = gs.multiply(vr);
+		   BigInteger w = pks.multiply(ws);
+		   BigInteger wa[] = new BigInteger[1];
+		   wa[0] = w; 
+		   Elgamal_CipherText sigma = new Elgamal_CipherText(wa,v);
+		   System.out.println(wa);System.out.println(v);
+		   Elgamal_PlainText plain;
+		   //plain = elgamal.decrypt(ct);
+		   
+		   
+		   
+		//   BigInteger Sigma = w.multiply(pow(v, h));
+
+		 // /hile (si !=1) {
+			   
+		 //  }
 		   
 		   
 		  
