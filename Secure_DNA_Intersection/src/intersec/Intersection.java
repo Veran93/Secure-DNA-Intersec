@@ -13,6 +13,7 @@ import elgamal.Elgamal_PlainText;
 import elgamal.Elgamal_Parameters;
 import chiffrement.CipherScheme;
 
+
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyPair;
@@ -37,7 +38,7 @@ public class Intersection {
 		int expectedNumberOfElements = 2;
 
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
-		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice_test");
+		String[] lines = new FileArrayProvider().readLines("./input/Alice_test");
 		//System.out.println(lines);
 		
 	        for (String line : lines) {
@@ -104,7 +105,7 @@ public class Intersection {
 		  }
 		 //  ge = elgamal.;
 			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
-			String[] linesbob = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Bob.txt");
+			String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
 			
 			
 		        for (String line : linesbob) {
@@ -239,4 +240,15 @@ public class Intersection {
 	}
 
 	*/
+	
+	
+	BigInteger pow(BigInteger base, BigInteger exponent) {
+		  BigInteger result = BigInteger.ONE;
+		  while (exponent.signum() > 0) {
+		    if (exponent.testBit(0)) result = result.multiply(base);
+		    base = base.multiply(base);
+		    exponent = exponent.shiftRight(1);
+		  }
+		  return result;
+		}
 }
