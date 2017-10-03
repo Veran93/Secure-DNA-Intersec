@@ -37,16 +37,17 @@ public class Intersection {
 		int expectedNumberOfElements = 200;
 
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
-		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice.txt");
-		
+		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice_test.txt");
+		//System.out.println(lines);
 		
 	        for (String line : lines) {
 	    		bloomFilter.add(line);
+	    		System.out.println(line);
 	        }
-	        
+	  
 	        
 		  int bs = bloomFilter.size();		  
-		  System.out.println(bs);
+		  //System.out.println(bs);
 			int hs = bloomFilter.getK();
 			//System.out.println(hs);
 			
@@ -60,6 +61,7 @@ public class Intersection {
 		  Elgamal elgamal = new Elgamal(256); 
 		  Elgamal_CipherText ct;
 		  BigInteger g = elgamal.geteg();
+		  //System.out.println(g);
 		  BigInteger pk = elgamal.getepk();
 		  BigInteger p = elgamal.getp();
 		  BigInteger sk = elgamal.gets();
@@ -86,7 +88,7 @@ public class Intersection {
 			BigInteger mhr[] = ct.getCt();
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
-			System.out.println(mhcool.intValue());
+			//System.out.println(mhcool.intValue());
 			Elgamal_PlainText pl;
 			
 			//pl = elgamal.decrypt(ct);
@@ -108,9 +110,10 @@ public class Intersection {
 		        }
 		        
 		   int bsb = bloomFilterbob.size(); 
-		   System.out.println(bsb);
+		   //System.out.println(bsb);
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
+		   int iter = 0;
 		   for (int i = 0; i<=bsb; i++)
 		   {
 			   boolean bb = bloomFilterbob.getBit(i);
@@ -118,11 +121,12 @@ public class Intersection {
 			   {
 				   vr = vr.multiply(Alicecipher[0][i]);
 				   ws = ws.multiply(Alicecipher[1][i]);
+				   iter++;
 
 			   }
 			   
 		   }
-		   System.out.println(vr);
+		   //System.out.println(iter);
 		   
 	       BigInteger s;
 	       do{
@@ -130,24 +134,32 @@ public class Intersection {
 	       }while(p.compareTo(s)==-1);
 	        
 	       BigInteger gs = g.modPow(s,p);
-	       System.out.println(gs);
+	       //System.out.println(gs);
 	       BigInteger pks = pk.modPow(s,p);
 		   BigInteger v = gs.multiply(vr);
 		   BigInteger w = pks.multiply(ws);
 		   BigInteger wa[] = new BigInteger[1];
 		   wa[0] = w; 
 		   Elgamal_CipherText sigma = new Elgamal_CipherText(wa,v);
-		   System.out.println(wa);System.out.println(v);
+		   //System.out.println(wa);System.out.println(v);
 		   Elgamal_PlainText plain;
-		   //plain = elgamal.decrypt(ct);
-		   
-		   
-		   
-		//   BigInteger Sigma = w.multiply(pow(v, h));
+		   plain = elgamal.decrypt(sigma);
+		   BigInteger pb[]=plain.getPt();
+		   BigInteger pbb = pb[0];
+		   //System.out.println(pbb);
+		   int pbi = pbb.intValue();
+		   //System.out.println(g);
+		  // BigInteger Sigma = w.multiply(pow(v, h));
+		   int x = 0; 
+		   BigInteger it = BigInteger.valueOf(0);
 
-		 // /hile (si !=1) {
-			   
-		 //  }
+		   while (pbb != it) {
+			 
+			  pbb = pbb.divide(g); 
+			  x++; 
+			  //System.out.println(pbb);
+			  System.out.println(x); 
+		   }
 		   
 		   
 		  
