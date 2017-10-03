@@ -33,11 +33,11 @@ public class Intersection {
 		//Bloom Filter
 		
 		double falsePositiveProbability = 0.2;
-		int bitSetSize = 1000;
-		int expectedNumberOfElements = 200;
+		int bitSetSize = 10;
+		int expectedNumberOfElements = 2;
 
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
-		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice_test.txt");
+		String[] lines = new FileArrayProvider().readLines("/home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input/Alice_test");
 		//System.out.println(lines);
 		
 	        for (String line : lines) {
@@ -70,6 +70,8 @@ public class Intersection {
 		  {
 			  
 			boolean b = bloomFilter.getBit(i); 
+			//System.out.println(b);
+			
 			if(b == true)
 			{
 				bigvert[0] = BigInteger.valueOf(0);
@@ -81,8 +83,8 @@ public class Intersection {
 
 			}
 				  
-			
-			
+			BigInteger gex = g.pow(1);
+			//System.out.println(gex);
 			ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
 				  
 			BigInteger mhr[] = ct.getCt();
@@ -133,9 +135,22 @@ public class Intersection {
 	           s = new BigInteger(p.bitCount()-1, new SecureRandom());
 	       }while(p.compareTo(s)==-1);
 	        
+	       
+	       BigInteger pbt1 = new BigInteger("3");
+	       int pit1 = 3;
+	       BigInteger btb2 = new BigInteger("2");
+	       BigInteger pbt3 = btb2.pow(pit1);
+	       int pit2 = pbt1.intValue();
+	       BigInteger pbt4 = btb2.pow(pit2);
+	      // System.out.println(pbt3);
+	      // System.out.println(pbt4);
+	       
+	       int si = s.intValue();
 	       BigInteger gs = g.modPow(s,p);
-	       //System.out.println(gs);
+	       //BigInteger gs = g.pow(si);
+	       System.out.println(s);
 	       BigInteger pks = pk.modPow(s,p);
+	       //BigInteger pks = pk.pow(si);
 		   BigInteger v = gs.multiply(vr);
 		   BigInteger w = pks.multiply(ws);
 		   BigInteger wa[] = new BigInteger[1];
@@ -151,14 +166,15 @@ public class Intersection {
 		   //System.out.println(g);
 		  // BigInteger Sigma = w.multiply(pow(v, h));
 		   int x = 0; 
-		   BigInteger it = BigInteger.valueOf(0);
+		   BigInteger it = BigInteger.valueOf(1);
+		   
 
 		   while (pbb != it) {
 			 
 			  pbb = pbb.divide(g); 
 			  x++; 
 			  //System.out.println(pbb);
-			  System.out.println(x); 
+			 // System.out.println(x); 
 		   }
 		   
 		   
@@ -208,6 +224,19 @@ public class Intersection {
 		 */
 
 	}
-
 	
+	/*
+	public BigInteger bigpow(BigInteger p)
+	{
+		
+		for(i = new BigInteger("1"); i<=p ; i<=p ;i++ )
+		{
+			
+		}
+		
+		return null;
+		
+	}
+
+	*/
 }
