@@ -43,7 +43,7 @@ public class Intersection {
 		
 	        for (String line : lines) {
 	    		bloomFilter.add(line);
-	    		System.out.println(line);
+	    		//System.out.println(line);
 	        }
 	  
 	        
@@ -129,29 +129,24 @@ public class Intersection {
 			   }
 			   
 		   }
-		   //System.out.println(iter);
-		   
+		   //System.out.println(p.bitCount()-1);
+		   //si = new int(100, new SecureRandom());
+		   BigInteger max = new BigInteger("100000");
 	       BigInteger s;
 	       do{
-	           s = new BigInteger(p.bitCount()-1, new SecureRandom());
+	           s = new BigInteger(5, new SecureRandom());
 	       }while(p.compareTo(s)==-1);
 	        
-	       
-	       BigInteger pbt1 = new BigInteger("3");
-	       int pit1 = 3;
-	       BigInteger btb2 = new BigInteger("2");
-	       BigInteger pbt3 = btb2.pow(pit1);
-	       int pit2 = pbt1.intValue();
-	       BigInteger pbt4 = btb2.pow(pit2);
-	      // System.out.println(pbt3);
-	      // System.out.println(pbt4);
-	       
+	       //p.bitCount()-1
+
+
 	       int si = s.intValue();
-	       BigInteger gs = g.modPow(s,p);
-	       //BigInteger gs = g.pow(si);
+	      // BigInteger gs = g.modPow(s,p);
+	       BigInteger gs = g.pow(si);
 	       System.out.println(s);
-	       BigInteger pks = pk.modPow(s,p);
-	       //BigInteger pks = pk.pow(si);
+	       System.out.println(si);
+	      // BigInteger pks = pk.modPow(s,p);
+	       BigInteger pks = pk.pow(si);
 		   BigInteger v = gs.multiply(vr);
 		   BigInteger w = pks.multiply(ws);
 		   BigInteger wa[] = new BigInteger[1];
@@ -167,21 +162,23 @@ public class Intersection {
 		   //System.out.println(g);
 		  // BigInteger Sigma = w.multiply(pow(v, h));
 		   int x = 0; 
-		   BigInteger it = BigInteger.valueOf(1);
+		   BigInteger it = BigInteger.valueOf(0);
 		   
-
+		   BigInteger SigSelf;
+		   
+		   
 		   while (pbb != it) {
 			 
 			  pbb = pbb.divide(g); 
 			  x++; 
 			  //System.out.println(pbb);
-			 // System.out.println(x); 
+			  System.out.println(x); 
 		   }
 		   
 		   
 		  
 		 // /home/niklas/git/Secure-DNA-Intersec/Secure_DNA_Intersection/input
-		 //BoncyCastle Elgamal
+
 		/*	
 			 Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
@@ -242,7 +239,7 @@ public class Intersection {
 	*/
 	
 	
-	BigInteger pow(BigInteger base, BigInteger exponent) {
+	public static BigInteger power(BigInteger base, BigInteger exponent) {
 		  BigInteger result = BigInteger.ONE;
 		  while (exponent.signum() > 0) {
 		    if (exponent.testBit(0)) result = result.multiply(base);
