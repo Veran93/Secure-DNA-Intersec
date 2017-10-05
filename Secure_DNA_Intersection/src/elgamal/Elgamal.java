@@ -66,6 +66,10 @@ public class Elgamal implements CipherScheme {
             r = new BigInteger(modulo.bitCount()-1, new SecureRandom());
         }while(kset.getPk().getP().compareTo(r)==-1);
         
+        
+        
+        // changed mhr[i]
+        
 /*
         for(int i=0;i<pt.getPt().length;i++){
            if(pt.getPt()[i].compareTo(modulo)==1){
@@ -93,6 +97,7 @@ public class Elgamal implements CipherScheme {
         return ct;
     }
 
+    //inserted getter methods ...
     public BigInteger geteg(){
 	return kset.getPk().getG();
     }
