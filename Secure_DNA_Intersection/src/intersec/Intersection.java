@@ -34,9 +34,9 @@ public class Intersection {
 		//Bloom Filter Alice
 		
 		double falsePositiveProbability = 0.2;
-		int bitSetSize = 10;
-		int expectedNumberOfElements = 2;
-
+		int bitSetSize = 100;
+		int expectedNumberOfElements = 15;
+	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
 		String[] lines = new FileArrayProvider().readLines("./input/Alice_test");
 
@@ -50,7 +50,7 @@ public class Intersection {
 		  int bs = bloomFilter.size();		  
 		  int hs = bloomFilter.getK();
 
-			
+		
 			
 			
 		  //Elgamal
@@ -84,7 +84,7 @@ public class Intersection {
 				bigvert[0] = BigInteger.valueOf(1);
 
 			}
-			System.out.println(bigvert[0]);
+			//System.out.println(bigvert[0]);
 
 			ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
 			
@@ -94,7 +94,6 @@ public class Intersection {
 			BigInteger mhr[] = ct.getCt();
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
-			Elgamal_PlainText pl;
 			
 			//gr = c1; mhcool = c2
 			Alicecipher[0][i] = mhcool;
@@ -104,7 +103,7 @@ public class Intersection {
 			
 		  }
 		  
-		 //  Bloom Filter Bob
+		 //  Bloom Filter Bob --
 			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
 			String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
 			
@@ -116,7 +115,7 @@ public class Intersection {
 		   int bsb = bloomFilterbob.size(); 
 		   
 		   
-		   // Multiply c1, c2 at all point where bf2 is null
+		   // Multiply c1, c2 at all points where bf2 is null
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
 
