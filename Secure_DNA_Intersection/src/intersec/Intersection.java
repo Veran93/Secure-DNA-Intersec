@@ -156,14 +156,14 @@ public class Intersection {
 		   plain = elgamal.decrypt(sigma);
 		   BigInteger pb[]=plain.getPt();
 		   BigInteger pbb = pb[0];
-		   System.out.println(pbb);
+//		   System.out.println(pbb);
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(0);
 		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
 //		   System.out.println(sk);
 //		   System.out.println(negsk);
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
-		   System.out.println(Selfsigma);
+//		   System.out.println(Selfsigma);
 //		   System.out.println(g);
 		   //identify exponent 
 		   while (Selfsigma != it) {
