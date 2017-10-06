@@ -3,7 +3,7 @@ package intersec;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import com.skjegstad.utils.BloomFilter;
+
 import elgamal.Elgamal;
 import elgamal.Elgamal_KeySet;
 import elgamal.Elgamal_PublicKey;
@@ -12,7 +12,7 @@ import elgamal.Elgamal_CipherText;
 import elgamal.Elgamal_PlainText;
 import elgamal.Elgamal_Parameters;
 import chiffrement.CipherScheme;
-
+import bloomfilter.BloomFilter;
 
 //import java.security.InvalidKeyException;
 //import java.security.Key;
@@ -144,10 +144,11 @@ public class Intersection {
 	       BigInteger gs = g.modPow(s,p);
 	       BigInteger pks = pk.modPow(s,p);
 		   BigInteger v = gs.multiply(vr).mod(p);
+//		   System.out.println(v);
 		   BigInteger w = pks.multiply(ws).mod(p);
 		   BigInteger wa[] = new BigInteger[1];
 		   wa[0] = w; 
-		   
+//		   System.out.println(w);
 		   
 		   //decrypt cipher
 		   Elgamal_CipherText sigma = new Elgamal_CipherText(wa,v);
@@ -155,16 +156,21 @@ public class Intersection {
 		   plain = elgamal.decrypt(sigma);
 		   BigInteger pb[]=plain.getPt();
 		   BigInteger pbb = pb[0];
+		   System.out.println(pbb);
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(0);
-		   
-		   
+		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
+//		   System.out.println(sk);
+//		   System.out.println(negsk);
+		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
+		   System.out.println(Selfsigma);
+//		   System.out.println(g);
 		   //identify exponent 
-		   while (pbb != it) {
+		   while (Selfsigma != it) {
 			 
-			  pbb = pbb.divide(g); 
+			  Selfsigma = Selfsigma.divide(g); 
 			  x++; 
-			  System.out.println(pbb);
+			  //System.out.println(Selfsigma);
 			  //System.out.println(x); 
 		   }
 	

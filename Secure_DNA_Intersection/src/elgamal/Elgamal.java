@@ -88,7 +88,8 @@ public class Elgamal implements CipherScheme {
                 System.out.println("Plain text superieure a N");
                 System.exit(1);
             } 
-           //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
+//           System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
+           //System.out.println(pt.getPt()[i]);
            mhr[i]=(kset.getPk().getG().modPow(pt.getPt()[i],modulo).multiply(kset.getPk().getH().modPow(r, modulo))).mod(modulo);
         }
 
@@ -96,6 +97,8 @@ public class Elgamal implements CipherScheme {
         ct=new Elgamal_CipherText(mhr,gr);
         return ct;
     }
+    
+    
 
     //inserted getter methods ...
     public BigInteger geteg(){
