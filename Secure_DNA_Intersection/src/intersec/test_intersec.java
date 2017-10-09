@@ -30,6 +30,8 @@ import java.security.SecureRandom;
 public class test_intersec {
 	
 	public static void main(String[] args) throws IOException {
+		
+		
 	
 		BigInteger input[] = new BigInteger[3];
 		input[1]= BigInteger.valueOf(2); input[2]=BigInteger.valueOf(2); input[0] =BigInteger.valueOf(2);
@@ -41,9 +43,43 @@ public class test_intersec {
 		  BigInteger p = elgamal.getp();
 		  BigInteger sk = elgamal.gets();
 		  
-		  for (int i = 0; i<=3 ; i++) {
-		  ct = elgamal.encrypt(new Elgamal_PlainText(input));
+		  BigInteger[][] Alicecipher = new BigInteger [2][3];
+		  BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
+		  System.out.println(input[0]);
+		  BigInteger invert[] = new BigInteger[1];
+		  //BigInteger tmpinvert;
+		  for (int i = 0; i<=2 ; i++) {  
+		  BigInteger tmpinvert = input[i];  
+		  invert[0]= tmpinvert;
+		  ct = elgamal.encrypt(new Elgamal_PlainText(invert));
+		  
+			BigInteger mhr[] = ct.getCt(); 
+			BigInteger mhcool = mhr[0];			
+			BigInteger gr = ct.getGr();
+			BigInteger modg =g.mod(p); 
+			//gr = c1; mhcool = c2
+			Alicecipher[0][i] = mhcool;
+			Alicecipher[1][i] = gr;
+		  
 		  }
+		   BigInteger vr = BigInteger.valueOf(1);
+		   BigInteger ws = BigInteger.valueOf(1);
+
+		   for (int i = 0; i<=2; i++)
+		   {
+
+			   vr = (vr.multiply(Alicecipher[1][i])).mod(p);
+				ws = (ws.multiply(Alicecipher[0][i])).mod(p);
+
+				   BigInteger Selfsigma = ws.multiply(vr.modPow(negsk, p)).mod(p);
+				   System.out.println(Selfsigma);
+			   
+		   }
+		   
+		   
+		   BigInteger Selfsigma = ws.multiply(vr.modPow(negsk, p)).mod(p);
+		   System.out.println(Selfsigma);
+		  
 		
 	}
 }	
