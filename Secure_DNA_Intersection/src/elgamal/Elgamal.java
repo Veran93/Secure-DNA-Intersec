@@ -70,7 +70,7 @@ public class Elgamal implements CipherScheme {
         
         // changed mhr[i]
         
-
+/*
         for(int i=0;i<pt.getPt().length;i++){
            if(pt.getPt()[i].compareTo(modulo)==1){
                 //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
@@ -80,8 +80,7 @@ public class Elgamal implements CipherScheme {
            //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
            mhr[i]=(pt.getPt()[i].multiply(kset.getPk().getH().modPow(r, modulo))).mod(modulo);
         }
-
-/*
+*/
         for(int i=0;i<pt.getPt().length;i++){
            if(pt.getPt()[i].compareTo(modulo)==1){
                 //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
@@ -93,7 +92,7 @@ public class Elgamal implements CipherScheme {
            mhr[i]=(kset.getPk().getG().modPow(pt.getPt()[i],modulo).multiply(kset.getPk().getH().modPow(r, modulo))).mod(modulo);
         }
         
-        */
+        
 
         BigInteger gr=kset.getPk().getG().modPow(r,modulo);
         ct=new Elgamal_CipherText(mhr,gr);

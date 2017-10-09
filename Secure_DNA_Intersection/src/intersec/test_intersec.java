@@ -75,10 +75,22 @@ public class test_intersec {
 				   System.out.println(Selfsigma);
 			   
 		   }
-		   
-		   
-		   BigInteger Selfsigma = ws.multiply(vr.modPow(negsk, p)).mod(p);
-		   System.out.println(Selfsigma);
+//		   BigInteger Mul = new BigInteger("3");
+//		   BigInteger vrm = Mul.multiply(vr).mod(p);
+//		   BigInteger wsm = Mul.multiply(ws).mod(p);
+		   BigInteger vrm = g.modPow(vr, p);
+		   BigInteger wsm = g.modPow(ws, p);
+		   BigInteger Selfsigma = wsm.multiply(vrm.modPow(negsk, p)).mod(p);
+//		   System.out.println(Selfsigma);
+		   int x = 0; 
+		   BigInteger it = BigInteger.valueOf(0);
+		   while (!(Selfsigma.compareTo(it)==0)) {
+				 
+			  Selfsigma = Selfsigma.divide(g); 
+			  x++; 
+			  System.out.println(Selfsigma);
+//			  System.out.println(x); 
+		   }
 		  
 		
 	}

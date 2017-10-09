@@ -38,7 +38,7 @@ public class Intersection {
 		int expectedNumberOfElements = 15;
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
-		String[] lines = new FileArrayProvider().readLines("./input/Alice_test");
+		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
 		
 	        for (String line : lines) {
@@ -71,8 +71,11 @@ public class Intersection {
 //		  BigInteger mod = new BigInteger("2");
 //		  BigInteger erg = on1.modPow(d1, mod);
 //		  System.out.println(erg);
+		  
+		  
+		  
 		  //Bitwise encryption
-		  BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
+
 		  for (int i = 0; i<=bs ; i++)
 		  {
 			  
@@ -103,7 +106,7 @@ public class Intersection {
 			Alicecipher[0][i] = mhcool;
 			Alicecipher[1][i] = gr;
 			int x = 0;
-
+			/*
 			   while (!(gr.compareTo(new BigInteger("0"))==0)) {
 					 
 				   gr = gr.divide(modg); 
@@ -111,10 +114,10 @@ public class Intersection {
 					  //System.out.println(gr);
 					  //System.out.println(x); 
 				   }
-			
+			*/
 			
 		  }
-			 
+		/*	 
 		for (int i = 0; i<=bs; i++) { 
 			BigInteger Selfsigmapl = Alicecipher[0][i].multiply(Alicecipher[1][i].modPow(negsk, p)).mod(p);
 //			System.out.println(Selfsigmapl); 
@@ -122,6 +125,7 @@ public class Intersection {
 			
 			
 		}
+		*/
 		 //  Bloom Filter Bob --
 			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
 			String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
@@ -143,8 +147,8 @@ public class Intersection {
 			   boolean bb = bloomFilterbob.getBit(i);
 			   if (bb == true)
 			   {
-				   vr = (vr.multiply(Alicecipher[1][i])).mod(p);
-				   ws = (ws.multiply(Alicecipher[0][i])).mod(p);
+				   vr = vr.multiply(Alicecipher[1][i]).mod(p);
+				   ws = ws.multiply(Alicecipher[0][i]).mod(p);
 
 			   }
 			   
@@ -162,29 +166,31 @@ public class Intersection {
 	       
 	       
 	       
-	       BigInteger gs = g.modPow(s,p);
-	       BigInteger pks = pk.modPow(s,p);
-		   BigInteger v = gs.multiply(vr).mod(p);
-//		   System.out.println(v);
-		   BigInteger w = pks.multiply(ws).mod(p);
+	       //BigInteger gs = g.modPow(s,p);
+	       //BigInteger pks = pk.modPow(s,p);
+		   BigInteger v = g.multiply(vr).mod(p);
+		   System.out.println(v);
+		   BigInteger w = pk.multiply(ws).mod(p);
 		   BigInteger wa[] = new BigInteger[1];
 		   wa[0] = w; 
-//		   System.out.println(w);
+		   System.out.println(w);
 		   
 		   //decrypt cipher
+		   /*
 		   Elgamal_CipherText sigma = new Elgamal_CipherText(wa,v);
 		   Elgamal_PlainText plain;
 		   plain = elgamal.decrypt(sigma);
 		   BigInteger pb[]=plain.getPt();
 		   BigInteger pbb = pb[0];
-//		   System.out.println(pbb);
+    	   System.out.println(pbb);
+    	   */
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(0);
-
+			  BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
 //		   System.out.println(sk);
 //		   System.out.println(negsk);
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
-//		   System.out.println(Selfsigma);
+//     	   System.out.println(Selfsigma);
 //		   System.out.println(g);
 		   //identify exponent 
 		   while (!(Selfsigma.compareTo(it)==0)) {
@@ -192,7 +198,7 @@ public class Intersection {
 			  Selfsigma = Selfsigma.divide(g); 
 			  x++; 
 			  System.out.println(Selfsigma);
-//			  System.out.println(x); 
+			  System.out.println(x); 
 		   }
 	
 	}
