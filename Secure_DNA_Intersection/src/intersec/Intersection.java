@@ -34,7 +34,7 @@ public class Intersection {
 		//Bloom Filter Alice
 		
 		double falsePositiveProbability = 0.2;
-		int bitSetSize = 100;
+		int bitSetSize = 10000;
 		int expectedNumberOfElements = 15;
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
@@ -65,14 +65,6 @@ public class Intersection {
 		  BigInteger pk = elgamal.getepk();
 		  BigInteger p = elgamal.getp();
 		  BigInteger sk = elgamal.gets();
-
-//		  BigInteger on1 = new BigInteger("3");
-//		  BigInteger d1 = new BigInteger("2");
-//		  BigInteger mod = new BigInteger("2");
-//		  BigInteger erg = on1.modPow(d1, mod);
-//		  System.out.println(erg);
-		  
-		  
 		  
 		  //Bitwise encryption
 
@@ -91,7 +83,6 @@ public class Intersection {
 				bigvert[0] = BigInteger.valueOf(1);
 
 			}
-			//System.out.println(bigvert[0]);
 
 			ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
 			
@@ -102,40 +93,27 @@ public class Intersection {
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
 			BigInteger modg =g.mod(p); 
+			
 			//gr = c1; mhcool = c2
+			
 			Alicecipher[0][i] = mhcool;
 			Alicecipher[1][i] = gr;
-			int x = 0;
-			/*
-			   while (!(gr.compareTo(new BigInteger("0"))==0)) {
-					 
-				   gr = gr.divide(modg); 
-					  x++; 
-					  //System.out.println(gr);
-					  //System.out.println(x); 
-				   }
-			*/
+
+
 			
 		  }
-		/*	 
-		for (int i = 0; i<=bs; i++) { 
-			BigInteger Selfsigmapl = Alicecipher[0][i].multiply(Alicecipher[1][i].modPow(negsk, p)).mod(p);
-//			System.out.println(Selfsigmapl); 
-//			System.out.println(g);
-			
-			
-		}
-		*/
+ 
 		 //  Bloom Filter Bob --
-			BloomFilter<String> bloomFilterbob = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
+
+			bloomFilter.clear();
 			String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
 			
 			
 		        for (String line : linesbob) {
-		    		bloomFilterbob.add(line);
+		        	bloomFilter.add(line);
 		        }
 		        
-		   int bsb = bloomFilterbob.size(); 
+		   int bsb = bloomFilter.size(); 
 		   
 		   
 		   // Multiply c1, c2 at all points where bf2 is null
@@ -144,9 +122,12 @@ public class Intersection {
 
 		   for (int i = 0; i<=bsb; i++)
 		   {
-			   boolean bb = bloomFilterbob.getBit(i);
+			   
+			   boolean bb = bloomFilter.getBit(i);
+			   System.out.println(bb);
 			   if (bb == true)
 			   {
+				   System.out.println(bb);
 				   vr = vr.multiply(Alicecipher[1][i]).mod(p);
 				   ws = ws.multiply(Alicecipher[0][i]).mod(p);
 
@@ -166,42 +147,92 @@ public class Intersection {
 	       
 	       
 	       
-	       //BigInteger gs = g.modPow(s,p);
-	       //BigInteger pks = pk.modPow(s,p);
+
 		   BigInteger v = g.multiply(vr).mod(p);
-		   System.out.println(v);
 		   BigInteger w = pk.multiply(ws).mod(p);
 		   BigInteger wa[] = new BigInteger[1];
-		   wa[0] = w; 
-		   System.out.println(w);
+		   wa[0] = w;
 		   
 		   //decrypt cipher
-		   /*
-		   Elgamal_CipherText sigma = new Elgamal_CipherText(wa,v);
-		   Elgamal_PlainText plain;
-		   plain = elgamal.decrypt(sigma);
-		   BigInteger pb[]=plain.getPt();
-		   BigInteger pbb = pb[0];
-    	   System.out.println(pbb);
-    	   */
+
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(0);
-			  BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
-//		   System.out.println(sk);
-//		   System.out.println(negsk);
+		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
-//     	   System.out.println(Selfsigma);
-//		   System.out.println(g);
+
 		   //identify exponent 
+		   
+		   BigInteger exeuc = solve(p,g);
+//		   BigInteger in1 = new BigInteger("99");
+//		   BigInteger in2 = new BigInteger("78");
+//		   BigInteger ee = solve(in1,in2);
 		   while (!(Selfsigma.compareTo(it)==0)) {
+			   
+			   
 			 
-			  Selfsigma = Selfsigma.divide(g); 
+			  Selfsigma = Selfsigma.multiply(exeuc); 
 			  x++; 
 			  System.out.println(Selfsigma);
-			  System.out.println(x); 
+//			  System.out.println(x); 
 		   }
-	
+
 	}
 	
+
+
+	    public static BigInteger solve(BigInteger a, BigInteger b)
+
+	    {
+	    	
+	    	
+	    	BigInteger tmpa = a;
+	    	BigInteger tmpb = b;
+	    	BigInteger x = new BigInteger("0"); 
+	    	BigInteger y = new BigInteger("1"); 
+	    	BigInteger lastx = new BigInteger("1"); 
+	    	BigInteger lasty = new BigInteger("0");
+	    	BigInteger temp;
+	    	BigInteger nu = new BigInteger("0");
+
+	        while (!(b.compareTo(nu) == 0))
+
+	        {
+
+	        	BigInteger q = a.divide(b);
+
+	        	BigInteger r = a.mod(b);
+
+	 
+
+	            a = b;
+
+	            b = r;
+
+	 
+
+	            temp = x;
+
+	            x = lastx.subtract(q.multiply(x));
+
+	            lastx = temp;
+
+	 
+
+	            temp = y;
+	            
+	            y = lasty.subtract(q.multiply(y));
+
+
+	            lasty = temp;            
+
+	        }
+	        
+	    	BigInteger zw1 = tmpa.multiply(lastx); 
+	    	BigInteger zw2 = tmpb.multiply(lasty); 
+	    	BigInteger result = zw1.add(zw2); 
+	        return result;
+	        
+
+	    }
 	
 }
