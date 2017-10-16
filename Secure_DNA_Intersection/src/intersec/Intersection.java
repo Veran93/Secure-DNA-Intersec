@@ -35,9 +35,13 @@ public class Intersection {
 		
 		double falsePositiveProbability = 0.2;
 		int bitSetSize = 10000;
-		int expectedNumberOfElements = 15;
+		int expectedNumberOfElements = 30;
+		
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
+        
+	  int bs = bloomFilter.size();	
+
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
 		
@@ -47,8 +51,9 @@ public class Intersection {
 	        }
 	  
 	        
-		  int bs = bloomFilter.size();		  
+//		  int bs = bloomFilter.size();		  
 		  int hs = bloomFilter.getK();
+		  System.out.println(hs);
 
 		
 			
@@ -73,7 +78,7 @@ public class Intersection {
 			  
 			boolean b = bloomFilter.getBit(i); 
 			
-			if(b == true)
+			if(b == false)
 			{
 				bigvert[0] = BigInteger.valueOf(0);
 
@@ -124,10 +129,10 @@ public class Intersection {
 		   {
 			   
 			   boolean bb = bloomFilter.getBit(i);
-			   System.out.println(bb);
+//			   System.out.println(bb);
 			   if (bb == true)
 			   {
-				   System.out.println(bb);
+//				   System.out.println(bb);
 				   vr = vr.multiply(Alicecipher[1][i]).mod(p);
 				   ws = ws.multiply(Alicecipher[0][i]).mod(p);
 
@@ -156,27 +161,42 @@ public class Intersection {
 		   //decrypt cipher
 
 		   int x = 0; 
-		   BigInteger it = BigInteger.valueOf(0);
+		   BigInteger it = BigInteger.valueOf(1);
 		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
 
 		   //identify exponent 
 		   
 		   BigInteger exeuc = solve(p,g);
-//		   BigInteger in1 = new BigInteger("99");
-//		   BigInteger in2 = new BigInteger("78");
-//		   BigInteger ee = solve(in1,in2);
+//		   System.out.println(exeuc); 
+
 		   while (!(Selfsigma.compareTo(it)==0)) {
 			   
 			   
 			 
-			  Selfsigma = Selfsigma.multiply(exeuc); 
+			  Selfsigma = Selfsigma.multiply(exeuc).mod(p); 
 			  x++; 
-			  System.out.println(Selfsigma);
+//			  System.out.println(Selfsigma);
 //			  System.out.println(x); 
 		   }
-
+		   
+		   double doubx = x;
+		   double doubbs = bs;
+		   double doubhs = hs;
+		   double intersec1=(Math.log(doubx/doubbs));
+//		   System.out.println(x);
+//		   System.out.println(bs);
+//		   System.out.println(intersec1);
+		   double intersec2=hs*Math.log(1-(1/bs));
+		   double intersec = (Math.log(doubx/doubbs))/(doubhs*Math.log(1-(1/doubbs)));
+		   System.out.println(intersec); 
+//		   System.out.println(intersec1);
+//		   System.out.println(intersec2);
+		   
 	}
+	
+	
+	
 	
 
 
@@ -229,7 +249,7 @@ public class Intersection {
 	        
 	    	BigInteger zw1 = tmpa.multiply(lastx); 
 	    	BigInteger zw2 = tmpb.multiply(lasty); 
-	    	BigInteger result = zw1.add(zw2); 
+	    	BigInteger result = lasty; 
 	        return result;
 	        
 
