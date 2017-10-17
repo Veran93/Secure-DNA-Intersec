@@ -33,14 +33,15 @@ public class Intersection {
 		
 		//Bloom Filter Alice
 		
-		double falsePositiveProbability = 0.2;
+		double falsePositiveProbability = 0.0001;
 		int bitSetSize = 10000;
-		int expectedNumberOfElements = 30;
+		int expectedNumberOfElements = 16;
 		
 	
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize,expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize, expectedNumberOfElements);
         
-	  int bs = bloomFilter.size();	
+	  int bs = bloomFilter.size();
+	  
 
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
@@ -50,12 +51,13 @@ public class Intersection {
 
 	        }
 	  
-	        
+	      System.out.println(bs);  
 //		  int bs = bloomFilter.size();		  
 		  int hs = bloomFilter.getK();
 		  System.out.println(hs);
 
-		
+		int noe= bloomFilter.count();
+		System.out.println(noe);
 			
 			
 		  //Elgamal
@@ -190,8 +192,12 @@ public class Intersection {
 		   double intersec2=hs*Math.log(1-(1/bs));
 		   double intersec = (Math.log(doubx/doubbs))/(doubhs*Math.log(1-(1/doubbs)));
 		   System.out.println(intersec); 
-//		   System.out.println(intersec1);
 //		   System.out.println(intersec2);
+		   BigInteger zq = new BigInteger("21");
+		   BigInteger ele = new BigInteger("5");
+		   
+		   BigInteger testeea = solve (zq,ele);
+		   System.out.println(testeea);
 		   
 	}
 	
