@@ -89,7 +89,7 @@ public class Elgamal implements CipherScheme {
             } 
 //           System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
            //System.out.println(pt.getPt()[i]);
-           mhr[i]=(kset.getPk().getG().modPow(pt.getPt()[i],modulo).multiply(kset.getPk().getH().modPow(r, modulo))).mod(modulo);
+           mhr[i]=((kset.getPk().getG().modPow(pt.getPt()[i],modulo)).multiply((kset.getPk().getH().modPow(r, modulo)))).mod(modulo);
         }
         
         

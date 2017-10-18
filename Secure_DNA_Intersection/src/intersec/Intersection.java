@@ -33,12 +33,12 @@ public class Intersection {
 		
 		//Bloom Filter Alice
 		
-		double falsePositiveProbability = 0.0001;
-		int bitSetSize = 10000;
-		int expectedNumberOfElements = 16;
+		double falsePositiveProbability = 0.000001;
+		int bitSetSize = 100000;
+		int expectedNumberOfElements = 15;
 		
 	
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(bitSetSize, expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
         
 	  int bs = bloomFilter.size();
 	  
@@ -169,7 +169,7 @@ public class Intersection {
 
 		   //identify exponent 
 		   
-		   BigInteger exeuc = solve(p,g);
+		   BigInteger exeuc = eea(p,g);
 //		   System.out.println(exeuc); 
 
 		   while (!(Selfsigma.compareTo(it)==0)) {
@@ -179,24 +179,28 @@ public class Intersection {
 			  Selfsigma = Selfsigma.multiply(exeuc).mod(p); 
 			  x++; 
 //			  System.out.println(Selfsigma);
-//			  System.out.println(x); 
+			  System.out.println(x); 
 		   }
+		   
 		   
 		   double doubx = x;
 		   double doubbs = bs;
+		   double z = doubbs - doubx;
 		   double doubhs = hs;
 		   double intersec1=(Math.log(doubx/doubbs));
 //		   System.out.println(x);
 //		   System.out.println(bs);
 //		   System.out.println(intersec1);
 		   double intersec2=hs*Math.log(1-(1/bs));
-		   double intersec = (Math.log(doubx/doubbs))/(doubhs*Math.log(1-(1/doubbs)));
+		   double intersec = (Math.log(z/doubbs))/(doubhs*Math.log(1-(1/doubbs)));
 		   System.out.println(intersec); 
+		   
+
 //		   System.out.println(intersec2);
 		   BigInteger zq = new BigInteger("21");
 		   BigInteger ele = new BigInteger("5");
 		   
-		   BigInteger testeea = solve (zq,ele);
+		   BigInteger testeea = eea (zq,ele);
 		   System.out.println(testeea);
 		   
 	}
@@ -206,7 +210,7 @@ public class Intersection {
 	
 
 
-	    public static BigInteger solve(BigInteger a, BigInteger b)
+	    public static BigInteger eea(BigInteger a, BigInteger b)
 
 	    {
 	    	
