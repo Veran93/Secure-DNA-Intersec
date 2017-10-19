@@ -2,8 +2,6 @@ package intersec;
 
 import java.io.IOException;
 import java.math.BigInteger;
-
-
 import elgamal.Elgamal;
 import elgamal.Elgamal_KeySet;
 import elgamal.Elgamal_PublicKey;
@@ -13,18 +11,8 @@ import elgamal.Elgamal_PlainText;
 import elgamal.Elgamal_Parameters;
 import chiffrement.CipherScheme;
 import bloomfilter.BloomFilter;
-
-//import java.security.InvalidKeyException;
-//import java.security.Key;
-//import java.security.KeyPair;
-//import java.security.KeyPairGenerator;
-//import java.security.NoSuchAlgorithmException;
-//import java.security.NoSuchProviderException;
-//import java.security.Provider;
 import java.security.SecureRandom;
-//import java.security.Security;
 
-//import javax.crypto.*;
 
 public class Intersection {
 	public static void main(String[] args) throws IOException {
@@ -40,7 +28,7 @@ public class Intersection {
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
         
-	  int bs = bloomFilter.size();
+	    int m = bloomFilter.size();
 	  
 
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
@@ -51,31 +39,26 @@ public class Intersection {
 
 	        }
 	  
-	      System.out.println(bs);  
-//		  int bs = bloomFilter.size();		  
-		  int hs = bloomFilter.getK();
-		  System.out.println(hs);
+	      //get number of Hash functions
+		  int k = bloomFilter.getK();
 
-		int noe= bloomFilter.count();
-		System.out.println(noe);
-			
 			
 		  //Elgamal
 			
 		  
 		  //Initialize
 		  BigInteger[] bigvert = new BigInteger[1];
-		  BigInteger[][] Alicecipher = new BigInteger [2][bs+1];
+		  BigInteger[][] Alicecipher = new BigInteger [2][m+1];
 		  Elgamal elgamal = new Elgamal(256); 
 		  Elgamal_CipherText ct;
 		  BigInteger g = elgamal.geteg();
 		  BigInteger pk = elgamal.getepk();
-		  BigInteger p = elgamal.getp();
+		  BigInteger q = elgamal.getp();
 		  BigInteger sk = elgamal.gets();
 		  
 		  //Bitwise encryption
 
-		  for (int i = 0; i<=bs ; i++)
+		  for (int i = 0; i<=m ; i++)
 		  {
 			  
 			boolean b = bloomFilter.getBit(i); 
@@ -99,7 +82,7 @@ public class Intersection {
 			BigInteger mhr[] = ct.getCt(); 
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
-			BigInteger modg =g.mod(p); 
+			BigInteger modg =g.mod(q); 
 			
 			//gr = c1; mhcool = c2
 			
@@ -131,12 +114,12 @@ public class Intersection {
 		   {
 			   
 			   boolean bb = bloomFilter.getBit(i);
-//			   System.out.println(bb);
+
 			   if (bb == true)
 			   {
-//				   System.out.println(bb);
-				   vr = vr.multiply(Alicecipher[1][i]).mod(p);
-				   ws = ws.multiply(Alicecipher[0][i]).mod(p);
+
+				   vr = vr.multiply(Alicecipher[1][i]).mod(q);
+				   ws = ws.multiply(Alicecipher[0][i]).mod(q);
 
 			   }
 			   
@@ -145,18 +128,15 @@ public class Intersection {
 		   // s element of Zq
 	       BigInteger s;
 	       do{
-	           s = new BigInteger(p.bitCount()-1, new SecureRandom());
-	       }while(p.compareTo(s)==-1);
+	           s = new BigInteger(q.bitCount()-1, new SecureRandom());
+	       }while(q.compareTo(s)==-1);
 	        
 
 
 	       // Re-Randomisation
 	       
-	       
-	       
-
-		   BigInteger v = g.multiply(vr).mod(p);
-		   BigInteger w = pk.multiply(ws).mod(p);
+		   BigInteger v = g.multiply(vr).mod(q);
+		   BigInteger w = pk.multiply(ws).mod(q);
 		   BigInteger wa[] = new BigInteger[1];
 		   wa[0] = w;
 		   
@@ -165,43 +145,27 @@ public class Intersection {
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(1);
 		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
-		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, p)).mod(p);
+		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, q)).mod(q);
 
 		   //identify exponent 
 		   
-		   BigInteger exeuc = eea(p,g);
-//		   System.out.println(exeuc); 
+		   BigInteger exeuc = eea(q,g);; 
 
 		   while (!(Selfsigma.compareTo(it)==0)) {
-			   
-			   
-			 
-			  Selfsigma = Selfsigma.multiply(exeuc).mod(p); 
+
+			  Selfsigma = Selfsigma.multiply(exeuc).mod(q); 
 			  x++; 
-//			  System.out.println(Selfsigma);
-			  System.out.println(x); 
+
 		   }
 		   
 		   
 		   double doubx = x;
-		   double doubbs = bs;
-		   double z = doubbs - doubx;
-		   double doubhs = hs;
-		   double intersec1=(Math.log(doubx/doubbs));
-//		   System.out.println(x);
-//		   System.out.println(bs);
-//		   System.out.println(intersec1);
-		   double intersec2=hs*Math.log(1-(1/bs));
-		   double intersec = (Math.log(z/doubbs))/(doubhs*Math.log(1-(1/doubbs)));
-		   System.out.println(intersec); 
+		   double double_m = m;
+		   double z = double_m - doubx;
+		   double doubhs = k;
+		   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
+		   System.out.println(X); 
 		   
-
-//		   System.out.println(intersec2);
-		   BigInteger zq = new BigInteger("21");
-		   BigInteger ele = new BigInteger("5");
-		   
-		   BigInteger testeea = eea (zq,ele);
-		   System.out.println(testeea);
 		   
 	}
 	
@@ -209,7 +173,8 @@ public class Intersection {
 	
 	
 
-
+// extended euclidean algorithm
+	
 	    public static BigInteger eea(BigInteger a, BigInteger b)
 
 	    {
