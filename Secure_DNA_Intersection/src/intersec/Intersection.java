@@ -112,7 +112,7 @@ public class Intersection {
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
 
-		   for (int i = 0; i<=bsb; i++)
+		   for (int i = 0; i<=m; i++)
 		   {
 			   
 			   boolean bb = bloomFilter.getBit(i);
