@@ -21,9 +21,9 @@ public class Intersection {
 		
 		//Bloom Filter Alice
 		
-		double falsePositiveProbability = 0.000001;
+		double falsePositiveProbability = 0.001;
 		int bitSetSize = 100000;
-		int expectedNumberOfElements = 15;
+		int expectedNumberOfElements = 50;
 		
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
@@ -54,7 +54,8 @@ public class Intersection {
 		  BigInteger g = elgamal.geteg();
 		  BigInteger pk = elgamal.getepk();
 		  BigInteger q = elgamal.getp();
-		  BigInteger sk = elgamal.gets();
+		  BigInteger sv = elgamal.gets();
+		  BigInteger sk = sv.mod(q);
 		  
 		  //Bitwise encryption
 
@@ -95,8 +96,9 @@ public class Intersection {
  
 		 //  Bloom Filter Bob --
 
-			bloomFilter.clear();
-			String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
+		  bloomFilter.clear();
+		  
+		  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
 			
 			
 		        for (String line : linesbob) {
@@ -134,11 +136,11 @@ public class Intersection {
 
 
 	       // Re-Randomisation
-	       
-		   BigInteger v = g.multiply(vr).mod(q);
-		   BigInteger w = pk.multiply(ws).mod(q);
-		   BigInteger wa[] = new BigInteger[1];
-		   wa[0] = w;
+	       BigInteger pks = pk.modPow(s,q);	
+	       BigInteger gs = g.modPow(s,q);
+		   BigInteger v = gs.multiply(vr).mod(q);
+		   BigInteger w = pks.multiply(ws).mod(q);
+		  
 		   
 		   //decrypt cipher
 
