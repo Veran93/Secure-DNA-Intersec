@@ -22,7 +22,6 @@ public class Intersection {
 		//Bloom Filter Alice
 		
 		double falsePositiveProbability = 0.001;
-		int bitSetSize = 100000;
 		int expectedNumberOfElements = 50;
 		
 	
