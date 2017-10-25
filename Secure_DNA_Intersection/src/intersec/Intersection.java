@@ -65,12 +65,12 @@ public class Intersection {
 			
 			if(b == false)
 			{
-				bigvert[0] = BigInteger.valueOf(0);
+				bigvert[0] = BigInteger.valueOf(1);
 
 			}
 			else
 			{
-				bigvert[0] = BigInteger.valueOf(1);
+				bigvert[0] = BigInteger.valueOf(0);
 
 			}
 
