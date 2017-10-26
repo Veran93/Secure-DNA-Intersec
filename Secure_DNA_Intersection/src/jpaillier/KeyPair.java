@@ -1,6 +1,7 @@
 package jpaillier;
 
 import java.math.BigInteger;
+import jpaillier.PublicKey;
 
 /**
  * A class that holds a pair of associated public and private keys.
