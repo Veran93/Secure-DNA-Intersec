@@ -12,24 +12,28 @@ import elgamal.Elgamal_Parameters;
 import chiffrement.CipherScheme;
 import bloomfilter.BloomFilter;
 import java.security.SecureRandom;
+import java.util.BitSet;
 
 
 public class Intersection {
 	public static void main(String[] args) throws IOException {
 
 	    
+
+		int[] testa3 = new int [700];
 		
 		//Bloom Filter Alice
 		
-		double falsePositiveProbability = 0.001;
-		int expectedNumberOfElements = 50;
+		double falsePositiveProbability = 0.0001;
+		int expectedNumberOfElements = 1000;
 		
 	
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
         
 	    int m = bloomFilter.size();
-	  
-
+	    System.out.println(m);
+		int[] testa1 = new int [m+1];
+		int[] testa2 = new int [m+1];
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
 		
@@ -37,11 +41,13 @@ public class Intersection {
 	    		bloomFilter.add(line);
 
 	        }
+	        
+	        
 	  
 	      //get number of Hash functions
 		  int k = bloomFilter.getK();
 
-			
+		  
 		  //Elgamal
 			
 		  
@@ -55,8 +61,17 @@ public class Intersection {
 		  BigInteger q = elgamal.getp();
 		  BigInteger sv = elgamal.gets();
 		  BigInteger sk = sv.mod(q);
+		  System.out.println(k);
 		  
+		  
+
+			int zz = m - bloomFilter.getBitSet().cardinality();
+			double numerator = Math.log((double)zz/m);
+			double denominator = k*Math.log(1-(1/(double)m));
+			double XX = numerator / denominator;
+			System.out.println(XX);
 		  //Bitwise encryption
+
 
 		  for (int i = 0; i<=m ; i++)
 		  {
@@ -65,12 +80,16 @@ public class Intersection {
 			
 			if(b == false)
 			{
+				
 				bigvert[0] = BigInteger.valueOf(1);
+				testa1[i]= 1;
 
 			}
 			else
 			{
 				bigvert[0] = BigInteger.valueOf(0);
+				testa1[i]= 0;
+				
 
 			}
 
@@ -92,6 +111,9 @@ public class Intersection {
 
 			
 		  }
+		  
+		  int zi = bloomFilter.getBitSet().cardinality();
+		  System.out.println(zi);
  
 		 //  Bloom Filter Bob --
 
@@ -105,11 +127,19 @@ public class Intersection {
 		        }
 		        
 		   int bsb = bloomFilter.size(); 
-		   
+		   int zi2 = bloomFilter.getBitSet().cardinality();
+			System.out.println(zi2);
+			
+			int zz2 = m - bloomFilter.getBitSet().cardinality();
+			double numerator2 = Math.log((double)zz2/m);
+			double denominator2 = k*Math.log(1-(1/(double)m));
+			double XX2 = numerator2 / denominator2;
+			System.out.println(XX2);
 		   
 		   // Multiply c1, c2 at all points where bf2 is null
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
+
 
 		   for (int i = 0; i<=m; i++)
 		   {
@@ -121,10 +151,28 @@ public class Intersection {
 
 				   vr = vr.multiply(Alicecipher[1][i]).mod(q);
 				   ws = ws.multiply(Alicecipher[0][i]).mod(q);
+				   testa2[i]= 1;
+				
 
 			   }
+			   else
+			   {
+				   testa2[i]= 0;
+			   }
+			   
 			   
 		   }
+		   
+		   int t1 =0;
+		   
+		   for (int i =0; i< testa1.length; i++)
+		   {
+			   if (testa1[i]== 1 && testa2[i]==1)
+			   {
+				   t1++;
+			   }
+		   }
+		   System.out.println(t1);
 		   
 		   // s element of Zq
 	       BigInteger s;
@@ -161,11 +209,16 @@ public class Intersection {
 		   
 		   
 		   double doubx = x;
+		   System.out.println(x);
 		   double double_m = m;
+		   System.out.println(m);
 		   double z = double_m - doubx;
 		   double doubhs = k;
+		   System.out.println(k);
 		   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
 		   System.out.println(X); 
+		   
+
 		   
 		   
 	}
