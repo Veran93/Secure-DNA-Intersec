@@ -15,10 +15,10 @@ import java.util.Random;
  * @see KeyPair
  */
 public class PublicKey {
-    private final int bits;
-    private final BigInteger n;
-    private final BigInteger nSquared;
-    private final BigInteger g;
+    private  static int bits;
+    private  static BigInteger n;
+    private  static BigInteger nSquared;
+    private  static BigInteger g;
 
     PublicKey(BigInteger n, BigInteger nSquared, BigInteger g, int bits) {
         this.n = n;
@@ -49,7 +49,7 @@ public class PublicKey {
      * @param m The plaintext that should be encrypted.
      * @return The corresponding ciphertext.
      */
-    public final BigInteger encrypt(BigInteger m) {
+    public final static  BigInteger encrypt(BigInteger m) {
 
         BigInteger r;
         do {

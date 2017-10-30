@@ -13,7 +13,7 @@ import chiffrement.CipherScheme;
 import bloomfilter.BloomFilter;
 import java.security.SecureRandom;
 import java.util.BitSet;
-
+import jpaillier.*;
 
 public class Intersection {
 	public static void main(String[] args) throws IOException {
@@ -70,6 +70,9 @@ public class Intersection {
 			double denominator = k*Math.log(1-(1/(double)m));
 			double XX = numerator / denominator;
 			System.out.println(XX);
+			
+			
+			
 		  //Bitwise encryption
 
 
@@ -78,7 +81,7 @@ public class Intersection {
 			  
 			boolean b = bloomFilter.getBit(i); 
 			
-			if(b == false)
+			if(b == true)
 			{
 				
 				bigvert[0] = BigInteger.valueOf(1);
@@ -116,7 +119,9 @@ public class Intersection {
 		  System.out.println(zi);
  
 		 //  Bloom Filter Bob --
-
+		 // Einlesen des 2. Datensatzes und erstllen des Bloomfilters
+		  
+		  //bloomfilter zurücksetzten 
 		  bloomFilter.clear();
 		  
 		  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
@@ -136,6 +141,7 @@ public class Intersection {
 			double XX2 = numerator2 / denominator2;
 			System.out.println(XX2);
 		   
+			
 		   // Multiply c1, c2 at all points where bf2 is null
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
@@ -216,7 +222,8 @@ public class Intersection {
 		   double doubhs = k;
 		   System.out.println(k);
 		   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
-		   System.out.println(X); 
+		   int intx = (int) X;
+		   System.out.println("Ca. " + intx + " Elemente sind in beiden Datensätzen enthalten"); 
 		   
 
 		   
@@ -289,7 +296,7 @@ public class Intersection {
 			//Bloom Filter Alice
 			
 			double falsePositiveProbability = 0.001;
-			int expectedNumberOfElements = 50;
+			int expectedNumberOfElements = 500;
 			
 		
 			BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
@@ -313,10 +320,10 @@ public class Intersection {
 				
 			  
 			  //Initialize
-			  BigInteger[] bigvert = new BigInteger[1];
+			  BigInteger bigvert = new BigInteger("");
 			  BigInteger[][] Alicecipher = new BigInteger [2][m+1];
 			  Elgamal elgamal = new Elgamal(256); 
-			  Elgamal_CipherText ct;
+			  BigInteger ct;
 			  BigInteger g = elgamal.geteg();
 			  BigInteger pk = elgamal.getepk();
 			  BigInteger q = elgamal.getp();
@@ -332,16 +339,16 @@ public class Intersection {
 				
 				if(b == false)
 				{
-					bigvert[0] = BigInteger.valueOf(1);
+					bigvert = BigInteger.valueOf(1);
 
 				}
 				else
 				{
-					bigvert[0] = BigInteger.valueOf(0);
+					bigvert = BigInteger.valueOf(0);
 
 				}
 
-				ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
+				ct = PublicKey.encrypt(bigvert);
 				
 				
 				// decomposit ciphertext
@@ -432,7 +439,9 @@ public class Intersection {
 			   double z = double_m - doubx;
 			   double doubhs = k;
 			   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
-			   System.out.println(X); 
+			   System.out.println(X+"Elemente sind in beiden Datensätzen enthalten"); 
+			   
+			   
 			   
 			   
 		}
