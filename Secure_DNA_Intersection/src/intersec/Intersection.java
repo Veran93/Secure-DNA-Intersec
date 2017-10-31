@@ -16,16 +16,14 @@ import java.util.BitSet;
 import jpaillier.*;
 
 public class Intersection {
+	
 	public static void main(String[] args) throws IOException {
 		
 
 		elgamal_encryption();
-   
-		   
+
 	}
-	
-	
-		
+
 	public static void elgamal_encryption() throws IOException
 	{	
 		
@@ -93,7 +91,7 @@ public class Intersection {
 			
 			
 		  
-		  //Bitwise encryption
+		  //Bitweise Verschlüsselung
 
 		  
 		  for (int i = 0; i<=m ; i++)
@@ -101,7 +99,7 @@ public class Intersection {
 			  
 			boolean b = bloomFilter.getBit(i); 
 			
-			//Wenn der Bloomfilter an dieser Stelle 1 ist, wird eine 1 an elgamal übergeben.
+			//Wenn der Bloomfilter an dieser Position eine 1 codiert, wird eine 1 an elgamal übergeben.
 			
 			if(b == true)
 			{
@@ -120,15 +118,15 @@ public class Intersection {
 			}
 			
 			
-			//
+			// Die codierung für elgamal entspricht dann S[i] = pk^r * g^Bf[i] 
 			ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
 			
 			
-			// decomposit ciphertext
+			// Ciphertext in S[i], R[i]
 			
 			/* 
 			 * mhr[]== S[i], nur der erste eintrag ist belegt
-				gr == R[i]
+			 * gr == R[i]
 			 */
 			BigInteger mhr[] = ct.getCt(); 
 			BigInteger mhcool = mhr[0];			
@@ -161,15 +159,15 @@ public class Intersection {
 		        }
 		  
 
-		    // Größe der Eingabedatei des Servers
-			int zz2 = m - bloomFilter.getBitSet().cardinality();
-			double numerator2 = Math.log((double)zz2/m);
-			double denominator2 = k*Math.log(1-(1/(double)m));
-			double XX2 = numerator2 / denominator2;
-			System.out.println("Der Datensatz des Servers enthält ca. : "+(int)XX2+" SNPS");
+		   // Größe der Eingabedatei des Servers
+		   int zz2 = m - bloomFilter.getBitSet().cardinality();
+		   double numerator2 = Math.log((double)zz2/m);
+		   double denominator2 = k*Math.log(1-(1/(double)m));
+		   double XX2 = numerator2 / denominator2;
+		   System.out.println("Der Datensatz des Servers enthält ca. : "+(int)XX2+" SNPS");
 		   
 			
-		   // Multipliziert alle werte des Ciphertextes des Clients auf, an denen der Bloomfilter des Servers einen Nulleintrag besitzt.
+		   // Multipliziert alle Werte des Ciphertextes des Clients auf, an denen der Bloomfilter des Servers einen Nulleintrag besitzt.
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
 
@@ -206,9 +204,11 @@ public class Intersection {
 				   t1++;
 			   }
 		   }
-		   System.out.println("Es gibt "+t1+ " Bloomfilter Bits bei denen beide Parteinen eine 1 codiert haben ");
+		   System.out.println("Es gibt "+t1+ " Bloomfilter Bits bei denen beide Parteinen eine 1 codiert haben \n ");
 		   
 		   // s element of Zq
+		   //Zufallszahl des Srvers 
+		   
 	       BigInteger s;
 	       do{
 	           s = new BigInteger(q.bitCount()-1, new SecureRandom());
@@ -216,21 +216,24 @@ public class Intersection {
 	        
 
 
-	       // Re-Randomisation
+	       // Re-Randomisation: 
+	       
+	       //Brechne pk^s und g^s
 	       BigInteger pks = pk.modPow(s,q);	
 	       BigInteger gs = g.modPow(s,q);
+	       
+	       //Berechne w = pks * ws (ws = Vonm Server aufmultiplizierte Werte von S[i]) und v = gs * vr (vr = Vonm Server aufmultiplizierte Werte von R[i])
 		   BigInteger v = gs.multiply(vr).mod(q);
 		   BigInteger w = pks.multiply(ws).mod(q);
 		  
 		   
 		   //decrypt cipher
-
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(1);
 		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, q)).mod(q);
 
-		   //identify exponent 
+		   //Identifiziere die Anzahl an Bloomfilter Positionen an denen beide 
 		   
 		   BigInteger exeuc = eea(q,g);
 
@@ -242,6 +245,7 @@ public class Intersection {
 		   }
 		   
 		   
+		   //Berechne aus der Anzahl der gemeinsamen Bits die Anzahl der gemeinsamen SNPs
 		   double doubx = x;
 		   double double_m = m;
 		   double z = double_m - doubx;
@@ -253,12 +257,11 @@ public class Intersection {
 	}
 
 
-		// extended euclidean algorithm
-	
+
 	    public static BigInteger eea(BigInteger a, BigInteger b)
 
 	    {
-	    	
+			// erweiterter euklidischer Algorithmus
 	    	
 	    	BigInteger tmpa = a;
 	    	BigInteger tmpb = b;
@@ -301,15 +304,15 @@ public class Intersection {
 	            lasty = temp;            
 
 	        }
-	        
-	    	BigInteger zw1 = tmpa.multiply(lastx); 
-	    	BigInteger zw2 = tmpb.multiply(lasty); 
+
 	    	BigInteger result = lasty; 
 	        return result;
 	        
 
 	    }
 	    
+	    
+	    //in progress ....
 		public static  void jpaillier () throws IOException {
 			
 			//Bloom Filter Alice
