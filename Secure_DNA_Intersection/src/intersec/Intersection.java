@@ -17,12 +17,21 @@ import jpaillier.*;
 
 public class Intersection {
 	public static void main(String[] args) throws IOException {
-
-	    
-
-		int[] testa3 = new int [700];
 		
-		//Bloom Filter Alice
+
+		elgamal_encryption();
+   
+		   
+	}
+	
+	
+		
+	public static void elgamal_encryption() throws IOException
+	{	
+		
+		//Bloom Filter Client
+		
+		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
 		
 		double falsePositiveProbability = 0.0001;
 		int expectedNumberOfElements = 1000;
@@ -31,7 +40,7 @@ public class Intersection {
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
         
 	    int m = bloomFilter.size();
-	    System.out.println(m);
+
 		int[] testa1 = new int [m+1];
 		int[] testa2 = new int [m+1];
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
@@ -41,17 +50,24 @@ public class Intersection {
 	    		bloomFilter.add(line);
 
 	        }
-	        
-	        
-	  
-	      //get number of Hash functions
-		  int k = bloomFilter.getK();
 
+	  
+	      //Anzahl der Hashfunktionen
+		  int k = bloomFilter.getK(); 
+
+		  
 		  
 		  //Elgamal
 			
 		  
 		  //Initialize
+		  
+		  /*
+		   * g = generator	
+		   * pk = public key
+		   * q = größe der zyklischen Gruppe
+		   * sk = secret key
+		   */
 		  BigInteger[] bigvert = new BigInteger[1];
 		  BigInteger[][] Alicecipher = new BigInteger [2][m+1];
 		  Elgamal elgamal = new Elgamal(256); 
@@ -61,25 +77,31 @@ public class Intersection {
 		  BigInteger q = elgamal.getp();
 		  BigInteger sv = elgamal.gets();
 		  BigInteger sk = sv.mod(q);
-		  System.out.println(k);
+		  
+		  System.out.println("Bloomfilter Parameter:");
+		  System.out.println("Anzahl der Hashfunktionen : "+k);
+		  System.out.println("Größe des Bloomfilters : "+m+ "\n");
 		  
 		  
-
-			int zz = m - bloomFilter.getBitSet().cardinality();
-			double numerator = Math.log((double)zz/m);
-			double denominator = k*Math.log(1-(1/(double)m));
-			double XX = numerator / denominator;
-			System.out.println(XX);
+		  // Größe der Eingabedatei des CLients
+		  int zz = m - bloomFilter.getBitSet().cardinality();
+		  double numerator = Math.log((double)zz/m);
+		  double denominator = k*Math.log(1-(1/(double)m));
+		  double XX = numerator / denominator;
+		  System.out.println("Der Datensatz des Clients enthält ca. : "+(int)XX+" SNPs");
 			
 			
 			
+		  
 		  //Bitwise encryption
 
-
+		  
 		  for (int i = 0; i<=m ; i++)
 		  {
 			  
 			boolean b = bloomFilter.getBit(i); 
+			
+			//Wenn der Bloomfilter an dieser Stelle 1 ist, wird eine 1 an elgamal übergeben.
 			
 			if(b == true)
 			{
@@ -88,6 +110,7 @@ public class Intersection {
 				testa1[i]= 1;
 
 			}
+			// ... andernfalls eine 0
 			else
 			{
 				bigvert[0] = BigInteger.valueOf(0);
@@ -95,12 +118,18 @@ public class Intersection {
 				
 
 			}
-
+			
+			
+			//
 			ct = elgamal.encrypt(new Elgamal_PlainText(bigvert));
 			
 			
 			// decomposit ciphertext
 			
+			/* 
+			 * mhr[]== S[i], nur der erste eintrag ist belegt
+				gr == R[i]
+			 */
 			BigInteger mhr[] = ct.getCt(); 
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
@@ -115,34 +144,32 @@ public class Intersection {
 			
 		  }
 		  
-		  int zi = bloomFilter.getBitSet().cardinality();
-		  System.out.println(zi);
+
  
-		 //  Bloom Filter Bob --
-		 // Einlesen des 2. Datensatzes und erstllen des Bloomfilters
+		 //  Bloom Filter Server
+
 		  
 		  //bloomfilter zurücksetzten 
 		  bloomFilter.clear();
 		  
+		  // Einlesen des 2. Datensatzes und erstllen des Bloomfilters
 		  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
 			
 			
 		        for (String line : linesbob) {
 		        	bloomFilter.add(line);
 		        }
-		        
-		   int bsb = bloomFilter.size(); 
-		   int zi2 = bloomFilter.getBitSet().cardinality();
-			System.out.println(zi2);
-			
+		  
+
+		    // Größe der Eingabedatei des Servers
 			int zz2 = m - bloomFilter.getBitSet().cardinality();
 			double numerator2 = Math.log((double)zz2/m);
 			double denominator2 = k*Math.log(1-(1/(double)m));
 			double XX2 = numerator2 / denominator2;
-			System.out.println(XX2);
+			System.out.println("Der Datensatz des Servers enthält ca. : "+(int)XX2+" SNPS");
 		   
 			
-		   // Multiply c1, c2 at all points where bf2 is null
+		   // Multipliziert alle werte des Ciphertextes des Clients auf, an denen der Bloomfilter des Servers einen Nulleintrag besitzt.
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
 
@@ -151,8 +178,9 @@ public class Intersection {
 		   {
 			   
 			   boolean bb = bloomFilter.getBit(i);
-
-			   if (bb == true)
+			   
+			   //
+			   if (bb == true) 
 			   {
 
 				   vr = vr.multiply(Alicecipher[1][i]).mod(q);
@@ -178,7 +206,7 @@ public class Intersection {
 				   t1++;
 			   }
 		   }
-		   System.out.println(t1);
+		   System.out.println("Es gibt "+t1+ " Bloomfilter Bits bei denen beide Parteinen eine 1 codiert haben ");
 		   
 		   // s element of Zq
 	       BigInteger s;
@@ -215,26 +243,17 @@ public class Intersection {
 		   
 		   
 		   double doubx = x;
-		   System.out.println(x);
 		   double double_m = m;
-		   System.out.println(m);
 		   double z = double_m - doubx;
-		   double doubhs = k;
-		   System.out.println(k);
+		   double doubhs = k;;
 		   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
 		   int intx = (int) X;
-		   System.out.println("Ca. " + intx + " Elemente sind in beiden Datensätzen enthalten"); 
-		   
-
-		   
-		   
+		   System.out.println("Ca. " + intx + " SNPs sind in beiden Datensätzen enthalten"); 
+		   	
 	}
-	
-	
-	
-	
 
-// extended euclidean algorithm
+
+		// extended euclidean algorithm
 	
 	    public static BigInteger eea(BigInteger a, BigInteger b)
 

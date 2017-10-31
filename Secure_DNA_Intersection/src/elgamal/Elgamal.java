@@ -7,7 +7,6 @@ package elgamal;
  */
 
 
-
 import chiffrement.CipherScheme;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -22,6 +21,10 @@ import java.util.logging.Logger;
  *
  * @author oorestisime
  */
+
+
+//Hier habe ich die Methode encrypt verändert, sowie einige getter Methoden hinzugefügt
+
 public class Elgamal implements CipherScheme {
 
     private int nbits;
@@ -58,6 +61,8 @@ public class Elgamal implements CipherScheme {
        return p;
     }
     public Elgamal_CipherText encrypt(Elgamal_PlainText pt){
+    	
+    	 // Der Parameter modulo entspricht der Größe der zyklischen Gruppe (q) 
         BigInteger modulo=kset.getPk().getP();
         Elgamal_CipherText ct;
         BigInteger mhr[]=new BigInteger[pt.getPt().length];
@@ -66,34 +71,23 @@ public class Elgamal implements CipherScheme {
             r = new BigInteger(modulo.bitCount()-1, new SecureRandom());
         }while(kset.getPk().getP().compareTo(r)==-1);
         
-        
-        
-        // changed mhr[i]
-        
-/*
+  
+
         for(int i=0;i<pt.getPt().length;i++){
            if(pt.getPt()[i].compareTo(modulo)==1){
-                //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
+
                 System.out.println("Plain text superieure a N");
                 System.exit(1);
-            } 
-           //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
-           mhr[i]=(pt.getPt()[i].multiply(kset.getPk().getH().modPow(r, modulo))).mod(modulo);
-        }
-*/
-        for(int i=0;i<pt.getPt().length;i++){
-           if(pt.getPt()[i].compareTo(modulo)==1){
-                //System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
-                System.out.println("Plain text superieure a N");
-                System.exit(1);
-            } 
-//           System.out.println("mod "+ modulo+" bytes  "+modulo.bitCount()+" "+pt.getPt()[i]);
-           //System.out.println(pt.getPt()[i]);
+            }
+           
+           // Der Parameter mhr[i] entspricht dem S[i] des Papers
+
            mhr[i]=((kset.getPk().getG().modPow(pt.getPt()[i],modulo)).multiply((kset.getPk().getH().modPow(r, modulo)))).mod(modulo);
         }
         
         
-
+        // Der Parameter gr entspricht dem R[i] des Papers
+        
         BigInteger gr=kset.getPk().getG().modPow(r,modulo);
         ct=new Elgamal_CipherText(mhr,gr);
         return ct;
@@ -118,39 +112,6 @@ public class Elgamal implements CipherScheme {
 	return kset.getSk().getX();
     }    
 
-    public Elgamal_CipherText encrypt(String s){
-        Elgamal_CipherText cipherT;
-        byte bytes[]=null;
-        try {
-            bytes = s.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(Elgamal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //System.out.print(bytes.length+"\n");
-        byte[][] chuncked =divideArray(bytes, 31);
-        //System.out.println("remainder is "+ s.length()%127);
-        //last byte[]. we have to delete zeros in the end!
-        byte lastchunck[]=new byte[s.length()%31];
-        int j=0;
-        for(int i=0;i<chuncked[0].length;i++){
-            if(chuncked[chuncked.length-1][i]!=(byte)0){
-               lastchunck[j]=(byte)(chuncked[chuncked.length-1][i]);
-               j++;
-             }
-        }
-        // convert to biginteger!
-        BigInteger[] chuncks=new BigInteger[chuncked.length];
-        for(int w=0;w<chuncks.length-1;w++){
-            chuncks[w]=new BigInteger(chuncked[w]);
-            //System.out.print(new String(chuncks[w].toByteArray()));
-        }
-        //convert last chunk
-        chuncks[chuncks.length-1]=new BigInteger(lastchunck);
-       // System.out.println(new String(chuncks[chuncks.length-1].toByteArray()));
-        //encrypt
-        cipherT=encrypt(new Elgamal_PlainText(chuncks));
-        return cipherT;
-    }
     public Elgamal_PlainText decrypt(Elgamal_CipherText ct){
         Elgamal_PlainText pt;
         BigInteger mod=kset.getPk().getP();
