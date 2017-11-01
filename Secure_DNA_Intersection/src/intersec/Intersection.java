@@ -39,8 +39,7 @@ public class Intersection {
         
 	    int m = bloomFilter.size();
 
-		int[] testa1 = new int [m+1];
-		int[] testa2 = new int [m+1];
+	    //Einlesen des Client Datensatzes
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
 		
@@ -50,6 +49,9 @@ public class Intersection {
 	        }
 
 	  
+		  int[] testa1 = new int [m+1];
+		  int[] testa2 = new int [m+1];
+		  
 	      //Anzahl der Hashfunktionen
 		  int k = bloomFilter.getK(); 
 
@@ -150,11 +152,11 @@ public class Intersection {
 		  //bloomfilter zurücksetzten 
 		  bloomFilter.clear();
 		  
-		  // Einlesen des 2. Datensatzes und erstllen des Bloomfilters
-		  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
+		  // Einlesen des 2. Datensatzes und erstllen des Server Bloomfilters
+		  String[] linesserver = new FileArrayProvider().readLines("./input/Bob.txt");
 			
 			
-		        for (String line : linesbob) {
+		        for (String line : linesserver) {
 		        	bloomFilter.add(line);
 		        }
 		  
@@ -167,7 +169,7 @@ public class Intersection {
 		   System.out.println("Der Datensatz des Servers enthält ca. : "+(int)XX2+" SNPS");
 		   
 			
-		   // Multipliziert alle Werte des Ciphertextes des Clients auf, an denen der Bloomfilter des Servers einen Nulleintrag besitzt.
+		   // Multipliziert alle Werte des Ciphertextes des Clients auf, an denen der Bloomfilter des Servers einen Einseintrag besitzt.
 		   BigInteger vr = BigInteger.valueOf(1);
 		   BigInteger ws = BigInteger.valueOf(1);
 
@@ -177,7 +179,7 @@ public class Intersection {
 			   
 			   boolean bb = bloomFilter.getBit(i);
 			   
-			   //
+			   
 			   if (bb == true) 
 			   {
 
@@ -231,12 +233,16 @@ public class Intersection {
 		   int x = 0; 
 		   BigInteger it = BigInteger.valueOf(1);
 		   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
+		   // Selfsigma entspricht g^x wobei x der Anzahl an Positionen entspricht an denen beide Bloomfilter 1 sind.
 		   BigInteger Selfsigma = w.multiply(v.modPow(negsk, q)).mod(q);
 
-		   //Identifiziere die Anzahl an Bloomfilter Positionen an denen beide 
+		   //Identifiziere die Anzahl an Bloomfilter Positionen an denen beide Bloomfilter eine 1 besitzen
 		   
+		   //Aufruf  erweiterter euklidischer Algorithmus
 		   BigInteger exeuc = eea(q,g);
 
+		   
+		   
 		   while (!(Selfsigma.compareTo(it)==0)) {
 
 			  Selfsigma = Selfsigma.multiply(exeuc).mod(q); 
@@ -246,6 +252,8 @@ public class Intersection {
 		   
 		   
 		   //Berechne aus der Anzahl der gemeinsamen Bits die Anzahl der gemeinsamen SNPs
+		   //log(z/m)/(k*log(1-(1/m))
+		   
 		   double doubx = x;
 		   double double_m = m;
 		   double z = double_m - doubx;
@@ -263,8 +271,7 @@ public class Intersection {
 	    {
 			// erweiterter euklidischer Algorithmus
 	    	
-	    	BigInteger tmpa = a;
-	    	BigInteger tmpb = b;
+
 	    	BigInteger x = new BigInteger("0"); 
 	    	BigInteger y = new BigInteger("1"); 
 	    	BigInteger lastx = new BigInteger("1"); 
@@ -338,19 +345,15 @@ public class Intersection {
 			  int k = bloomFilter.getK();
 
 				
-			  //Elgamal
-				
-			  
+			  //Jpaillier
+			  KeyPairBuilder jpaillier = new KeyPairBuilder();
+			  KeyPair jkeypair = jpaillier.generateKeyPair();
+			  PublicKey jpub = jkeypair.getPublicKey();
 			  //Initialize
 			  BigInteger bigvert = new BigInteger("");
 			  BigInteger[][] Alicecipher = new BigInteger [2][m+1];
-			  Elgamal elgamal = new Elgamal(256); 
+
 			  BigInteger ct;
-			  BigInteger g = elgamal.geteg();
-			  BigInteger pk = elgamal.getepk();
-			  BigInteger q = elgamal.getp();
-			  BigInteger sv = elgamal.gets();
-			  BigInteger sk = sv.mod(q);
 			  
 			  //Bitwise encryption
 
@@ -370,20 +373,9 @@ public class Intersection {
 
 				}
 
-				ct = PublicKey.encrypt(bigvert);
+				ct = jpub.encrypt(bigvert);
 				
 				
-				// decomposit ciphertext
-				
-				BigInteger mhr[] = ct.getCt(); 
-				BigInteger mhcool = mhr[0];			
-				BigInteger gr = ct.getGr();
-				BigInteger modg =g.mod(q); 
-				
-				//gr = c1; mhcool = c2
-				
-				Alicecipher[0][i] = mhcool;
-				Alicecipher[1][i] = gr;
 
 
 				
