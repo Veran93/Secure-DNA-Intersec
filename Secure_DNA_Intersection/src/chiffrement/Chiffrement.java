@@ -30,7 +30,7 @@ public class Chiffrement {
         String s="Lorem ipsum dolor sit amet, consectetur adipisicing elit"+
                 ", sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
         System.out.println(s+"\nELGAMAL");
-        System.out.println(eg.Elgamal_PtToString(eg.decrypt(eg.encrypt(s))));
+
         /*ArrayList<BigInteger> list;
         BigInteger p=new BigInteger("23");
         list=eg.ordre(new BigInteger("23"));
