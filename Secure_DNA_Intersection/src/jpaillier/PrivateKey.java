@@ -5,7 +5,7 @@ import java.math.BigInteger;
 /**
  * A class that represents the private part of the Paillier key pair.
  */
-class PrivateKey {
+public class PrivateKey {
 
     private final BigInteger lambda;
     private final BigInteger preCalculatedDenominator;

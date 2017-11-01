@@ -188,6 +188,7 @@ public class Intersection {
 				   testa2[i]= 1;
 				
 
+				   
 			   }
 			   else
 			   {
@@ -196,6 +197,7 @@ public class Intersection {
 			   
 			   
 		   }
+		   
 		   
 		   int t1 =0;
 		   
@@ -320,7 +322,7 @@ public class Intersection {
 	    
 	    
 	    //in progress ....
-		public static  void jpaillier () throws IOException {
+		public static  void jpaillier_encryption () throws IOException {
 			
 			//Bloom Filter Alice
 			
@@ -346,14 +348,23 @@ public class Intersection {
 
 				
 			  //Jpaillier
+			  
+			  
 			  KeyPairBuilder jpaillier = new KeyPairBuilder();
 			  KeyPair jkeypair = jpaillier.generateKeyPair();
 			  PublicKey jpub = jkeypair.getPublicKey();
+			  PrivateKey jsec = jkeypair.getPrivateKey();
 			  //Initialize
 			  BigInteger bigvert = new BigInteger("");
-			  BigInteger[][] Alicecipher = new BigInteger [2][m+1];
+			  BigInteger[] jclient_cipher = new BigInteger[m+1];
+
 
 			  BigInteger ct;
+			  
+			  BigInteger jgen = jpub.getG();
+			  BigInteger j_q = jpub.getnSquared();
+			  BigInteger j_pk = jpub.getN();
+			  BigInteger j_sec = jsec.getLambda();
 			  
 			  //Bitwise encryption
 
@@ -374,7 +385,7 @@ public class Intersection {
 				}
 
 				ct = jpub.encrypt(bigvert);
-				
+				jclient_cipher[i] = ct;
 				
 
 
@@ -407,8 +418,8 @@ public class Intersection {
 				   if (bb == true)
 				   {
 
-					   vr = vr.multiply(Alicecipher[1][i]).mod(q);
-					   ws = ws.multiply(Alicecipher[0][i]).mod(q);
+					   vr = vr.add(jclient_cipher[i]).mod(j_q);
+					   ws = ws.add(jclient_cipher[i]).mod(j_q);
 
 				   }
 				   
@@ -417,32 +428,32 @@ public class Intersection {
 			   // s element of Zq
 		       BigInteger s;
 		       do{
-		           s = new BigInteger(q.bitCount()-1, new SecureRandom());
-		       }while(q.compareTo(s)==-1);
+		           s = new BigInteger(j_q.bitCount()-1, new SecureRandom());
+		       }while(jgen.compareTo(s)==-1);
 		        
 
 
 		       // Re-Randomisation
-		       BigInteger pks = pk.modPow(s,q);	
-		       BigInteger gs = g.modPow(s,q);
-			   BigInteger v = gs.multiply(vr).mod(q);
-			   BigInteger w = pks.multiply(ws).mod(q);
+		       BigInteger pks = j_pk.modPow(s,j_q);	
+		       BigInteger gs = jgen.modPow(s,j_q);
+			   BigInteger v = gs.multiply(vr).mod(j_q);
+			   BigInteger w = pks.multiply(ws).mod(j_q);
 			  
 			   
 			   //decrypt cipher
 
 			   int x = 0; 
 			   BigInteger it = BigInteger.valueOf(1);
-			   BigInteger negsk = BigInteger.valueOf(0).subtract(sk);
-			   BigInteger Selfsigma = w.multiply(v.modPow(negsk, q)).mod(q);
+			   BigInteger negsk = BigInteger.valueOf(0).subtract(j_sec);
+			   BigInteger Selfsigma = w.multiply(v.modPow(negsk, j_q)).mod(j_q);
 
 			   //identify exponent 
 			   
-			   BigInteger exeuc = eea(q,g);
+			   BigInteger exeuc = eea(j_q,jgen);
 
 			   while (!(Selfsigma.compareTo(it)==0)) {
 
-				  Selfsigma = Selfsigma.multiply(exeuc).mod(q); 
+				  Selfsigma = Selfsigma.multiply(exeuc).mod(j_q); 
 				  x++; 
 
 			   }
