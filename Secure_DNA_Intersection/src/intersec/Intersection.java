@@ -397,76 +397,82 @@ public class Intersection {
 
 			  bloomFilter.clear();
 			  
-			  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
+			  String[] linesServer = new FileArrayProvider().readLines("./input/Bob.txt");
 			  int sline_count = 0;
 				
-			        for (String line : linesbob) {
+			        for (String line : linesServer) {
 			        	bloomFilter.add(line);
 			        	sline_count++;
 			        }
 			        
-			   int bsb = bloomFilter.size(); 
-			   
-			   
-			   // Multiply c1, c2 at all points where bf2 is null
-			   BigInteger vr = BigInteger.valueOf(1);
-			   BigInteger ws = BigInteger.valueOf(1);
 
-			   for (int i = 0; i<=sline_count; i++)
-			   {
+			  BloomFilter<String> BloomfilterClient = bloomFilter;
+			   
+			  // Multiply c1, c2 at all points where bf2 is null
+			  BigInteger vr = BigInteger.valueOf(1);
+			  BigInteger ws = BigInteger.valueOf(1);
+
+			  for (int i = 0; i<=sline_count; i++)
+			  {
+				  
+				  
+				  bloomFilter.clear();
+				  String line = linesServer[i];
+				  bloomFilter.add(line);
+				  
+				  boolean bs = bloomFilter.getBit(i);
+				  boolean bc = BloomfilterClient.getBit(i);
+
+				  if (bs == true)
+				  {
+
+					  vr = vr.add(jclient_cipher[i]).mod(j_q);
+					  ws = ws.add(jclient_cipher[i]).mod(j_q);
+
+				  }
 				   
-				   boolean bb = bloomFilter.getBit(i);
-
-				   if (bb == true)
-				   {
-
-					   vr = vr.add(jclient_cipher[i]).mod(j_q);
-					   ws = ws.add(jclient_cipher[i]).mod(j_q);
-
-				   }
-				   
-			   }
+			  }
 			   
-			   // s element of Zq
-		       BigInteger s;
-		       do{
-		           s = new BigInteger(j_q.bitCount()-1, new SecureRandom());
-		       }while(jgen.compareTo(s)==-1);
+			  // s element of Zq
+		      BigInteger s;
+		      do{
+		          s = new BigInteger(j_q.bitCount()-1, new SecureRandom());
+		      }while(jgen.compareTo(s)==-1);
 		        
 
 
-		       // Re-Randomisation
-		       BigInteger pks = j_pk.modPow(s,j_q);	
-		       BigInteger gs = jgen.modPow(s,j_q);
-			   BigInteger v = gs.multiply(vr).mod(j_q);
-			   BigInteger w = pks.multiply(ws).mod(j_q);
+		      // Re-Randomisation
+		      BigInteger pks = j_pk.modPow(s,j_q);	
+		      BigInteger gs = jgen.modPow(s,j_q);
+			  BigInteger v = gs.multiply(vr).mod(j_q);
+			  BigInteger w = pks.multiply(ws).mod(j_q);
 			  
 			   
-			   //decrypt cipher
+			  //decrypt cipher
 
-			   int x = 0; 
-			   BigInteger it = BigInteger.valueOf(1);
-			   BigInteger negsk = BigInteger.valueOf(0).subtract(j_sec);
-			   BigInteger Selfsigma = w.multiply(v.modPow(negsk, j_q)).mod(j_q);
+			  int x = 0; 
+			  BigInteger it = BigInteger.valueOf(1);
+			  BigInteger negsk = BigInteger.valueOf(0).subtract(j_sec);
+			  BigInteger Selfsigma = w.multiply(v.modPow(negsk, j_q)).mod(j_q);
 
-			   //identify exponent 
+			  //identify exponent 
 			   
-			   BigInteger exeuc = eea(j_q,jgen);
+			  BigInteger exeuc = eea(j_q,jgen);
 
-			   while (!(Selfsigma.compareTo(it)==0)) {
+			  while (!(Selfsigma.compareTo(it)==0)) {
 
-				  Selfsigma = Selfsigma.multiply(exeuc).mod(j_q); 
-				  x++; 
+				 Selfsigma = Selfsigma.multiply(exeuc).mod(j_q); 
+				 x++; 
 
-			   }
+			  }
 			   
 			   
-			   double doubx = x;
-			   double double_m = m;
-			   double z = double_m - doubx;
-			   double doubhs = k;
-			   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
-			   System.out.println(X+"Elemente sind in beiden Datensätzen enthalten"); 
+			  double doubx = x;
+			  double double_m = m;
+			  double z = double_m - doubx;
+			  double doubhs = k;
+			  double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
+			  System.out.println(X+"Elemente sind in beiden Datensätzen enthalten"); 
 			   
 			   
 			   
