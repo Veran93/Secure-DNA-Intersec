@@ -259,8 +259,8 @@ public class Intersection {
 		   double doubx = x;
 		   double double_m = m;
 		   double z = double_m - doubx;
-		   double doubhs = k;;
-		   double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
+		   double double_k = k;;
+		   double X = (Math.log(z/double_m))/(double_k*Math.log(1-(1/double_m)));
 		   int intx = (int) X;
 		   System.out.println("Ca. " + intx + " SNPs sind in beiden Datensätzen enthalten"); 
 		   	
