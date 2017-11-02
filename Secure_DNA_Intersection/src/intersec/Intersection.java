@@ -337,9 +337,10 @@ public class Intersection {
 
 			String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
-			
+			int line_count = 0; 
 		        for (String line : lines) {
 		    		bloomFilter.add(line);
+		    		line_count++;
 
 		        }
 		  
@@ -392,15 +393,16 @@ public class Intersection {
 				
 			  }
 	 
-			 //  Bloom Filter Bob --
+			 //  Bloom Filter Server
 
 			  bloomFilter.clear();
 			  
 			  String[] linesbob = new FileArrayProvider().readLines("./input/Bob.txt");
-				
+			  int sline_count = 0;
 				
 			        for (String line : linesbob) {
 			        	bloomFilter.add(line);
+			        	sline_count++;
 			        }
 			        
 			   int bsb = bloomFilter.size(); 
@@ -410,7 +412,7 @@ public class Intersection {
 			   BigInteger vr = BigInteger.valueOf(1);
 			   BigInteger ws = BigInteger.valueOf(1);
 
-			   for (int i = 0; i<=m; i++)
+			   for (int i = 0; i<=sline_count; i++)
 			   {
 				   
 				   boolean bb = bloomFilter.getBit(i);
