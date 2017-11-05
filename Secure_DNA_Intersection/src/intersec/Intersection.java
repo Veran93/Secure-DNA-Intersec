@@ -401,7 +401,6 @@ public class Intersection {
 			  int sline_count = 0;
 				
 			        for (String line : linesServer) {
-			        	bloomFilter.add(line);
 			        	sline_count++;
 			        }
 			        
@@ -409,8 +408,9 @@ public class Intersection {
 			  BloomFilter<String> BloomfilterClient = bloomFilter;
 			   
 			  // Multiply c1, c2 at all points where bf2 is null
-			  BigInteger vr = BigInteger.valueOf(1);
-			  BigInteger ws = BigInteger.valueOf(1);
+			  BigInteger cj = BigInteger.valueOf(1);
+			  BigInteger pj = BigInteger.valueOf(1);
+
 
 			  for (int i = 0; i<=sline_count; i++)
 			  {
@@ -422,30 +422,32 @@ public class Intersection {
 				  
 				  boolean bs = bloomFilter.getBit(i);
 				  boolean bc = BloomfilterClient.getBit(i);
-
-				  if (bs == true)
+				  for (int j =0; j<m; j++)
 				  {
+					  if (bloomFilter.getBit(j) == true)
+					  {
 
-					  vr = vr.add(jclient_cipher[i]).mod(j_q);
-					  ws = ws.add(jclient_cipher[i]).mod(j_q);
+						  cj = cj.add(jclient_cipher[i]).mod(j_q);
 
-				  }
+					  }
+				  }		  
 				   
 			  }
 			   
 			  // s element of Zq
-		      BigInteger s;
+		      BigInteger rj;
 		      do{
-		          s = new BigInteger(j_q.bitCount()-1, new SecureRandom());
-		      }while(jgen.compareTo(s)==-1);
-		        
+		          rj = new BigInteger(j_q.bitCount()-1, new SecureRandom());
+		      }while(jgen.compareTo(rj)==-1);
+		      
+		      pj = (cj.multiply(rj)).add(());  
 
 
 		      // Re-Randomisation
 		      BigInteger pks = j_pk.modPow(s,j_q);	
 		      BigInteger gs = jgen.modPow(s,j_q);
-			  BigInteger v = gs.multiply(vr).mod(j_q);
-			  BigInteger w = pks.multiply(ws).mod(j_q);
+			  BigInteger v = gs.multiply(cj).mod(j_q);
+			  BigInteger w = pks.multiply(pj).mod(j_q);
 			  
 			   
 			  //decrypt cipher
