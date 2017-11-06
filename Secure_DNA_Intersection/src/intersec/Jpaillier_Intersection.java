@@ -163,25 +163,6 @@ public class Jpaillier_Intersection {
 		  }
 		  int x = 0; 
 		  
-
-		  //identify exponent 
-		   
-		  BigInteger exeuc = eea(j_q,jgen);
-
-		  while (!(Selfsigma.compareTo(it)==0)) {
-
-			 Selfsigma = Selfsigma.multiply(exeuc).mod(j_q); 
-			 x++; 
-
-		  }
-		   
-		   
-		  double doubx = x;
-		  double double_m = m;
-		  double z = double_m - doubx;
-		  double doubhs = k;
-		  double X = (Math.log(z/double_m))/(doubhs*Math.log(1-(1/double_m)));
-		  System.out.println(X+"Elemente sind in beiden Datensätzen enthalten"); 
 		   
 		   
 		   
