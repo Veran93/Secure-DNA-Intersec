@@ -8,9 +8,9 @@ import jpaillier.PublicKey;
  */
 public class KeyPair {
 
-    private final PrivateKey privateKey;
-    private final PublicKey publicKey;
-    private final BigInteger upperBound;
+    private static PrivateKey privateKey;
+    private static PublicKey publicKey;
+    private static BigInteger upperBound;
 
     KeyPair(PrivateKey privateKey, PublicKey publicKey, BigInteger upperBound) {
         this.privateKey = privateKey;
@@ -33,7 +33,7 @@ public class KeyPair {
      * @return The corresponding plaintext. If an upper bound was given to {@link KeyPairBuilder},
      * the result can also be negative. See {@link KeyPairBuilder#upperBound(BigInteger)} for details.
      */
-    public final BigInteger decrypt(BigInteger c) {
+    public final static BigInteger decrypt(BigInteger c) {
 
         BigInteger n = publicKey.getN();
         BigInteger nSquare = publicKey.getnSquared();

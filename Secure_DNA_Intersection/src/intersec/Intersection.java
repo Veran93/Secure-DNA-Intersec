@@ -410,7 +410,10 @@ public class Intersection {
 			  // Multiply c1, c2 at all points where bf2 is null
 			  BigInteger cj = BigInteger.valueOf(1);
 			  BigInteger pj = BigInteger.valueOf(1);
-
+			  BigInteger [][] Rerand_array = new BigInteger[2][m+1];
+			  
+			  BigInteger zero = BigInteger.valueOf(0);
+			  BigInteger Enc_zero = jpub.encrypt(zero);
 
 			  for (int i = 0; i<=sline_count; i++)
 			  {
@@ -428,34 +431,43 @@ public class Intersection {
 					  {
 
 						  cj = cj.add(jclient_cipher[i]).mod(j_q);
-
+					      
 					  }
-				  }		  
+				  }	
+				  
+				  // rj element of Zq
+			      BigInteger rj;
+			      do{
+			          rj = new BigInteger(j_q.bitCount()-1, new SecureRandom());
+			      }while(jgen.compareTo(rj)==-1);
+			      
+			      BigInteger Big_line = new BigInteger(line.getBytes());
+			      BigInteger Senrcpt =jpub.encrypt(Big_line);
+			      
+			      pj = (cj.multiply(rj)).add((Senrcpt));  
+				  
+			      BigInteger rcj = cj.add(zero);
+			      BigInteger rpj = pj.add(zero);
+			      
+			      Rerand_array [0][i] = rcj;
+			      Rerand_array [1][i] = rpj;
+			      
 				   
 			  }
 			   
-			  // s element of Zq
-		      BigInteger rj;
-		      do{
-		          rj = new BigInteger(j_q.bitCount()-1, new SecureRandom());
-		      }while(jgen.compareTo(rj)==-1);
-		      
-		      pj = (cj.multiply(rj)).add(());  
 
 
-		      // Re-Randomisation
-		      BigInteger pks = j_pk.modPow(s,j_q);	
-		      BigInteger gs = jgen.modPow(s,j_q);
-			  BigInteger v = gs.multiply(cj).mod(j_q);
-			  BigInteger w = pks.multiply(pj).mod(j_q);
 			  
 			   
 			  //decrypt cipher
-
+			  BigInteger dec_rcj;
+			  BigInteger dec_rpj;
+			  for (int i=0; i<m; i++)
+			  {
+				  dec_rcj = KeyPair.decrypt(Rerand_array [0][i]);
+			  }
 			  int x = 0; 
-			  BigInteger it = BigInteger.valueOf(1);
-			  BigInteger negsk = BigInteger.valueOf(0).subtract(j_sec);
-			  BigInteger Selfsigma = w.multiply(v.modPow(negsk, j_q)).mod(j_q);
+			  
 
 			  //identify exponent 
 			   
