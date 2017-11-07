@@ -19,11 +19,11 @@ public class Intersection {
 	
 	public static void main(String[] args) throws IOException {
 		
-		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
-		DNA_elgamal.elgamal_encryption();
+		//Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
+	//DNA_elgamal.elgamal_encryption();
 		
-//		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
-//		DNA_jpaillier.jpaillier_encryption();
+		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
+	    DNA_jpaillier.jpaillier_encryption();
 
 	}
 

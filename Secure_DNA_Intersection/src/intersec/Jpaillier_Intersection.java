@@ -112,7 +112,7 @@ public class Jpaillier_Intersection {
 		        }
 		  System.out.println(sline_count);		        
 
-		  BigInteger [][] Rerand_array = new BigInteger[2][m+1];
+		  BigInteger [] Rerand_array = new BigInteger[m+1];
 		  
 		  
 		  
@@ -144,11 +144,13 @@ public class Jpaillier_Intersection {
 					  
 					  
 					  // Addiere alle korrespondierende Stellen im Ciphertext des Clients auf.
-					  cj = cj.add(jclient_cipher[i]).mod(j_q);
+					  cj = cj.add(jclient_cipher[j]).mod(j_q);
 				      
 				  }
 			  }	
 			  
+			  
+			  /*
 			  // rj element of Zq
 		      BigInteger rj;
 		      do{
@@ -162,27 +164,42 @@ public class Jpaillier_Intersection {
 		      //((rj · cj) + H Epk(yj))
 		      pj = (cj.multiply(rj)).mod(j_q).add((Senrcpt)).mod(j_q);  
 			  
-		      
+		      */
+			  
+			  
 		      //Rerandomisation: rand = c +H c0 mit Epk (0) = c0.
 		      BigInteger rcj = cj.add(Enc_zero).mod(j_q);
-		      BigInteger rpj = pj.add(Enc_zero).mod(j_q);
+		      //BigInteger rpj = pj.add(Enc_zero).mod(j_q);
 		      
 		      
-		      Rerand_array [0][i] = rcj;
-		      Rerand_array [1][i] = rpj;
-		      
+		      Rerand_array [i] = rcj;
+
 			   
 		  }
 	  
 		   
 		  //decrypt cipher
+		  
+		  BigInteger bigzero = BigInteger.valueOf(0);
+		  int zerocounter = 0;
+		  
 		  BigInteger dec_rcj;
 		  BigInteger dec_rpj;
 		  for (int i=0; i<m; i++)
 		  {
-			  dec_rcj = KeyPair.decrypt(Rerand_array [0][i]);
-			  dec_rpj = KeyPair.decrypt(Rerand_array [1][i]);
+			  dec_rcj = KeyPair.decrypt(Rerand_array [i]);
+			  
+			  if (dec_rcj == bigzero) {
+				  
+				  zerocounter++;
+				  
+			  }
+				  
+				  
+
 		  }
+		  
+		  System.out.println(zerocounter);
 	   
 		   
 	}
