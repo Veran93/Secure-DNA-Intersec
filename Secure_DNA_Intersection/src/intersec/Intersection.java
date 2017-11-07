@@ -21,6 +21,9 @@ public class Intersection {
 		
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
 		DNA_elgamal.elgamal_encryption();
+		
+//		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
+//		DNA_jpaillier.jpaillier_encryption();
 
 	}
 

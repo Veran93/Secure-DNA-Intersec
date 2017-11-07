@@ -9,6 +9,8 @@ import elgamal.Elgamal;
 import elgamal.Elgamal_CipherText;
 import elgamal.Elgamal_PlainText;
 
+
+// Berechnung der Intersection mittels Elgamal
 public class Elgamal_Intersection {
 	
 	public static void elgamal_encryption() throws IOException
@@ -76,9 +78,7 @@ public class Elgamal_Intersection {
 		  double denominator = k*Math.log(1-(1/(double)m));
 		  double XX = numerator / denominator;
 		  System.out.println("Der Datensatz des Clients enthält ca. : "+(int)XX+" SNPs");
-			
-			
-			
+
 		  
 		  //Bitweise Verschlüsselung
 
@@ -130,8 +130,6 @@ public class Elgamal_Intersection {
 
 			
 		  }
-		  
-
  
 		 //  Bloom Filter Server
 
@@ -226,9 +224,7 @@ public class Elgamal_Intersection {
 		   //Identifiziere die Anzahl an Bloomfilter Positionen an denen beide Bloomfilter eine 1 besitzen
 		   
 		   //Aufruf  erweiterter euklidischer Algorithmus
-		   BigInteger exeuc = eea(q,g);
-
-		   
+		   BigInteger exeuc = Extended_Euclidean_algorithm.eea(q,g);
 		   
 		   while (!(Selfsigma.compareTo(it)==0)) {
 
@@ -250,45 +246,7 @@ public class Elgamal_Intersection {
 		   System.out.println("Ca. " + intx + " SNPs sind in beiden Datensätzen enthalten"); 
 		   	
 	}
-	
-	 public static BigInteger eea(BigInteger a, BigInteger b)
 
-	    {
-			// erweiterter euklidischer Algorithmus
-	    	
-
-	    	BigInteger x = new BigInteger("0"); 
-	    	BigInteger y = new BigInteger("1"); 
-	    	BigInteger lastx = new BigInteger("1"); 
-	    	BigInteger lasty = new BigInteger("0");
-	    	BigInteger temp;
-	    	BigInteger nu = new BigInteger("0");
-
-	        while (!(b.compareTo(nu) == 0))
-
-	        {
-	        	BigInteger q = a.divide(b);
-	        	BigInteger r = a.mod(b);
-
-	            a = b;
-	            b = r;
-	            
-	            temp = x;
-
-	            x = lastx.subtract(q.multiply(x));
-	            lastx = temp;
-	            temp = y;
-	            
-	            y = lasty.subtract(q.multiply(y));
-	            lasty = temp;            
-
-	        }
-
-	    	BigInteger result = lasty; 
-	        return result;
-	        
-
-	    }
 
 }
 

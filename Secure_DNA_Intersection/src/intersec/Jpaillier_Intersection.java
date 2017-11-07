@@ -10,16 +10,18 @@ import jpaillier.KeyPairBuilder;
 import jpaillier.PrivateKey;
 import jpaillier.PublicKey;
 
+
+//Bchnung der Intersection mittels Jpaillier
 public class Jpaillier_Intersection {
 
-	   
-
-    
     
     //in progress ....
 	public static  void jpaillier_encryption () throws IOException {
 		
-		//Bloom Filter Alice
+		
+		//Bloom Filter Client
+		
+		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
 		
 		double falsePositiveProbability = 0.001;
 		int expectedNumberOfElements = 500;
@@ -33,11 +35,11 @@ public class Jpaillier_Intersection {
 		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
 
 		int line_count = 0; 
-	        for (String line : lines) {
-	    		bloomFilter.add(line);
-	    		line_count++;
+	    for (String line : lines) {
+	    	bloomFilter.add(line);
+	    	line_count++;
 
-	        }
+	    }
 	  
 	      //get number of Hash functions
 		  int k = bloomFilter.getK();
@@ -50,8 +52,16 @@ public class Jpaillier_Intersection {
 		  KeyPair jkeypair = jpaillier.generateKeyPair();
 		  PublicKey jpub = jkeypair.getPublicKey();
 		  PrivateKey jsec = jkeypair.getPrivateKey();
+		  
 		  //Initialize
-		  BigInteger bigvert = new BigInteger("");
+		  
+		  /*
+		   * jgen = generator	
+		   * j_pk = public key
+		   * j_q = größe der zyklischen Gruppe
+		   * j_sec = secret key
+		   */
+		  BigInteger bigvert = new BigInteger("0");
 		  BigInteger[] jclient_cipher = new BigInteger[m+1];
 
 
@@ -90,41 +100,50 @@ public class Jpaillier_Intersection {
  
 		 //  Bloom Filter Server
 
-		  bloomFilter.clear();
-		  
+
+		  //Einlesen des Server Datensatzes 
 		  String[] linesServer = new FileArrayProvider().readLines("./input/Bob.txt");
 		  int sline_count = 0;
+		  int sline_size = linesServer.length;
+		  System.out.println(sline_size);
 			
 		        for (String line : linesServer) {
 		        	sline_count++;
 		        }
-		        
+		  System.out.println(sline_count);		        
 
-		  BloomFilter<String> BloomfilterClient = bloomFilter;
-		   
-		  // Multiply c1, c2 at all points where bf2 is null
-		  BigInteger cj = BigInteger.valueOf(1);
-		  BigInteger pj = BigInteger.valueOf(1);
 		  BigInteger [][] Rerand_array = new BigInteger[2][m+1];
 		  
+		  
+		  
+		  // Verschlüsselte Null wird für Rerandomisation
 		  BigInteger zero = BigInteger.valueOf(0);
 		  BigInteger Enc_zero = jpub.encrypt(zero);
 
-		  for (int i = 0; i<=sline_count; i++)
+		  
+		  // Für jeden SNP in der Datenbank des Servers...
+		  for (int i = 0; i<=sline_count-1; i++)
 		  {
 			  
+			  //setze Bloomfilter, cj und pj zurück
+			  BigInteger cj = BigInteger.valueOf(0);
+			  BigInteger pj = BigInteger.valueOf(0);
 			  
 			  bloomFilter.clear();
 			  String line = linesServer[i];
-			  bloomFilter.add(line);
 			  
-			  boolean bs = bloomFilter.getBit(i);
-			  boolean bc = BloomfilterClient.getBit(i);
+			  //...erstelle einen Bloomfilter
+			  bloomFilter.add(line);
+
+			  
+			  //...prüfe die ausgaben der Hashfunktionen (Einsen im Bloomfilter)
 			  for (int j =0; j<m; j++)
 			  {
 				  if (bloomFilter.getBit(j) == true)
 				  {
-
+					  
+					  
+					  // Addiere alle korrespondierende Stellen im Ciphertext des Clients auf.
 					  cj = cj.add(jclient_cipher[i]).mod(j_q);
 				      
 				  }
@@ -136,23 +155,25 @@ public class Jpaillier_Intersection {
 		          rj = new BigInteger(j_q.bitCount()-1, new SecureRandom());
 		      }while(jgen.compareTo(rj)==-1);
 		      
+		      
 		      BigInteger Big_line = new BigInteger(line.getBytes());
 		      BigInteger Senrcpt =jpub.encrypt(Big_line);
 		      
-		      pj = (cj.multiply(rj)).add((Senrcpt));  
+		      //((rj · cj) + H Epk(yj))
+		      pj = (cj.multiply(rj)).mod(j_q).add((Senrcpt)).mod(j_q);  
 			  
-		      BigInteger rcj = cj.add(zero);
-		      BigInteger rpj = pj.add(zero);
+		      
+		      //Rerandomisation: rand = c +H c0 mit Epk (0) = c0.
+		      BigInteger rcj = cj.add(Enc_zero).mod(j_q);
+		      BigInteger rpj = pj.add(Enc_zero).mod(j_q);
+		      
 		      
 		      Rerand_array [0][i] = rcj;
 		      Rerand_array [1][i] = rpj;
 		      
 			   
 		  }
-		   
-
-
-		  
+	  
 		   
 		  //decrypt cipher
 		  BigInteger dec_rcj;
@@ -160,16 +181,11 @@ public class Jpaillier_Intersection {
 		  for (int i=0; i<m; i++)
 		  {
 			  dec_rcj = KeyPair.decrypt(Rerand_array [0][i]);
+			  dec_rpj = KeyPair.decrypt(Rerand_array [1][i]);
 		  }
-		  int x = 0; 
-		  
-		   
-		   
-		   
+	   
 		   
 	}
-	
-		
-	
+
 	
 }
