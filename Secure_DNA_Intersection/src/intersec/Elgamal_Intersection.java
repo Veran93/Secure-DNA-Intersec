@@ -29,7 +29,7 @@ public class Elgamal_Intersection {
 	    int m = bloomFilter.size();
 
 	    //Einlesen des Client Datensatzes
-		String[] lines = new FileArrayProvider().readLines("./input/Alice.txt");
+		String[] lines = new FileArrayProvider().readLines("./input/Client_small");
 
 		
 	        for (String line : lines) {
@@ -138,7 +138,7 @@ public class Elgamal_Intersection {
 		  bloomFilter.clear();
 		  
 		  // Einlesen des 2. Datensatzes und erstllen des Server Bloomfilters
-		  String[] linesserver = new FileArrayProvider().readLines("./input/Bob.txt");
+		  String[] linesserver = new FileArrayProvider().readLines("./input/Server_small");
 			
 			
 		        for (String line : linesserver) {
