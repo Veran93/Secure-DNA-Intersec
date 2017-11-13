@@ -1,0 +1,168 @@
+\documentclass[
+12pt,                  % Schriftgroesse [10,11 oder 12pt]
+a4paper,               % Papierformat
+titlepage,             % Es soll eine Titelseite verwendet werden!
+headsepline,
+%draft,                % schnelle Vorschau
+%abstracton,           % Abstract oder nicht?
+appendixprefix,        % Mit dieser Option wird das A, B etc. vor den Kapiteln im Anhang aktiviert.
+headings=normal,       % Gibt die Groesse der Ueberschriften an. Zur Wahl stehen smallheadings, normalheadings und bigheadings.
+parskip=half*,         % Mit dieser Option beeinflusst man die Absatzformatierung.
+captions=tableheading, % Setzt die Tabellenbeschriftung ueber die Tabelle.
+%chapterprefix,         % Mit dier Option schaltet man ein, dass vor jedes Kapitel 'Kapitel 1' etc. geschrieben wird.
+twoside,               % Mit dieser Option gibt man an, ob man ein zweiseitiges Format (--> Buch) wuenscht oder nicht.                   
+BCOR=15mm,             % Bindungskorrektur                   
+%liststotoc            % Bewirkt, dass dem Inhaltsverezeichnis das Abbildungs- und Tabellenverzeichnis hinzugefuegt wird.
+version
+]{scrbook}
+
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+
+
+%%\usepackage{ucs}
+\usepackage{wrapfig} 
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{float}
+%\graphicspath{{./images/}}
+\usepackage{color}
+\usepackage[english]{babel}
+\usepackage{subfigure}
+\usepackage[automark]{scrpage2}  % Kopf- und Fusszeilen
+\usepackage{rotating}
+\usepackage[]{hyperref}
+ 
+\usepackage{afterpage,lscape} 
+ 
+\usepackage{lipsum}
+\usepackage[section]{placeins}
+%hypersetup color 
+
+%% EINBINDEN VON QUELLCODE / DEF VON ALGORITHMEN:
+\usepackage{verbatim}
+%\usepackage[vlined]{algorithm2e}
+\floatname{algorithm}{\footnotesize Algorithmus}
+\usepackage{booktabs}
+
+%% LITERATURANGABE:
+
+%\usepackage[backend=biber, style =numeric-comp, backref=true,sorting=none]{biblatex} 
+%\usepackage{natbib}
+\usepackage[babel,german=guillemets]{csquotes}
+%\addbibresource{./otherincludes/ref.bib} 
+
+%% ORIGINAL PACKAGE DEFINES:
+% \renewcommand{\capfont}{\normalfont}
+% \renewcommand{\caplabelfont}{\normalfont}
+% \renewcommand{\descfont}{\sffamily\bfseries}
+% \renewcommand{\headfont}{\slshape}
+% \renewcommand{\pnumfont}{\normalfont}
+% \renewcommand{\sectfont}{\sffamily\bfseries}
+\usepackage{caption}
+\captionsetup{format=plain}
+\renewcommand{\descfont}{\bfseries}
+\renewcommand{\sectfont}{\bfseries}
+
+\setkomafont{captionlabel}{\bfseries\footnotesize}
+\setkomafont{caption}{\footnotesize}
+\renewcommand{\headfont}{\bfseries}
+\renewcommand{\figurename}{Abb.}
+\renewcommand{\tablename}{Tabelle}
+
+\renewcommand*{\titlepagestyle}{empty}
+
+
+\usepackage{enumitem}
+\newlist{arrowlist}{itemize}{1}
+\setlist[arrowlist]{label=$\Rightarrow$}
+%% ------------------------------------------------------------------------
+%%  EIGENE DEFINITIONEN
+%% ------------------------------------------------------------------------
+
+%% RANDABSTAENDE:
+\usepackage{calc}
+\usepackage{geometry}
+\geometry{left=3.0cm, right=2.5cm}%, top=1.0cm}%bottom=1.0cm}%, top=4.0cm}
+\addtolength{\textheight}{2.7cm}
+\setlength{\skip\footins}{10mm}
+
+\usepackage[%
+       final,% 
+       activate,% 
+       verbose=true]{microtype}
+\usepackage{%
+       fixltx2e,%
+       mparhack%
+}
+
+
+%% FARBEN:
+\definecolor{Ocean}{cmyk}{1,0,0.2,0.78}
+\definecolor{Grey}{cmyk}{0,0,0,0.6}
+\definecolor{ULGray}{cmyk}{0,0,0.03,0.1}
+
+%% KOPF- UND FUSSZEILEN:
+\pagestyle{scrheadings}
+%\chead{}
+%\ihead{\headmark}
+%\ohead[\pagemark]{\pagemark}
+%\cfoot[]{}
+\clearscrheadfoot
+\rehead{\headmark} 
+\lehead{\pagemark} 
+\lohead{\headmark} 
+\rohead{\pagemark}
+
+
+\begin{document}
+%\setlength{\headheight}{0pt}
+
+%% ------------------------------------------------------------------------
+%% TITELSEITE
+%% ------------------------------------------------------------------------
+\thispagestyle{headings}
+\pagenumbering{roman}
+\begin{titlepage}
+\input{./otherincludes/Titelseite1}
+%\input{./otherincludes/Titelseite_sf}
+\end{titlepage}
+
+%% ------------------------------------------------------------------------
+%% VERZEICHNISSE ETC
+%% ------------------------------------------------------------------------
+
+\cleardoublepage
+%\input{./otherincludes/Erklaerung}
+\cleardoublepage
+\selectlanguage{english}
+%\input{./otherincludes/Kurzfassung}
+
+\tableofcontents
+\enlargethispage{5cm}
+%\listoffigures
+
+%\listoftables
+
+\cleardoublepage
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+
+\input{./chapters/Kap01---Einleitung}
+\input{./chapters/Kap02---Methoden}
+%\input{./chapters/Kap03---Ergebnisse}
+%\input{./chapters/Kap04---Diskussion}
+%\input{./chapters/Kap05---Schlussfolgerungen}
+
+
+%% ------------------------------------------------------------------------
+
+%\printbibliography
+\enlargethispage{5cm}
+%\bibliographystyle{apalike}
+%\bibliography{./otherincludes/refferences}
+
+\end{document}

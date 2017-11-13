@@ -1,0 +1,50 @@
+\chapter{Methoden}
+\label{sec:Chapter2}
+\section{Bloom Filter}
+\label{sec:Sec1.2}
+
+Alle diese Methoden basieren auf sogenannten Bloomfiltern.
+Hierbei handelt es sich um eine  Technik um festzustellen, ob bestimmte Daten in einem Datensatz vorhanden sind oder nicht.
+Sie bestehen aus einem mit Nullen vorinitialisiertem m Bit langen Array und k Hashfunktionen, welche auf die Positionen des Arrays abbilden.
+
+Zur Initialisierung werden auf jedes Element des Datensatzes alle k Hashfunktionen angewendet.
+Die zur Ausgabe der Hashfunktionen korrespondierenden Bits im Array werden darauf hin auf Eins gesetzt.
+
+Soll für ein Datenelement geprüft werden, ob dieses Teil des Datensatzes ist, werden  alle Hashfunktionen auf dieses angewendet.\\
+Nur wenn alle Positionen im Array an den korrespondierenden Punkten der Ausgabe dem Wert Eins entsprechen wird angenommen das sich das Element im Datensatz befindet.
+
+Diese Überprüfung ist nicht resistent gegenüber  
+
+\section{Kryptosysteme}
+\label{sec:Sec1.3}
+
+\subsection{Homomorphie}
+Homomorphie bezeichnet eine Eigenschaft von Kryptosystemen. 
+Ein Kryptosystem ist genau dann homomorph gegenüber einer mathematischen Operation, wenn Berechnungen im Ciphertext mit dieser Operation denen im KLartext entsprechen.
+
+\subsection{Elgamal}
+\label{sec:Sec1.3.1}
+Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann Schlüsselaustausches.
+
+Elgamal ist homomorph gegenüber der Multiplikation
+$$ E(m \textsubscript{1} * m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
+
+\subsection{Pailier}
+\label{sec:Sec1.3.2}
+
+
+
+\subsection{Goldwasser-micali}
+\label{sec:Sec1.3.3}
+
+\section{Implementierte Algorithmen}
+
+\subsection{Algorithmus 1 - Elgamal}
+\label{sec:Sec2.2}
+
+\subsection{Algorithmus 2 - Paillier}
+\label{sec:Sec2.3}
+
+
+\subsection{Algorithmus 3 - Goldwasser-Micali}
+\label{sec:Sec2.4}
