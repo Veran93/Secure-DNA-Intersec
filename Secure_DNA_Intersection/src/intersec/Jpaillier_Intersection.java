@@ -21,10 +21,10 @@ public class Jpaillier_Intersection {
 		
 		//Bloom Filter Client
 		
-		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
+		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ viele Hashfunktionen ein srecht kleines Array füllen.
 		
 		double falsePositiveProbability = 0.01;
-		int expectedNumberOfElements = 60;
+		int expectedNumberOfElements = 25;
 		
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
@@ -46,7 +46,7 @@ public class Jpaillier_Intersection {
 		  int k = bloomFilter.getK();
 
 			
-		  //Jpaillier
+		  //Paillier
 		  
 		  
 		  KeyPairBuilder jpaillier = new KeyPairBuilder();
@@ -88,11 +88,6 @@ public class Jpaillier_Intersection {
 		  test_gesct = (test_ct.multiply(test_ct2)).mod(j_q);
 		  
 		  test_dec = jkeypair.decrypt(test_gesct);
-
-		  
-		  
-		  
-		  
 		  
 		  //Bitwise encryptionjpaillier java
 
@@ -114,10 +109,7 @@ public class Jpaillier_Intersection {
 
 			ct = jpub.encrypt(bigvert);
 			jclient_cipher[i] = ct;
-			
-
-
-			
+						
 		  }
 
 		 //  Bloom Filter Server
@@ -159,24 +151,6 @@ public class Jpaillier_Intersection {
 				      
 				  }
 			  }	
-			  
-			  
-			  /*
-			  // rj element of Zq
-		      BigInteger rj;
-		      do{
-		          rj = new BigInteger(j_q.bitCount()-1, new SecureRandom());
-		      }while(jgen.compareTo(rj)==-1);
-		      
-		      
-		      BigInteger Big_line = new BigInteger(line.getBytes());
-		      BigInteger Senrcpt =jpub.encrypt(Big_line);
-		      
-		      //((rj · cj) + H Epk(yj))
-		      pj = (cj.multiply(rj)).mod(j_q).add((Senrcpt)).mod(j_q);  
-			  
-		      */
-			  
 
 			  // Verschlüsselte Null wird für Rerandomisation
 			  BigInteger zero = BigInteger.valueOf(0);
@@ -184,16 +158,11 @@ public class Jpaillier_Intersection {
 
 			  
 		      //Rerandomisation: rand = c +H c0 mit Epk (0) = c0.
-		      BigInteger rcj = (cj.multiply(Enc_zero)).mod(j_q);
-		      //BigInteger rpj = pj.add(Enc_zero).mod(j_q);
-		      
-		      
+		      BigInteger rcj = (cj.multiply(Enc_zero)).mod(j_q);		      		      
 		      Rerand_array [i] = rcj;
-
 			   
 		  }
-	  
-		   
+	  		   
 		  //decrypt cipher
 		  
 		  BigInteger bigzero = BigInteger.valueOf(0);
@@ -210,13 +179,10 @@ public class Jpaillier_Intersection {
 				  zerocounter++;	  
 			  }
 
-
 		  }
 
 		  System.out.println("Nach Paillier sind "+zerocounter+ " SNPs in beiden Datensätzen enthalten ");
-	   
-		   
+	   		   
 	}
-
 	
 }
