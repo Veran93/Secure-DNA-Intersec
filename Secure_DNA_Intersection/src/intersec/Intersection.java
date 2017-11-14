@@ -19,6 +19,7 @@ public class Intersection {
 	
 	public static void main(String[] args) throws IOException {
 		
+		//uptodate
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
 	    DNA_elgamal.elgamal_encryption();
 		
