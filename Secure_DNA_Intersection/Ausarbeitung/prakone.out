@@ -1,18 +1,17 @@
 \BOOKMARK [0][-]{chapter.1}{Einleitung}{}% 1
-\BOOKMARK [1][-]{section.1.1}{Abstract}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Genetische Marker}{chapter.1}% 3
-\BOOKMARK [2][-]{subsection.1.2.1}{SNPs}{section.1.2}% 4
-\BOOKMARK [2][-]{subsection.1.2.2}{INDELs}{section.1.2}% 5
-\BOOKMARK [1][-]{section.1.3}{Personalisierte Medizin}{chapter.1}% 6
-\BOOKMARK [1][-]{section.1.4}{Anwendung}{chapter.1}% 7
-\BOOKMARK [0][-]{chapter.2}{Methoden}{}% 8
-\BOOKMARK [1][-]{section.2.1}{Bloom Filter}{chapter.2}% 9
-\BOOKMARK [1][-]{section.2.2}{Kryptosysteme}{chapter.2}% 10
-\BOOKMARK [2][-]{subsection.2.2.1}{Homomorphie}{section.2.2}% 11
-\BOOKMARK [2][-]{subsection.2.2.2}{Elgamal}{section.2.2}% 12
-\BOOKMARK [2][-]{subsection.2.2.3}{Pailier}{section.2.2}% 13
-\BOOKMARK [2][-]{subsection.2.2.4}{Goldwasser-micali}{section.2.2}% 14
-\BOOKMARK [1][-]{section.2.3}{Implementierte Algorithmen}{chapter.2}% 15
-\BOOKMARK [2][-]{subsection.2.3.1}{Algorithmus 1 - Elgamal}{section.2.3}% 16
-\BOOKMARK [2][-]{subsection.2.3.2}{Algorithmus 2 - Paillier}{section.2.3}% 17
-\BOOKMARK [2][-]{subsection.2.3.3}{Algorithmus 3 - Goldwasser-Micali}{section.2.3}% 18
+\BOOKMARK [1][-]{section.1.1}{Genetische Marker}{chapter.1}% 2
+\BOOKMARK [2][-]{subsection.1.1.1}{SNPs}{section.1.1}% 3
+\BOOKMARK [2][-]{subsection.1.1.2}{INDELs}{section.1.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Personalisierte Medizin}{chapter.1}% 5
+\BOOKMARK [1][-]{section.1.3}{Anwendung}{chapter.1}% 6
+\BOOKMARK [0][-]{chapter.2}{Methoden}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Bloom Filter}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.2}{Kryptosysteme}{chapter.2}% 9
+\BOOKMARK [2][-]{subsection.2.2.1}{Homomorphie}{section.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.2.2}{Elgamal}{section.2.2}% 11
+\BOOKMARK [2][-]{subsection.2.2.3}{Pailier}{section.2.2}% 12
+\BOOKMARK [2][-]{subsection.2.2.4}{Goldwasser-micali}{section.2.2}% 13
+\BOOKMARK [1][-]{section.2.3}{Implementierte Algorithmen}{chapter.2}% 14
+\BOOKMARK [2][-]{subsection.2.3.1}{Algorithmus 1 - Elgamal}{section.2.3}% 15
+\BOOKMARK [2][-]{subsection.2.3.2}{Algorithmus 2 - Paillier}{section.2.3}% 16
+\BOOKMARK [2][-]{subsection.2.3.3}{Algorithmus 3 - Goldwasser-Micali}{section.2.3}% 17
