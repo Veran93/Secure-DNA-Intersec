@@ -21,7 +21,7 @@ public class Jpaillier_Intersection {
 		
 		//Bloom Filter Client
 		
-		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ viele Hashfunktionen ein srecht kleines Array füllen.
+		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ viele Hashfunktionen ein kleines Array füllen.
 		
 		double falsePositiveProbability = 0.01;
 		int expectedNumberOfElements = 25;
@@ -40,7 +40,7 @@ public class Jpaillier_Intersection {
 	    	line_count++;
 
 	    }
-	    //System.out.println("1");
+	      //System.out.println("1");
 	  
 	      //get number of Hash functions
 		  int k = bloomFilter.getK();
