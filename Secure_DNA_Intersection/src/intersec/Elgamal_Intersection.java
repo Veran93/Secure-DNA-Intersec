@@ -81,8 +81,7 @@ public class Elgamal_Intersection {
 
 		  
 		  //Bitweise Verschlüsselung
-
-		  
+  
 		  for (int i = 0; i<=m ; i++)
 		  {
 			  
@@ -117,6 +116,7 @@ public class Elgamal_Intersection {
 			 * mhr[]== S[i], nur der erste eintrag ist belegt
 			 * gr == R[i]
 			 */
+			
 			BigInteger mhr[] = ct.getCt(); 
 			BigInteger mhcool = mhr[0];			
 			BigInteger gr = ct.getGr();
