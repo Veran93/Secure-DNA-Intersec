@@ -14,12 +14,14 @@
 \contentsline {subsection}{\numberline {2.2.1}Homomorphie}{3}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}Elgamal}{3}{subsection.2.2.2}
 \contentsline {subsubsection}{\nonumberline Schl\IeC {\"u}sselerzeugung}{4}{section*.3}
-\contentsline {subsubsection}{\nonumberline verschl\IeC {\"u}sselung}{4}{section*.4}
+\contentsline {subsubsection}{\nonumberline Verschl\IeC {\"u}sselung}{4}{section*.4}
 \contentsline {subsubsection}{\nonumberline Entschl\IeC {\"u}sselung}{4}{section*.5}
 \contentsline {subsubsection}{\nonumberline Homomorphie}{4}{section*.6}
+\contentsline {subsubsection}{\nonumberline Sicherheit}{4}{section*.7}
+\contentsline {subsubsection}{\nonumberline Zuverl\IeC {\"a}ssigkeit}{4}{section*.8}
 \contentsline {subsection}{\numberline {2.2.3}Pailier}{4}{subsection.2.2.3}
-\contentsline {subsection}{\numberline {2.2.4}Goldwasser-micali}{4}{subsection.2.2.4}
-\contentsline {section}{\numberline {2.3}Implementierte Algorithmen}{4}{section.2.3}
-\contentsline {subsection}{\numberline {2.3.1}Algorithmus 1 - Elgamal}{4}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Algorithmus 2 - Paillier}{4}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}Algorithmus 3 - Goldwasser-Micali}{4}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.2.4}Goldwasser-micali}{5}{subsection.2.2.4}
+\contentsline {section}{\numberline {2.3}Implementierte Algorithmen}{5}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Algorithmus 1 - Elgamal}{5}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Algorithmus 2 - Paillier}{5}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Algorithmus 3 - Goldwasser-Micali}{5}{subsection.2.3.3}

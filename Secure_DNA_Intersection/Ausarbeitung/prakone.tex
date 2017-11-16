@@ -77,21 +77,6 @@ version
 \usepackage{enumitem}
 \newlist{arrowlist}{itemize}{1}
 \setlist[arrowlist]{label=$\Rightarrow$}
-\usepackage{tikz}
-\tikzset{
-	every overlay node/.style={
-		%draw=black,fill=white,rounded corners,
-		anchor=north west,
-	},
-}
-% Usage:
-% \tikzoverlay at (-1cm,-5cm) {content};
-% or
-% \tikzoverlay[text width=5cm] at (-1cm,-5cm) {content};
-\def\tikzoverlay{%
-	\tikz[baseline,overlay]\node[every overlay node]
-}%
-
 %% ------------------------------------------------------------------------
 %%  EIGENE DEFINITIONEN
 %% ------------------------------------------------------------------------
