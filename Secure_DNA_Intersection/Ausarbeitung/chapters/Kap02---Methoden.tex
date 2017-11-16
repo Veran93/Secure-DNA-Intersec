@@ -13,7 +13,7 @@ Die zur Ausgabe der Hashfunktionen korrespondierenden Bits im Array werden darau
 Soll für ein Datenelement geprüft werden, ob dieses Teil des Datensatzes ist, werden  alle Hashfunktionen auf dieses angewendet.\\
 Nur wenn alle Positionen im Array an den korrespondierenden Punkten der Ausgabe dem Wert Eins entsprechen wird angenommen das sich das Element im Datensatz befindet.
 
-Diese Überprüfung ist nicht resistent gegenüber  
+Diese Überprüfung ist jedoch nicht resistent gegenüber Falsch Positiven Ergebnissen, da diese Positionen auch durch mehrere 
 
 \section{Kryptosysteme}
 \label{sec:Sec1.3}
@@ -63,9 +63,9 @@ Der hier beschriebene Algorithmus wurde zunächst im ... veröffentlicht. Es wur
 Der Client erstellt zu Beginn einen Boomfilter seiner Daten. Dabei wird jedes Datenelement einzeln 
 Zur Verschlüsselung wählt der Client zunächst public und secret key nach elgamal.
 Daraufhin wird jedes Bit des Bloomfilter Arrays einzeln verschlüsselt.
-Hierzu werden die zu sendende Nachrichten so gewählt das $m = g^{1-BF[i]}$
-Dies führt dazu, dass m an Stellen an welchen der Bloomfiltern einen 1 besitzt einer 1 entspricht und g wenn er dort eine 0 besitzt.
-Dann berechnet er seine Mit diesen
+Hierzu werden die zu sendende Nachrichten so gewählt das $m = g^BF[i]$
+Dies führt dazu, dass m an Stellen an welchen der Bloomfiltern einen 1 besitzt einer 1 entspricht und g wenn er dort eine 0 besitzt. 
+Dann berechnet er seine  diesen
 
 $$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
 
