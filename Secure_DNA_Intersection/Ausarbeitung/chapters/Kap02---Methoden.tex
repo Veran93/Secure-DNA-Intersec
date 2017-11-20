@@ -24,25 +24,25 @@ Ein Kryptosystem ist genau dann homomorph gegenüber einer mathematischen Operat
 
 \subsection{Elgamal}
 \label{sec:Sec1.3.1}
-\begin{enumerate}
-	\item Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann Schlüsselaustausches.
-\end{enumerate}
 
-\subsubsection{Schlüsselerzeugung}
+ Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann Schlüsselaustausches.
+
+
+
 Zunächst wählt der Client eine endliche zyklische Gruppe Z der Ordnung q mit einem Generator g.
 \begin{itemize}	
 	\item Secrect key: Der Client wählt eine zufällige Zahl $a<q$ mit dem $GGT(a,q) = 1$. Dies ist der Secret key
 	\item Public Key: Der public key ist dann $P = g\textsuperscript{a} $	
 \end{itemize}
-\subsubsection{Verschlüsselung}
+
 Sei $m \in Z\textsubscript{q}$ die zu versendende Nachricht. Dann wählt der Server eine zufällige Zahl $r<q$ mit dem $GGT(r,q) = 1$. Nun berechnet sich $c\textsubscript{1} = g\textsuperscript{r}$ sowie $c\textsubscript{2} =P \textsuperscript{r} *m$. Der Ciphertext besteht so aus $C = (c\textsubscript{1},c\textsubscript{2})$.
-\subsubsection{Entschlüsselung}
+
 Zur Entschlüsselung wird $\Sigma = c_{1}^{-q} * c_{2} brechnet.$
-\subsubsection{Homomorphie }
+
 Elgamal ist homomorph gegenüber der Multiplikation
 $$ E(m \textsubscript{1} * m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
-\subsubsection{Sicherheit}
-\subsubsection{Zuverlässigkeit}
+
+
 
 
 \subsection{Pailier}
@@ -64,11 +64,7 @@ Der Client erstellt zu Beginn einen Boomfilter seiner Daten. Dabei wird jedes Da
 Zur Verschlüsselung wählt der Client zunächst public und secret key nach elgamal.
 Daraufhin wird jedes Bit des Bloomfilter Arrays einzeln verschlüsselt.
 Hierzu werden die zu sendende Nachrichten so gewählt das $m = g^BF[i]$
-Dies führt dazu, dass m an Stellen an welchen der Bloomfiltern einen 1 besitzt einer 1 entspricht und g wenn er dort eine 0 besitzt. 
-Dann berechnet er seine  diesen
-
-$$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
-
+Dies führt dazu, dass $ m $ an Stellen an welchen der Bloomfilter $ BF_Client = 0 $  dem Wert 1  entspricht und an den Stellen, an denen $ BF_Client = 1 $ dem Generator g.
 
 \[
 S\textsubscript{i} = pk^{r_{i}} \ * \ \left\{
@@ -79,13 +75,24 @@ g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
 \right.
 \]
 
+Diese Nachricht wird dann nach Elgamal verschlüsselt. Der Ciphertext entspricht dann:
+$$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
+
+Der Ciphertext wird dann zusammen mit dem public key und den Bloomfilter Parametern an den Server übermittelt.
+Dieser erstellt nun seinerseits einen Bloomfilter mit den Einträgen seines Datensatzes unter Berücksichtigung der Parameter des Clients. 
+
+Für alle Indices an welchen $BF_Server = 0$ werden die Elemente des Ciphertextes des Clients $R_i$ und $S_i$ aufmultipliziert.
+Dies ist aufgrund der Homomorphie Eigenschaft von Elgamal ohne Datenverlust möglich.
+
+Daraufhin selektiert dieser alle Indexes von Einträgen seines Bloomfilters. Indices 
+Für jeden dieser Indices wird daraufhin der entsprechende Eintrag im Ciphertexts des Clients 
 Aufmultiplikation  von $R_i$ bzw $S_i$ an jenen Stellen, an welchen $BF_2 = 0$ ist.
-Rerandomisierung mit $g^s$ bzw. $pk^s$ 
-Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
+
+Die Ergebnisse werden nun mit $ g \textsuperscript{s}  $ bzw. $ pk \textsuperscript{s} $ rerandomisiert :
 $$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
 $$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
 
-
+$ V $ und $ W $ werden nun zurück an den Client gesendet, welcher nun die Elgamal Entschlüsselung auf diese anwendet.
 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
 	
 
@@ -108,5 +115,12 @@ $$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
 \label{sec:Sec2.3}
 
 
+
 \subsection{Algorithmus 3 - Goldwasser-Micali}
 \label{sec:Sec2.4}
+
+
+
+
+
+
