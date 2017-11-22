@@ -25,9 +25,10 @@ Ein Kryptosystem ist genau dann homomorph gegenüber einer mathematischen Operat
 \subsection{Elgamal}
 \label{sec:Sec1.3.1}
 
- Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann Schlüsselaustausches.
+Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann
+Schlüsselaustausches.
 
-
+\textbf{Verfahren}\\
 
 Zunächst wählt der Client eine endliche zyklische Gruppe Z der Ordnung q mit einem Generator g.
 \begin{itemize}	
@@ -39,16 +40,40 @@ Sei $m \in Z\textsubscript{q}$ die zu versendende Nachricht. Dann wählt der Ser
 
 Zur Entschlüsselung wird $\Sigma = c_{1}^{-q} * c_{2} brechnet.$
 
+\textbf{Homomorphie}\\
 Elgamal ist homomorph gegenüber der Multiplikation
 $$ E(m \textsubscript{1} * m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
 
+\textbf{Sicherheit}\\
+Elgamal ist IND-CPA sicher, falls das
+
+
+
+Dann gibt es einen Algorithmus, der in polyn. Zeit DH-Schlussel gab von zufalligen Gruppenelementen unterscheidet.
+Widerspruch:
+Nach Annahme gibt es keinen effizienten
+Algorithmus zum Entscheiden von DH-Schlusselngab.
+Daher kann es auch keinen polynomiellen Angreifer A geben.
 
 
 
 \subsection{Pailier}
 \label{sec:Sec1.3.2}
 
+\textbf{Verfahren}\\
 Das Schlüsselpaar wird folgendermaßen generiert:
+Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt
+\begin{itemize}	
+	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
+	\item Public Key: Der public key ist dann $P = g\textsuperscript{a} $	
+\end{itemize}
+\textbf{Homomorphie}\\
+Paillier ist homomorph gegenüber der Addition.
+
+$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) + E(m \textsubscript{2}))$$
+
+\textbf{Sicherheit}\\
+ 
 
 
 \subsection{Goldwasser-micali}
@@ -58,7 +83,7 @@ Das Schlüsselpaar wird folgendermaßen generiert:
 
 \subsection{Algorithmus 1 - Elgamal}
 
-Der hier beschriebene Algorithmus wurde zunächst im ... veröffentlicht. Es wurden Algorithmen für unterschiedliche Konstellationen postuliert. An dieser Stelle habe ich den zwei Parteien Fall genutzt.
+Dieser Algorithmus wurde zunächst im ... veröffentlicht. Es wurden Algorithmen für unterschiedliche Konstellationen postuliert. 
 
 Der Client erstellt zu Beginn einen Boomfilter seiner Daten. Dabei wird jedes Datenelement einzeln 
 Zur Verschlüsselung wählt der Client zunächst public und secret key nach elgamal.
@@ -88,15 +113,6 @@ Daraufhin selektiert dieser alle Indexes von Einträgen seines Bloomfilters. Ind
 Für jeden dieser Indices wird daraufhin der entsprechende Eintrag im Ciphertexts des Clients 
 Aufmultiplikation  von $R_i$ bzw $S_i$ an jenen Stellen, an welchen $BF_2 = 0$ ist.
 
-Die Ergebnisse werden nun mit $ g \textsuperscript{s}  $ bzw. $ pk \textsuperscript{s} $ rerandomisiert :
-$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
-$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
-
-$ V $ und $ W $ werden nun zurück an den Client gesendet, welcher nun die Elgamal Entschlüsselung auf diese anwendet.
-$R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
-	
-
-
 $$ V = (g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}})$$
 
 \[
@@ -108,11 +124,31 @@ pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{
 \right.
 \]
 
-$$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
+Die Ergebnisse werden nun mit $ g \textsuperscript{s}  $ bzw. $ pk \textsuperscript{s} $ rerandomisiert :
+$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+$ V $ und $ W $ werden nun zurück an den Client gesendet, welcher nun die Elgamal Entschlüsselung auf diese anwendet:
+$$\Sigma = W * V^{-sk}$$
+
+Da $pk$ = $g^{sk}$, ergibt sich folgende Gleichung:
+	
+$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^z) $$
+
+
+Nach dem Kürzen erhält man:
+$$\Sigma = g^x$$
+
+$ z $ entspricht hierbei der Anzahl  an Positionen an denen sowohl der Client als auch der Server einen Nulleintag in ihren Bloomfiltern haben.
+
+Der approximierte Betrag der im Bloomfilter gespeicherten Elemente errechnet sich dann durch:
+
+$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
+
 
 
 \subsection{Algorithmus 2 - Paillier}
 \label{sec:Sec2.3}
+
 
 
 
