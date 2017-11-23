@@ -61,6 +61,8 @@ Daher kann es auch keinen polynomiellen Angreifer A geben.
 \label{sec:Sec1.3.2}
 
 \textbf{Verfahren}\\
+\\
+\textit{Schlüsselerzeugung:}\\
 Das Schlüsselpaar wird folgendermaßen generiert:
 Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt, sodass $ g \in (\mathbb{Z}/ n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.
 Das Schlüsselpaar wird dann folgendermaßen gebildet.
@@ -68,6 +70,13 @@ Das Schlüsselpaar wird dann folgendermaßen gebildet.
 	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
 	\item Public Key: $(n,g)$	
 \end{itemize}
+
+\textit{Verschlüsselung:}\\
+Zur Verschlüsselung einer Nachricht $ m \in \mathbb{Z} $ wählt der Client zunächst eine Zufalls Zahl $ r $ wobei $ 0 \leq r \leq n $\\
+Dann berechnet sich der Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $\\
+\textit{Entschlüsselung:}\\
+Der Plaintext kann folgendermaßen berechnet werden: $ m = L(c^{\lambda} \mod n^{2}) * \mu mod n $\\
+\\
 \textbf{Homomorphie}\\
 Paillier ist homomorph gegenüber der Addition.
 
@@ -75,7 +84,6 @@ $$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) + E(m 
 
 \textbf{Sicherheit}\\
  
-
 
 \subsection{Goldwasser-micali}
 \label{sec:Sec1.3.3}
