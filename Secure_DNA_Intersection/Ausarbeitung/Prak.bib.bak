@@ -1,0 +1,62 @@
+% This file was created with JabRef 2.10.
+% Encoding: UTF-8
+
+
+@InBook{Lipmaa2011,
+  Title                    = {On the CCA1-Security of Elgamal and Damg{\aa}rd's Elgamal},
+  Author                   = {Lipmaa, Helger},
+  Editor                   = {Lai, Xuejia
+and Yung, Moti
+and Lin, Dongdai},
+  Pages                    = {18--35},
+  Publisher                = {Springer Berlin Heidelberg},
+  Year                     = {2011},
+
+  Address                  = {Berlin, Heidelberg},
+
+  Abstract                 = {It is known that there exists a reduction from the CCA1-security of Damg{\aa}rd's Elgamal (DEG) cryptosystem to what we call the {\$}{\backslash}textrm{\{}ddh{\}}^{\{}{\backslash}textrm{\{}dsdh{\}}{\}}{\$} assumption. We show that {\$}{\backslash}textrm{\{}ddh{\}}^{\{}{\backslash}textrm{\{}dsdh{\}}{\}}{\$} is unnecessary for DEG-CCA1, while DDH is insufficient for DEG-CCA1. We also show that CCA1-security of the Elgamal cryptosystem is equivalent to another assumption {\$}{\backslash}textrm{\{}ddh{\}}^{\{}{\backslash}textrm{\{}csdh{\}}{\}}{\$} , while we show that {\$}{\backslash}textrm{\{}ddh{\}}^{\{}{\backslash}textrm{\{}dsdh{\}}{\}}{\$} is insufficient for Elgamal's CCA1-security. Finally, we prove a generic-group model lower bound {\$}{\backslash}Omega ({\backslash}sqrt[3]{\{}q{\}}){\$} for the hardest considered assumption {\$}{\backslash}textrm{\{}ddh{\}}^{\{}{\backslash}textrm{\{}csdh{\}}{\}}{\$} , where q is the largest prime factor of the group order.},
+  Booktitle                = {Information Security and Cryptology: 6th International Conference, Inscrypt 2010, Shanghai, China, October 20-24, 2010, Revised Selected Papers},
+  Doi                      = {10.1007/978-3-642-21518-6_2},
+  ISBN                     = {978-3-642-21518-6},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.23},
+  Url                      = {https://doi.org/10.1007/978-3-642-21518-6_2}
+}
+
+@InBook{Paillier1999,
+  Title                    = {Public-Key Cryptosystems Based on Composite Degree Residuosity Classes},
+  Author                   = {Paillier, Pascal},
+  Editor                   = {Stern, Jacques},
+  Pages                    = {223--238},
+  Publisher                = {Springer Berlin Heidelberg},
+  Year                     = {1999},
+
+  Address                  = {Berlin, Heidelberg},
+
+  Abstract                 = {This paper investigates a novel computational problem, namely the Composite Residuosity Class Problem, and its applications to public-key cryptography. We propose a new trapdoor mechanism and derive from this technique three encryption schemes: a trapdoor permutation and two homomorphic probabilistic encryption schemes computationally comparable to RSA. Our cryptosystems, based on usual modular arithmetics, are provably secure under appropriate assumptions in the standard model.},
+  Booktitle                = {Advances in Cryptology --- EUROCRYPT '99: International Conference on the Theory and Application of Cryptographic Techniques Prague, Czech Republic, May 2--6, 1999 Proceedings},
+  Doi                      = {10.1007/3-540-48910-X_16},
+  ISBN                     = {978-3-540-48910-8},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.23},
+  Url                      = {https://doi.org/10.1007/3-540-48910-X_16}
+}
+
+@InBook{ref1,
+  Title                    = {ElGamal Encryption},
+  Editor                   = {van Tilborg, Henk C. A.
+and Jajodia, Sushil},
+  Pages                    = {396--396},
+  Publisher                = {Springer US},
+  Year                     = {2011},
+
+  Address                  = {Boston, MA},
+
+  Booktitle                = {Encyclopedia of Cryptography and Security},
+  Doi                      = {10.1007/978-1-4419-5906-5_1091},
+  ISBN                     = {978-1-4419-5906-5},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.23},
+  Url                      = {https://doi.org/10.1007/978-1-4419-5906-5_1091}
+}
+

@@ -62,10 +62,11 @@ Daher kann es auch keinen polynomiellen Angreifer A geben.
 
 \textbf{Verfahren}\\
 Das Schlüsselpaar wird folgendermaßen generiert:
-Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt
+Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt, sodass $ g \in (\mathbb{Z}/ n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.
+Das Schlüsselpaar wird dann folgendermaßen gebildet.
 \begin{itemize}	
 	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
-	\item Public Key: Der public key ist dann $P = g\textsuperscript{a} $	
+	\item Public Key: $(n,g)$	
 \end{itemize}
 \textbf{Homomorphie}\\
 Paillier ist homomorph gegenüber der Addition.
