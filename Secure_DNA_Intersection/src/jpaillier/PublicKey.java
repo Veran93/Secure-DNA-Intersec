@@ -3,7 +3,7 @@ package jpaillier;
 
 import java.math.BigInteger;
 import java.util.Random;
-
+import java.security.SecureRandom;
 /**
  * A class that represents the public part of the Paillier key pair.
  * <p>
@@ -53,7 +53,7 @@ public class PublicKey {
 
         BigInteger r;
         do {
-            r = new BigInteger(bits, new Random());
+            r = new BigInteger(bits, new SecureRandom());
         } while (r.compareTo(n) >= 0);
 
         BigInteger result = g.modPow(m, nSquared);

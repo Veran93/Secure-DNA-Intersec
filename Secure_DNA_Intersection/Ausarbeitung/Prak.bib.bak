@@ -2,6 +2,58 @@
 % Encoding: UTF-8
 
 
+@Book{EinfKryp,
+  Title                    = {Einführung in die Kryptographie},
+  Author                   = {Johannes Buchmann},
+  Publisher                = {Springer Berlin Heidelberg},
+  Year                     = {2016},
+
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.24}
+}
+
+@InBook{Davidson2017,
+  Title                    = {An Efficient Toolkit for Computing Private Set Operations},
+  Author                   = {Davidson, Alex
+and Cid, Carlos},
+  Editor                   = {Pieprzyk, Josef
+and Suriadi, Suriadi},
+  Pages                    = {261--278},
+  Publisher                = {Springer International Publishing},
+  Year                     = {2017},
+
+  Address                  = {Cham},
+
+  Abstract                 = {Private set operation (PSO) protocols provide a natural way of securely performing operations on data sets, such that crucial details of the input sets are not revealed. Such protocols have an ever-increasing number of practical applications, particularly when implementing privacy-preserving data mining schemes. Protocols for computing private set operations have been prevalent in multi-party computation literature over the past decade, and in the case of private set intersection (PSI), have become practically feasible to run in real applications. In contrast, other set operations such as union have received less attention from the research community, and the few existing designs are often limited in their feasibility. In this work we aim to fill this gap, and present a new technique using Bloom filter data structures and additive homomorphic encryption to develop the first private set union protocol with both linear computation and communication complexities. Moreover, we show how to adapt this protocol to give novel ways of computing PSI and private set intersection/union cardinality with only minor changes to the protocol computation. Our work resembles therefore a toolkit for scalable private set computation with linear complexities, and we provide a thorough experimental analysis that shows that the online phase of our designs is practical up to large set sizes.},
+  Booktitle                = {Information Security and Privacy: 22nd Australasian Conference, ACISP 2017, Auckland, New Zealand, July 3--5, 2017, Proceedings, Part II},
+  Doi                      = {10.1007/978-3-319-59870-3_15},
+  ISBN                     = {978-3-319-59870-3},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.24},
+  Url                      = {https://doi.org/10.1007/978-3-319-59870-3_15}
+}
+
+@InBook{Debnath2015,
+  Title                    = {Secure and Efficient Private Set Intersection Cardinality Using Bloom Filter},
+  Author                   = {Debnath, Sumit Kumar
+and Dutta, Ratna},
+  Editor                   = {Lopez, Javier
+and Mitchell, Chris J.},
+  Pages                    = {209--226},
+  Publisher                = {Springer International Publishing},
+  Year                     = {2015},
+
+  Address                  = {Cham},
+
+  Abstract                 = {We first present a Private Set Intersection Cardinality (PSI-CA) protocol followed by its authorized variant, APSI-CA, utilizing Bloom filter ( {\$}{\$}{\backslash}mathsf{\{}BF{\}}{\$}{\$} BF ). We further extend these to PSI and APSI protocols. All the constructions are proven to be secure in standard model with linear complexities. Moreover, our protocols hide the size of the client's private set which may be sensitive in application specific scenarios. The proposed PSI-CA and APSI-CA are the first to achieve security in standard model under the Quadratic Residuosity (QR) assumption with linear complexities.},
+  Booktitle                = {Information Security: 18th International Conference, ISC 2015, Trondheim, Norway, September 9-11, 2015, Proceedings},
+  Doi                      = {10.1007/978-3-319-23318-5_12},
+  ISBN                     = {978-3-319-23318-5},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.24},
+  Url                      = {https://doi.org/10.1007/978-3-319-23318-5_12}
+}
+
 @InBook{Lipmaa2011,
   Title                    = {On the CCA1-Security of Elgamal and Damg{\aa}rd's Elgamal},
   Author                   = {Lipmaa, Helger},
