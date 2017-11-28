@@ -18,5 +18,5 @@
 \contentsline {subsection}{\numberline {2.2.4}Goldwasser-micali}{5}{subsection.2.2.4}
 \contentsline {section}{\numberline {2.3}Implementierte Algorithmen}{5}{section.2.3}
 \contentsline {subsection}{\numberline {2.3.1}Algorithmus 1 - Elgamal}{5}{subsection.2.3.1}
-\contentsline {subsection}{\numberline {2.3.2}Algorithmus 2 - Paillier}{6}{subsection.2.3.2}
-\contentsline {subsection}{\numberline {2.3.3}Algorithmus 3 - Goldwasser-Micali}{6}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.2}Algorithmus 2 - Paillier}{7}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Algorithmus 3 - Goldwasser-Micali}{7}{subsection.2.3.3}

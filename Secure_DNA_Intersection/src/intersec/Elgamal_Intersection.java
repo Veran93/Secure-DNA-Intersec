@@ -20,8 +20,8 @@ public class Elgamal_Intersection {
 		
 		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
 		
-		double falsePositiveProbability = 0.0001;
-		int expectedNumberOfElements = 500;
+		double falsePositiveProbability = 0.00001;
+		int expectedNumberOfElements = 1000000;
 		
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
@@ -29,7 +29,7 @@ public class Elgamal_Intersection {
 	    int m = bloomFilter.size();
 
 	    //Einlesen des Client Datensatzes
-		String[] lines = new FileArrayProvider().readLines("./input/Client_small");
+		String[] lines = new FileArrayProvider().readLines("./input/client15000_2000");
 
 		
 	        for (String line : lines) {
@@ -138,7 +138,7 @@ public class Elgamal_Intersection {
 		  bloomFilter.clear();
 		  
 		  // Einlesen des 2. Datensatzes und erstllen des Server Bloomfilters
-		  String[] linesserver = new FileArrayProvider().readLines("./input/Server_small");
+		  String[] linesserver = new FileArrayProvider().readLines("./input/server15000_2000");
 			
 			
 		        for (String line : linesserver) {
