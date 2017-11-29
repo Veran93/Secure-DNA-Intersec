@@ -13,7 +13,7 @@ import elgamal.Elgamal_PlainText;
 // Berechnung der Intersection mittels Elgamal
 public class Elgamal_Intersection {
 	
-	public static void elgamal_encryption() throws IOException
+	public static int elgamal_encryption(double falsepos, int expnumbofel, String incl, String insv) throws IOException
 	{	
 		
 		//Bloom Filter Client
@@ -21,15 +21,15 @@ public class Elgamal_Intersection {
 		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
 		
 		double falsePositiveProbability = 0.00001;
-		int expectedNumberOfElements = 1000000;
+		int expectedNumberOfElements = expnumbofel * 10;
 		
 	
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability, expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsepos, expectedNumberOfElements);
         
 	    int m = bloomFilter.size();
 
 	    //Einlesen des Client Datensatzes
-		String[] lines = new FileArrayProvider().readLines("./input/client15000_2000");
+		String[] lines = new FileArrayProvider().readLines("./input/"+incl);
 
 		
 	        for (String line : lines) {
@@ -138,7 +138,7 @@ public class Elgamal_Intersection {
 		  bloomFilter.clear();
 		  
 		  // Einlesen des 2. Datensatzes und erstllen des Server Bloomfilters
-		  String[] linesserver = new FileArrayProvider().readLines("./input/server15000_2000");
+		  String[] linesserver = new FileArrayProvider().readLines("./input/"+insv);
 			
 			
 		        for (String line : linesserver) {
@@ -244,6 +244,7 @@ public class Elgamal_Intersection {
 		   double X = (Math.log(z/double_m))/(double_k*Math.log(1-(1/double_m)));
 		   int intx = (int) X;
 		   System.out.println("Ca. " + intx + " SNPs sind in beiden Datensätzen enthalten"); 
+		   return intx;
 		   	
 	}
 

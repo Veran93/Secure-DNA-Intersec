@@ -19,8 +19,8 @@ public class Intersection {
 	
 	public static void main(String[] args) throws IOException {
 		int cou = 0;
-		String[] clientlines = new FileArrayProvider().readLines("./input/client15000_2000");
-		String[] serverlines = new FileArrayProvider().readLines("./input/server15000_2000");
+		String[] clientlines = new FileArrayProvider().readLines("./input/1000/client1000_100");
+		String[] serverlines = new FileArrayProvider().readLines("./input/1000/server1000_100");
 		
 		for(String cline: clientlines)
 		{
@@ -35,14 +35,18 @@ public class Intersection {
 		}
 
 		System.out.println("Es befinden sich " +cou+" SNPS in beiden Datensätzen.");
+		 
 		//uptodate
 		long starttime = System.currentTimeMillis();
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
-	    DNA_elgamal.elgamal_encryption();
+	    int elgx=  DNA_elgamal.elgamal_encryption(0.001, 1000,"1000/client1000_100","1000/server1000_100");
 	    long elgatime = System.currentTimeMillis();
 	    long afterelg = elgatime -starttime; 
 	    System.out.println(afterelg);
-		
+	    System.out.println(elgx);
+	    double Abw1 =elgx-cou;
+	    double Abw = (Abw1/100)*100;
+	    System.out.println(Abw);
 		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
 	    DNA_jpaillier.jpaillier_encryption();
 	    long pailtime = System.currentTimeMillis();

@@ -54,6 +54,31 @@ and Mitchell, Chris J.},
   Url                      = {https://doi.org/10.1007/978-3-319-23318-5_12}
 }
 
+@InBook{Egert2015,
+  Title                    = {Privately Computing Set-Union and Set-Intersection Cardinality via Bloom Filters},
+  Author                   = {Egert, Rolf
+and Fischlin, Marc
+and Gens, David
+and Jacob, Sven
+and Senker, Matthias
+and Tillmanns, J{\"o}rn},
+  Editor                   = {Foo, Ernest
+and Stebila, Douglas},
+  Pages                    = {413--430},
+  Publisher                = {Springer International Publishing},
+  Year                     = {2015},
+
+  Address                  = {Cham},
+
+  Abstract                 = {In this paper we propose a new approach to privately compute the set-union cardinality and the set-intersection cardinality among multiple honest-but-curious parties. Our approach is inspired by a proposal of Ashok and Mukkamala (DBSec'14) which deploys Bloom filters to approximate the size tightly. One advantage of their solution is that it avoids ample public-key cryptography. Unfortunately, we show here that their protocol is vulnerable to actual attacks. We therefore propose a new Bloom filter based protocol, also forgoing heavy cryptography, and prove its security.},
+  Booktitle                = {Information Security and Privacy: 20th Australasian Conference, ACISP 2015, Brisbane, QLD, Australia, June 29 -- July 1, 2015, Proceedings},
+  Doi                      = {10.1007/978-3-319-19962-7_24},
+  ISBN                     = {978-3-319-19962-7},
+  Owner                    = {hiwi},
+  Timestamp                = {2017.11.24},
+  Url                      = {https://doi.org/10.1007/978-3-319-19962-7_24}
+}
+
 @InBook{Lipmaa2011,
   Title                    = {On the CCA1-Security of Elgamal and Damg{\aa}rd's Elgamal},
   Author                   = {Lipmaa, Helger},
