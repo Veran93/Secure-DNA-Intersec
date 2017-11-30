@@ -62,7 +62,7 @@
 		\vskip 0.3cm
 	\tikzoverlay (n1) at (-0.5cm,3cm) {
 		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Alice} }
+			\begin{block}{\textbf{Client} }
 			\begin{arrowlist}
 				\item Erstellt Bloom Filter ihrer Daten
 				\item Verschlüsselt jede Stelle ihres Bloom Filters mittels ElGamal
@@ -75,7 +75,7 @@
 	
 	\tikzoverlay (n2) at (6.7cm,3.5cm) {
 		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Bob}}
+			\begin{block}{\textbf{Server}}
 			\begin{arrowlist}
 
 				\item Erstellt Bloom Filter seiner Daten
@@ -113,12 +113,45 @@
 	
 \end{frame}
 
+\begin{frame}{Paillier - Verfahren}
+
+	\textbf{Schlüsselerzeugung:}\\
+	
+	
+	Das Schlüsselpaar wird folgendermaßen generiert:
+	Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt, sodass $ g \in (\mathbb{Z}/ n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.
+	Das Schlüsselpaar wird dann folgendermaßen gebildet.
+	\begin{itemize}	
+		\item Secrect key: $ \lambda = kgV(p-1, q-1) $
+		\item Public Key: $(n,g)$	
+	\end{itemize}
+	
+	
+
+\end{frame}
+
+\begin{frame}
+		\textbf{Verschlüsselung:}\\
+		
+		
+		Zur Verschlüsselung einer Nachricht $ m \in \mathbb{Z} $ wählt der Client zunächst eine Zufalls Zahl $ r $ wobei $ 0 \leq r \leq n $
+		Dann berechnet sich der Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $\
+		
+		\textbf{Entschlüsselung:}\\
+		Der Plaintext kann folgendermaßen berechnet werden: $ m = L(c^{\lambda} \mod n^{2}) * \mu mod n $
+		
+		\textbf{Homomorphie:}\\
+		Paillier ist homomorph gegenüber der Addition.
+		
+		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) + E(m \textsubscript{2}))$$
+\end{frame}
+
 \begin{frame}{Algorithmus basierend auf Paillier}
 	\footnotesize
 	\vskip 0.3cm
 	\tikzoverlay (n1) at (-0.5cm,3cm) {
 		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Alice} }
+			\begin{block}{\textbf{Client} }
 				\begin{arrowlist}
 						\item Erstellt Bloom Filter ihrer Daten
 						\item Invertiert jede Stelle des Bloomfilters.
@@ -132,7 +165,7 @@
 	
 	\tikzoverlay (n2) at (6.7cm,3.5cm) {
 		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Bob}}
+			\begin{block}{\textbf{Server}}
 				\begin{arrowlist}
 					
 						\item Erstellt für jedes Element des Datensatzes einen Bloomfilter seiner Daten
@@ -170,7 +203,7 @@
 	
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Ergenisse }
 
  \begin{table}[h]
 	\begin{tabular}{c|c|c|c|c}
