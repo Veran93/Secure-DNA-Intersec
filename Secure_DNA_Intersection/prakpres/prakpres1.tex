@@ -50,12 +50,12 @@
 %  \tableofcontents
 %\end{frame}
 \section{Einleitung}
-\begin{frame}{Formel}
+\begin{frame}{Abschätzung der Elemente in einem Bloomfilter}
 	$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
 	
 	\begin{arrowlist}
-		\item Basiert auf Berechnung Anzahl von Nullen in einem Bloomfilter:
-		\item 	$ z = m*(1 -\frac{1}{m})\textsuperscript{k*X}$ 
+		\item Basiert auf Abschätzung der False-positive Wahrscheinlichkeit in einem Bloomfilter:
+		\item 	$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
 	\end{arrowlist}
 
 \end{frame}
@@ -70,8 +70,8 @@
 		\begin{minipage}{0.45\textwidth}
 			\begin{block}{\textbf{Client} }
 			\begin{arrowlist}
-				\item Erstellt Bloom Filter ihrer Daten
-				\item Verschlüsselt jede Stelle ihres Bloom Filters mittels ElGamal
+				\item Erstellt Bloom Filter der Daten
+				\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
 
 			\end{arrowlist}
 				\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
@@ -84,9 +84,9 @@
 			\begin{block}{\textbf{Server}}
 			\begin{arrowlist}
 
-				\item Erstellt Bloom Filter seiner Daten
-				\item Selektiert jene Stellen Stellen in seinem BF die den Eintrag null besitzen.
-				\item Multipliziert an diesen Stellen die Werte des Ciphertextes von Alice auf 
+				\item Erstellt Bloom Filter der Daten
+				\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
+				\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
 				\item Rerandomisiert die entstandenen Ergebnisse
 				\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
 					$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
@@ -164,7 +164,7 @@
 						\item Verschlüsselt jede Stelle ihres Bloomfilters mittels Paillier
 						
 					\end{arrowlist}
-					\quad  \ \ $c =(g^{m}*r^{n}) mod n^{2} $
+					\quad  \ \ $c_{1-m} =(g^{m}*r^{n}) \ mod \ n^{2} $
 			\end{block}
 		\end{minipage}
 	};
@@ -178,7 +178,7 @@
 						\item Selektiert in jedem Blommfilter jene Stellen die den Eintrag Eins besitzen.
 						\item Addiert an diesen Stellen die Werte des Ciphertextes des Clients auf 
 						\item Rerandomisiert die entstandenen Ergebnisse mit verschlüsselter Null
-						\quad  \ \	$$ Rerand c_{j} = (cj * encrypt_{pailier}(0) )$$
+						\quad  \ \	$$ Rerand \ e_{j} = (ej \ *  \ encrypt_{pailier}(0) )$$
 
 					
 				\end{arrowlist}
@@ -190,9 +190,8 @@
 		\begin{minipage}{0.45\textwidth}
 			\begin{block}{}
 				\begin{arrowlist}
-					\item Alice entschlüsselt mit sk Ciphertexte von Bob
-					\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
-					\item Berechnet die Set-Union der BF
+					\item Client entschlüsselt mit sk Ciphertexte von Server
+					\item 
 				\end{arrowlist}
 			\end{block}
 		\end{minipage}
@@ -201,7 +200,7 @@
 	\begin{tikzpicture}[overlay]
 	
 	\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $  [pk, c] \ \ \ \ $};
-	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ rerand(c_{1-j}) \ \ $};
+	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ rerand(e_{1-j}) \ \ $};
 	
 	
 	\end{tikzpicture}
@@ -209,7 +208,12 @@
 	
 \end{frame}
 
-\begin{frame}{Ergebnisse }
+\begin{frame}{Ergebnisse - Elgamal }
+	
+	\begin{arrowlist}
+		\item Dauer für Vergleich des gesamten Exomes bei wenigen Minuten.
+		\item Laufzeit Unabhängig davon wie stark die Überschneidung zwischen zwischen den Datensätzen ist. 
+	\end{arrowlist}
 
  \begin{table}[h]
 	\begin{tabular}{c|c|c|c|c}
@@ -221,7 +225,13 @@
 	\end{tabular}
 	\caption{Hashfunktionen : 14, Anzahl Bloomfilter Bits:3029660, Größe der Datensätze: 15000 SNPs }
 	\label{tab:meinetabelle1}
+	
+	
 \end{table}
+
+
+\end{frame}	
+\begin{frame}
 \begin{table}[h]
 			 	
 	\begin{tabular}{c|c|c|c|c}
@@ -235,8 +245,72 @@
 	\caption{Datensatz 1000 SNPs, Überschneidung 100, Hashfunktionen: 10 }
 	\label{tab:meinetabelle2}
 \end{table}
+
+\begin{arrowlist}
+	\item Die Laufzeit ist linear abhängig zur Anzahl der Bloomfilterbits
+	\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+\end{arrowlist}
 \end{frame}			 
+	
+\begin{frame}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Hashf.&1&4&7&10&14\\
+			\hline
+			Runtime (sec)&7&27&44&62&104\\
+			Abweichung&11\%&13\%&10\%&9\%&9\%\\
+			
+			
+		\end{tabular}
+		\caption{Datensatz 1000 SNPs, Überschneidung 100, Array: 504944 }
+		\label{tab:meinetabelle4}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Die Laufzeit ist linear abhängig zur Anzahl der Bloomfilterbits
+		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+	\end{arrowlist}
+\end{frame}
 
 
-
+\begin{frame}{Ergebnisse-Paillier}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Array&14139&12119&10099&8080\\
+			\hline
+			Runtime (sec)&219&194&183&163\\
+			Abweichung&1\%&4\%&6\%&24\%\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 100, SNPs 1000 }
+		\label{tab:meinetabelle5}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Paillier deutlich langsamer als Elgamal
+		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+	\end{arrowlist}
+\end{frame}
+\begin{frame}{Ergebnisse-Paillier}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Array&141385&\\
+			\hline
+			Runtime (sec)&2420\\
+			Abweichung&1\%\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 7500, SNPs 15000 }
+		\label{tab:meinetabelle5}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Paillier deutlich langsamer als Elgamal
+		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+	\end{arrowlist}
 \end{document}

@@ -16,7 +16,7 @@ public class Jpaillier_Intersection {
 
     
     //in progress ....
-	public static  void jpaillier_encryption () throws IOException {
+	public static  int jpaillier_encryption (double falsepos, int expnumbofel, String incl, String insv) throws IOException {
 		
 		
 		//Bloom Filter Client
@@ -24,15 +24,15 @@ public class Jpaillier_Intersection {
 		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ viele Hashfunktionen ein kleines Array füllen.
 		
 		double falsePositiveProbability = 0.01;
-		int expectedNumberOfElements = 25;
+		int expectedNumberOfElements =expnumbofel;
 		
 	
-		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsePositiveProbability,expectedNumberOfElements);
+		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsepos,expectedNumberOfElements);
         
 	    int m = bloomFilter.size();
-	  
+		System.out.println(m);
 
-		String[] lines = new FileArrayProvider().readLines("./input/Client_small");
+		String[] lines = new FileArrayProvider().readLines("./input/"+incl);
 
 		int line_count = 0; 
 	    for (String line : lines) {
@@ -44,7 +44,7 @@ public class Jpaillier_Intersection {
 	  
 	      //get number of Hash functions
 		  int k = bloomFilter.getK();
-
+		  System.out.println(k);
 			
 		  //Paillier
 		  
@@ -116,7 +116,7 @@ public class Jpaillier_Intersection {
 
 
 		  //Einlesen des Server Datensatzes 
-		  String[] linesServer = new FileArrayProvider().readLines("./input/Server_small");
+		  String[] linesServer = new FileArrayProvider().readLines("./input/"+insv);
 		  int sline_count = 0;
 		  int sline_size = linesServer.length;
 		  //System.out.println(sline_size);
@@ -182,6 +182,7 @@ public class Jpaillier_Intersection {
 		  }
 
 		  System.out.println("Nach Paillier sind "+zerocounter+ " SNPs in beiden Datensätzen enthalten ");
+		  return zerocounter;
 	   		   
 	}
 	

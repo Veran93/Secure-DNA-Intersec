@@ -20,8 +20,8 @@ public class Elgamal_Intersection {
 		
 		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
 		
-		double falsePositiveProbability = 0.00001;
-		int expectedNumberOfElements = expnumbofel * 10;
+		double falsePositiveProbability = 0.01;
+		int expectedNumberOfElements = expnumbofel * 50;
 		
 	
 		BloomFilter<String> bloomFilter = new BloomFilter<String>(falsepos, expectedNumberOfElements);
