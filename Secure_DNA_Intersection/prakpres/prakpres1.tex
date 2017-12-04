@@ -54,7 +54,7 @@
 	$$ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$$
 	
 	\begin{arrowlist}
-		\item Basiert auf Abschätzung der False-positive Wahrscheinlichkeit in einem Bloomfilter:
+		\item Basiert auf Abschätzung der Anzahl an Nullen in einem Bloomfilter in einem Bloomfilter:
 		\item 	$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
 	\end{arrowlist}
 	
@@ -159,12 +159,11 @@
 		\begin{minipage}{0.45\textwidth}
 			\begin{block}{\textbf{Client} }
 				\begin{arrowlist}
-						\item Erstellt Bloom Filter ihrer Daten
-						\item Invertiert jede Stelle des Bloomfilters.
-						\item Verschlüsselt jede Stelle ihres Bloomfilters mittels Paillier
+						\item Erstellt Bloomfilter der Daten und invertiert jede Stelle des Bloomfilters.
+						\item Verschlüsselt jede Stelle des Bloomfilters mittels Paillier
 						
 					\end{arrowlist}
-					\quad  \ \ $c_{1-m} =(g^{m}*r^{n}) \ mod \ n^{2} $
+					\quad  \ \ $ \ c_{1-m} =(g^{m}*r^{n}) \ mod \ n^{2} $
 			\end{block}
 		\end{minipage}
 	};
@@ -268,8 +267,7 @@
 	\end{table}
 	
 	\begin{arrowlist}
-		\item Die Laufzeit ist linear abhängig zur Anzahl der Bloomfilterbits
-		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+		\item Anzahl der Hashfunktionen hat deutlich weniger Einfluss, jedoch kommt es bei hoher Anzahl zu vermehrt Falsch positiven Ergebnissen.
 	\end{arrowlist}
 \end{frame}
 
@@ -310,7 +308,8 @@
 	\end{table}
 	
 	\begin{arrowlist}
-		\item Paillier deutlich langsamer als Elgamal
+		\item Zum Vergleich von gesamten Exomen ca. 40 min
+		\item Aufgrund der kleineren Bloomfiltergröße kommt es jedoch nicht so schnell zum Überlauf des Arbeitsspeichers.
 
 		
 	\end{arrowlist}
@@ -331,12 +330,7 @@
 		\caption{Hashf.7, Überschneidung 7500, SNPs 15000 }
 		\label{tab:meinetabelle7}
 	\end{table}
-	
-	\begin{arrowlist}
-		\item Paillier deutlich langsamer als Elgamal
-		
-		
-	\end{arrowlist}
+
 	
 \end{frame}
 \end{document}
