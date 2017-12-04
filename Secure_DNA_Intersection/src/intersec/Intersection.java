@@ -51,7 +51,7 @@ public class Intersection {
 	    System.out.println(Abw);
 	    */
 		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
-	    int pail = DNA_jpaillier.jpaillier_encryption(0.1, 14000,"15000/client15000_7500","15000/server15000_7500");
+	    int pail = DNA_jpaillier.jpaillier_encryption(0.0001,10000,"15000/client15000_7500","15000/server15000_7500");
 	    long pailtime = System.currentTimeMillis();
 	    long afterpail = pailtime -starttime; 
 	    System.out.println(afterpail);

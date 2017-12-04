@@ -51,13 +51,13 @@
 %\end{frame}
 \section{Einleitung}
 \begin{frame}{Abschätzung der Elemente in einem Bloomfilter}
-	$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
+	$$ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$$
 	
 	\begin{arrowlist}
 		\item Basiert auf Abschätzung der False-positive Wahrscheinlichkeit in einem Bloomfilter:
 		\item 	$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
 	\end{arrowlist}
-
+	
 \end{frame}
 
 \section{Algorithmus}
@@ -191,7 +191,7 @@
 			\begin{block}{}
 				\begin{arrowlist}
 					\item Client entschlüsselt mit sk Ciphertexte von Server
-					\item 
+					\item Anzahl der entschlüsselten Nullen entspricht der Anzahl der sich überschneidenden Elemente
 				\end{arrowlist}
 			\end{block}
 		\end{minipage}
@@ -291,26 +291,29 @@
 	
 	\begin{arrowlist}
 		\item Paillier deutlich langsamer als Elgamal
-		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+		\item Benötigt deutlich kleinere Bloomfilter für selbe Genauigkeit, jedoch ist die Bitweise Verschlüsselung sehr langsam
 	\end{arrowlist}
 \end{frame}
 \begin{frame}{Ergebnisse-Paillier}
 	\begin{table}[h]
 		
 		\begin{tabular}{c|c|c|c|c|c}
-			Array&141385&\\
+			Array&141385&100989&75742\\
 			\hline
-			Runtime (sec)&2420\\
-			Abweichung&1\%\\
+			Runtime (sec)&2420&2318&2007\\
+			Abweichung&1\%&4\%& 13\%\\
 			
 			
 		\end{tabular}
 		\caption{Hashf.7, Überschneidung 7500, SNPs 15000 }
-		\label{tab:meinetabelle5}
+		\label{tab:meinetabelle6}
 	\end{table}
 	
 	\begin{arrowlist}
 		\item Paillier deutlich langsamer als Elgamal
-		\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+
+		
 	\end{arrowlist}
+
+\end{frame}
 \end{document}
