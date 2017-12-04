@@ -18,9 +18,10 @@ import intersec.Elgamal_Intersection;
 public class Intersection {
 	
 	public static void main(String[] args) throws IOException {
+		
 		int cou = 0;
-		String[] clientlines = new FileArrayProvider().readLines("./input/15000/client15000_7500");
-		String[] serverlines = new FileArrayProvider().readLines("./input/15000/server15000_7500");
+		String[] clientlines = new FileArrayProvider().readLines("./input/1000/client1000_100");
+		String[] serverlines = new FileArrayProvider().readLines("./input/1000/server1000_100");
 		
 		for(String cline: clientlines)
 		{
@@ -39,25 +40,27 @@ public class Intersection {
 		//uptodate
 		
 		long starttime = System.currentTimeMillis();
-		/*
+		
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
-	    int elgx=  DNA_elgamal.elgamal_encryption(0.5, 1000,"1000/client1000_100","1000/server1000_100");
+	    int elgx=  DNA_elgamal.elgamal_encryption(0.01, 150,"1000/client1000_100","1000/server1000_100");
 	    long elgatime = System.currentTimeMillis();
 	    long afterelg = elgatime -starttime; 
-	    System.out.println(afterelg);
-	    System.out.println(elgx);
-	    double Abw1 =elgx-cou;
-	    double Abw = (Abw1/100)*100;
-	    System.out.println(Abw);
-	    */
+	    System.out.println("Elgamal benötigte "+afterelg*0.001 +" Sekunden bzw "+(afterelg/60)*0.001 +" Minuten");
+	    double eAbw1 =elgx-cou;
+	    System.out.println("Elgamal fand "+eAbw1+" nicht vorhandene SNPs");
+	    double eAbw = (eAbw1/1000)*100;
+	    System.out.println("Elgamal fand "+eAbw + " % mehr SNPs als eigentlich vorhanden");
+
+	    
 		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
-	    int pail = DNA_jpaillier.jpaillier_encryption(0.001,10000,"15000/client15000_7500","15000/server15000_7500");
+	    int pail = DNA_jpaillier.jpaillier_encryption(0.01,591,"1000/client1000_100","1000/server1000_100");
 	    long pailtime = System.currentTimeMillis();
 	    long afterpail = pailtime -starttime; 
-	    System.out.println(afterpail);
-	    double Abw1 =pail-cou;
-	    double Abw = (Abw1/7500)*100;
-	    System.out.println(Abw);
+	    System.out.println("Paillier benötigte "+afterpail*0.001 +" Sekunden bzw "+(afterpail/60)*0.001 +" Minuten");
+	    double Abw1p =pail-cou;
+	    System.out.println("Paillier fand "+Abw1p+" nicht vorhandene SNPs");
+	    double Abw2p = (Abw1p/1000)*100;
+	    System.out.println("Paillier fand "+Abw2p + " % mehr SNPs als eigentlich vorhanden");
 
 	}
 
