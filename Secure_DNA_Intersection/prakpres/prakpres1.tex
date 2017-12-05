@@ -112,19 +112,20 @@
 \begin{frame}{Abschätzung der Elemente in einem Bloomfilter}
 	$$ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$$
 	
-	\begin{arrowlist}
-		\item Basiert auf Abschätzung der Anzahl an Nullen in einem Bloomfilter in einem Bloomfilter:
-		\item 	$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
-	\end{arrowlist}
-	
 \end{frame}
 
 \begin{frame}
 		\begin{arrowlist}
 			\item Wahrscheinlichkeit, dass ein Bloomfilterbit Null ist $ z' = (1 -\frac{1}{m})\textsuperscript{k* X} $
-			\item Da biomialverteilt ist der Erwartungswert:
-			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
-			\item 
+			\newline
+			\item Mit der Abschätzung $ (1 -\frac{t}{k})^{k} \approx e^{-t} $ gilt :
+			\newline
+				\newline
+			 $ (1-\frac{1}{m}) ^{k*x} = (1-\frac{(k*x/m)}{k*x})^{k*x} \approx e^{\frac{-k*x}{m}}$ 
+			\newline
+			\item Da binomialverteielt ist der Erwartungswert:
+			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}\approx m*e^{\frac{-k*x}{m}} $ 
+			
 		\end{arrowlist}
 \end{frame}
 
@@ -136,7 +137,7 @@
 	\textbf{Schlüsselerzeugung:}\\
 	
 	\begin{arrowlist}
-	\item Client wählt zwei Primzahlen p,q , mit $ ggt(pq, (p-1)(q-1))= 1$  
+	\item Client wählt zwei Primzahlen p,q , mit $ ggt(pq, (p-1)(q-1))= 1 und n =pq $  
 	\item Der Generator g so gewählt, sodass $ g \in (\mathbb{Z} n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.	
 	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
 	\item Public Key: $(n,g)$	
@@ -149,14 +150,15 @@
 \begin{frame}
 		\textbf{Verschlüsselung:}
 		\begin{arrowlist}
-			\item Client wählt Zufallszahl $ r $ wobei $ 0 \leq r \leq n $
+			\item Nachricht  $ m \in \mathbb{Z}_{n}^{*} $
+			\item Client wählt Zufallszahl $ r  \in \mathbb{Z}_{n^{2}}^{*} $ 
 			\item Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $
 		\end{arrowlist}
 		
 
 		\textbf{Entschlüsselung:}
 		\begin{arrowlist}
-			\item Benötigt zunächst $ L(u)= \frac{(u-1)}{n} $
+			\item Benötigt zunächst $ L(x)= \frac{(x-1)}{n} $
 			\item Plaintext $ m = \frac{L(c^{\lambda} \ mod \ n^{2}) }{L(g^{\lambda} \ mod \ n^{2})} \ mod \ n $
 		\end{arrowlist}
 
@@ -324,7 +326,7 @@
 	
 	\begin{arrowlist}
 		\item Zum Vergleich von gesamten Exomen ca. 40 min
-		\item Aufgrund der kleineren Bloomfiltergröße kommt es jedoch nicht so schnell zum Überlauf des Arbeitsspeichers.
+ 
 
 		
 	\end{arrowlist}
