@@ -23,6 +23,9 @@
 \newlist{arrowlist}{itemize}{1}
 \setlist[arrowlist]{label=$\Rightarrow$}
 \usepackage{tikz}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
 \tikzset{
 	every overlay node/.style={
 		%draw=black,fill=white,rounded corners,
@@ -49,7 +52,63 @@
 %\begin{frame}{Outline}
 %  \tableofcontents
 %\end{frame}
-\section{Einleitung}
+\begin{frame}{Algorithmus basierend auf Elgamal}
+	\footnotesize
+	\vskip 0.3cm
+	\tikzoverlay (n1) at (-0.5cm,3cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{\textbf{Client} }
+				\begin{arrowlist}
+					\item Erstellt Bloom Filter der Daten
+					\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
+					
+				\end{arrowlist}
+				\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
+			\end{block}
+		\end{minipage}
+	};
+	
+	\tikzoverlay (n2) at (6.7cm,3.5cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{\textbf{Server}}
+				\begin{arrowlist}
+					
+					\item Erstellt Bloom Filter der Daten
+					\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
+					\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
+					\item Rerandomisiert die entstandenen Ergebnisse
+					\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+					$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+					
+				\end{arrowlist}
+			\end{block}
+		\end{minipage}
+	};
+	
+	\tikzoverlay (n3) at (-0.5cm,0cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{}
+				\begin{arrowlist}
+					\item Alice entschlüsselt mit sk Ciphertext von Bob
+					\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
+					\item Schätzt hieraus die Gesamtmenge an SNPs
+				\end{arrowlist}
+			\end{block}
+		\end{minipage}
+	};
+	
+	\begin{tikzpicture}[overlay]
+	
+	\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
+	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
+	
+	
+	\end{tikzpicture}
+	
+	
+\end{frame}
+
+
 \begin{frame}{Abschätzung der Elemente in einem Bloomfilter}
 	$$ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$$
 	
@@ -60,93 +119,49 @@
 	
 \end{frame}
 
+\begin{frame}
+		\begin{arrowlist}
+			\item Wahrscheinlichkeit, dass ein Bloomfilterbit Null ist $ z' = (1 -\frac{1}{m})\textsuperscript{k* X} $
+			\item Da biomialverteilt ist der Erwartungswert:
+			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}$ 
+			\item 
+		\end{arrowlist}
+\end{frame}
+
 \section{Algorithmus}
 
-
-\begin{frame}{Algorithmus basierend auf Elgamal}
-	\footnotesize
-		\vskip 0.3cm
-	\tikzoverlay (n1) at (-0.5cm,3cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Client} }
-			\begin{arrowlist}
-				\item Erstellt Bloom Filter der Daten
-				\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
-
-			\end{arrowlist}
-				\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
-			\end{block}
-		\end{minipage}
-	};
-	
-	\tikzoverlay (n2) at (6.7cm,3.5cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Server}}
-			\begin{arrowlist}
-
-				\item Erstellt Bloom Filter der Daten
-				\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
-				\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
-				\item Rerandomisiert die entstandenen Ergebnisse
-				\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
-					$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
-
-			\end{arrowlist}
-			\end{block}
-		\end{minipage}
-	};
-	
-	\tikzoverlay (n3) at (-0.5cm,0cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{}
-						\begin{arrowlist}
-							\item Alice entschlüsselt mit sk Ciphertext von Bob
-							\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
-							\item Berechnet die Set-Union der BF
-						\end{arrowlist}
-			\end{block}
-		\end{minipage}
-	};
-	
-	\begin{tikzpicture}[overlay]
-
-	\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
-	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
-
-	
-	\end{tikzpicture}
-	
-	
-\end{frame}
 
 \begin{frame}{Paillier - Verfahren}
 
 	\textbf{Schlüsselerzeugung:}\\
 	
-	
-	Das Schlüsselpaar wird folgendermaßen generiert:
-	Der Client wählt zwei Primzahlen p,q , mit ggt(pq, (p-1)(q-1))= 0. Des weiteren wird der Generator g so gewählt, sodass $ g \in (\mathbb{Z}/ n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.
-	Das Schlüsselpaar wird dann folgendermaßen gebildet.
-	\begin{itemize}	
-		\item Secrect key: $ \lambda = kgV(p-1, q-1) $
-		\item Public Key: $(n,g)$	
-	\end{itemize}
+	\begin{arrowlist}
+	\item Client wählt zwei Primzahlen p,q , mit $ ggt(pq, (p-1)(q-1))= 1$  
+	\item Der Generator g so gewählt, sodass $ g \in (\mathbb{Z} n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.	
+	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
+	\item Public Key: $(n,g)$	
+	\end{arrowlist}
 	
 	
 
 \end{frame}
 
 \begin{frame}
-		\textbf{Verschlüsselung:}\\
+		\textbf{Verschlüsselung:}
+		\begin{arrowlist}
+			\item Client wählt Zufallszahl $ r $ wobei $ 0 \leq r \leq n $
+			\item Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $
+		\end{arrowlist}
 		
-		
-		Zur Verschlüsselung einer Nachricht $ m \in \mathbb{Z} $ wählt der Client zunächst eine Zufalls Zahl $ r $ wobei $ 0 \leq r \leq n $
-		Dann berechnet sich der Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $\
-		\newline
-		\textbf{Entschlüsselung:}\\
-		Der Plaintext kann folgendermaßen berechnet werden: $ m = L(c^{\lambda} \mod n^{2}) * \mu mod n $
-		\newline
-		\textbf{Homomorphie:}\\
+
+		\textbf{Entschlüsselung:}
+		\begin{arrowlist}
+			\item Benötigt zunächst $ L(u)= \frac{(u-1)}{n} $
+			\item Plaintext $ m = \frac{L(c^{\lambda} \ mod \ n^{2}) }{L(g^{\lambda} \ mod \ n^{2})} \ mod \ n $
+		\end{arrowlist}
+
+
+		\textbf{Homomorphie:}
 		Paillier ist homomorph gegenüber der Addition.
 		
 		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) + E(m \textsubscript{2}))$$
@@ -177,7 +192,7 @@
 						\item Selektiert in jedem Blommfilter jene Stellen die den Eintrag Eins besitzen.
 						\item Addiert an diesen Stellen die Werte des Ciphertextes des Clients auf 
 						\item Rerandomisiert die entstandenen Ergebnisse mit verschlüsselter Null
-						\quad  \ \	$$ Rerand \ e_{j} = (ej \ *  \ encrypt_{pailier}(0) )$$
+						\quad  \ \	$$ Rerand \ e_{j} = (ej \ *  \ enc_{pailier}(0) )$$
 
 					
 				\end{arrowlist}
@@ -319,11 +334,11 @@
 \begin{frame}{Vergleich}
 	\begin{table}[h]
 		
-		\begin{tabular}{c|c|c|c|c|c}
-			Abweichung&2\%&3\%&4&6\\
+		\begin{tabular}{c|c|c|c|c|c|c}
+			Abweichung&0.1\%&0.6\%&2\%&3\%&4\%&6\%\\
 			\hline
-			Runtime elgamal&17&15&11&6\\
-			Runtime paillier&150&150&135&120\\
+			Runtime elgamal&467&150&17&15&11&6\\
+			Runtime paillier&510&340&150&150&135&120\\
 			
 			
 		\end{tabular}

@@ -42,7 +42,7 @@ public class Intersection {
 		long starttime = System.currentTimeMillis();
 		
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
-	    int elgx=  DNA_elgamal.elgamal_encryption(0.01, 150,"1000/client1000_100","1000/server1000_100");
+	    int elgx=  DNA_elgamal.elgamal_encryption(0.01, 8000,"1000/client1000_100","1000/server1000_100");
 	    long elgatime = System.currentTimeMillis();
 	    long afterelg = elgatime -starttime; 
 	    System.out.println("Elgamal benötigte "+afterelg*0.001 +" Sekunden bzw "+(afterelg/60)*0.001 +" Minuten");
@@ -53,7 +53,7 @@ public class Intersection {
 
 	    
 		Jpaillier_Intersection DNA_jpaillier = new Jpaillier_Intersection();
-	    int pail = DNA_jpaillier.jpaillier_encryption(0.01,591,"1000/client1000_100","1000/server1000_100");
+	    int pail = DNA_jpaillier.jpaillier_encryption(0.01,1300,"1000/client1000_100","1000/server1000_100");
 	    long pailtime = System.currentTimeMillis();
 	    long afterpail = pailtime -starttime; 
 	    System.out.println("Paillier benötigte "+afterpail*0.001 +" Sekunden bzw "+(afterpail/60)*0.001 +" Minuten");
