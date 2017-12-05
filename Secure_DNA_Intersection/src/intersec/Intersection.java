@@ -1,5 +1,4 @@
 package intersec;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import elgamal.Elgamal;
