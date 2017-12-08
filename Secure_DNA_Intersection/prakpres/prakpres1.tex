@@ -166,7 +166,7 @@
 		\textbf{Homomorphie:}
 		Paillier ist homomorph gegenüber der Addition.
 		
-		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) + E(m \textsubscript{2}))$$
+		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
 \end{frame}
 
 \begin{frame}{Algorithmus basierend auf Paillier}
@@ -180,7 +180,7 @@
 						\item Verschlüsselt jede Stelle des Bloomfilters mittels Paillier
 						
 					\end{arrowlist}
-					\quad  \ \ $ \ c_{1-m} =(g^{m}*r^{n}) \ mod \ n^{2} $
+					\quad  \ \ $ \ c_{i} =(g^{IBF[i]}*r^{n}) \ mod \ n^{2} $
 			\end{block}
 		\end{minipage}
 	};
@@ -192,7 +192,7 @@
 					
 						\item Erstellt für jedes Element des Datensatzes einen Bloomfilter seiner Daten
 						\item Selektiert in jedem Blommfilter jene Stellen die den Eintrag Eins besitzen.
-						\item Addiert an diesen Stellen die Werte des Ciphertextes des Clients auf 
+						\item Multipliziert an diesen Stellen die Werte des Ciphertextes des Clients auf 
 						\item Rerandomisiert die entstandenen Ergebnisse mit verschlüsselter Null
 						\quad  \ \	$$ Rerand \ e_{j} = (ej \ *  \ enc_{pailier}(0) )$$
 
@@ -222,6 +222,14 @@
 	\end{tikzpicture}
 	
 	
+\end{frame}
+
+\begin{frame}{Beispiel}
+	
+	Sei $ X_{client} = {rs12323, rs23453, rs34564} $ und $ X_{server} = {rs98787, rs87676, rs76565}  $. Der Bloomfilter BF sei definiert mit dem Array $ m = {0,0,0,0,0,0,0,0,0,0,0,0}  $ und den Hashfunktionen $ k_{1-3} $.
+	Zunächst wendet der Client die Hashfunktionen auf alle SNPs seines Datensatzes an: $ k_{1 (rs12323)} =1 ,k_{2 (rs12323)} = 2 , k_{3 (rs12323)} = 5; k_{1 (rs23453)} =2 ,k_{2 (rs23453)} = 7 , k_{3 (rs23453)} = 0; $
+	
+	 
 \end{frame}
 
 \begin{frame}{Ergebnisse - Elgamal }

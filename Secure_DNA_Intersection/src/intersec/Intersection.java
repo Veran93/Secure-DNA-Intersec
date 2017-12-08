@@ -43,6 +43,9 @@ public class Intersection {
 		Elgamal_Intersection DNA_elgamal = new Elgamal_Intersection();
 	    int elgx=  DNA_elgamal.elgamal_encryption(0.01, 8000,"1000/client1000_100","1000/server1000_100");
 	    long elgatime = System.currentTimeMillis();
+
+	    
+	    
 	    long afterelg = elgatime -starttime; 
 	    System.out.println("Elgamal benötigte "+afterelg*0.001 +" Sekunden bzw "+(afterelg/60)*0.001 +" Minuten");
 	    double eAbw1 =elgx-cou;
