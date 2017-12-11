@@ -46,6 +46,216 @@
 \date{\today}
 
 \begin{document}
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	% Uncomment these lines for an automatically generated outline.
+	%\begin{frame}{Outline}
+	%  \tableofcontents
+	%\end{frame}
+	
+	\section{Introduction}
+	
+	\begin{frame}{Motivation}
+		
+		\begin{arrowlist}
+			\item  Ziel dieses Projektes ist es verschiedene Methoden vergleichen, mit denen es möglich ist privacy preserving die Übereinstimmung der DNA einer Person zu einer anderen bzw. zu einem Referenz Exom zu ermitteln
+			\item Hierzu vergleichen wir die SNP Profile dieser Exome.	
+			(Unter Umständen wären auch Satelliten-Repeats möglich)
+			
+		\end{arrowlist}
+		
+		
+		
+	\end{frame}
+	
+	\begin{frame}
+		
+		\begin{arrowlist}
+			
+			\item Viele Therapien in der Personalisierten Medizin sind an bestimmte SNP Profile gekoppelt.
+			\item Durch einen solchen Vergleich wäre es möglich festzustellen, ob für einen Patienten ein bestimmtes Medikament wirksam wäre oder nicht. 
+			\item Die Grundlage aller dieser Methoden bilden sogenannte Bloom Filter
+		\end{arrowlist}
+		
+		
+		
+	\end{frame}
+	\subsection{Bloom Filter}
+	
+	\begin{frame}{Bloom Filter}
+		
+		\begin{arrowlist}
+			\item Technik um festzustellen, ob bestimmte Daten in einem Datensatz vorhanden sind oder nicht.
+			\item  Aufbau:\\
+			- Ein mit Nullen initialisiertem m Bit langes Array \\ 
+			- k Hashfunktionen\\
+			\item Initialisierung\\
+			- Auf jedes Element des Datensatzes werden alle k Hashfunktionen angewendet.\\ 
+			- Jede der Hashfunktionen bildet auf das Array ab\\
+			- Die Positionen im Array die den Ausgaben entsprechen werden auf 1 gesetzt.\\
+			
+		\end{arrowlist}
+		
+	\end{frame}
+	\begin{frame}{Bloom Filter}
+		\begin{arrowlist}
+			
+			\item Datenprüfung:\\
+			- Auf ein zu überprüfendes Datenelement d werden wieder alle k Hashfunktionen angewendet\\
+			- Nur wenn alle Positionen im BF an den Punkten der Ausgabe 1 sind wird angenommen, dass sich d im Datensatz befindet
+		\end{arrowlist}
+		
+	\end{frame}
+	
+	\section{Algorithmus}
+	
+	
+	\begin{frame}{Algorithmus - In a Nutshell}
+		\footnotesize
+		\vskip 0.3cm
+		\tikzoverlay (n1) at (-0.5cm,3cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{\textbf{Alice} }
+					\begin{arrowlist}
+						\item Erstellt Bloom Filter ihrer Daten
+						\item Verschlüsselt jede Stelle ihres Bloom Filters mittels ElGamal
+						
+					\end{arrowlist}
+					\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
+				\end{block}
+			\end{minipage}
+		};
+		
+		\tikzoverlay (n2) at (6.7cm,3.5cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{\textbf{Bob}}
+					\begin{arrowlist}
+						
+						\item Erstellt Bloom Filter seiner Daten
+						\item Selektiert jene Stellen Stellen in seinem BF die den Eintrag null besitzen.
+						\item Multipliziert an diesen Stellen die Werte des Ciphertextes von Alice auf 
+						\item Rerandomisiert die entstandenen Ergebnisse
+						\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+						$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+						
+					\end{arrowlist}
+				\end{block}
+			\end{minipage}
+		};
+		
+		\tikzoverlay (n3) at (-0.5cm,0cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{}
+					\begin{arrowlist}
+						\item Alice entschlüsselt mit sk Ciphertext von Bob
+						\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
+						\item Berechnet die Set-Union der BF
+					\end{arrowlist}
+				\end{block}
+			\end{minipage}
+		};
+		
+		\begin{tikzpicture}[overlay]
+		
+		\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
+		\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
+		
+		
+		\end{tikzpicture}
+		
+		
+	\end{frame}
+	
+	
+	
+	\begin{frame}{Algorithmus - Step 1}
+		$$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
+		
+		
+		\[
+		S\textsubscript{i} = pk^{r_{i}} \ * \ \left\{
+		\begin{array}{ll}
+		g^{0} = 1 \ bei \  BF\textsubscript{1}[i]=1\\
+		g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
+		\end{array}
+		\right.
+		\]
+		
+		\begin{block}{Legende}
+			pk: public key, sk: private key, g: Generator $r_i$: Zufallszahlen aus $Z_q$ 
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}{Algorithmus - Step 2}
+		
+		\begin{arrowlist}
+			\item Aufmultiplikation  von $R_i$ bzw $S_i$ an jenen Stellen, an welchen $BF_2 = 0$ ist.
+			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
+			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
+		\end{arrowlist}	
+		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+		$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+		
+		
+		\begin{block}{Legende}
+			pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}
+		\begin{arrowlist}
+			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
+			
+		\end{arrowlist}
+		
+		$$ V = (g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}})$$
+		
+		\[
+		W =\left\{
+		\begin{array}{ll}
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
+		\end{array}
+		\right.
+		\]
+		
+		$$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
+		
+	\end{frame}
+	
+	
+	\begin{frame}{Algorithmus - Step 3}
+		$$\Sigma = W * V^{-sk}$$
+		\begin{arrowlist}
+			\item V, W aus vorherigem Schritt einsetzen und für $pk$ = $g^{sk}$ 
+		\end{arrowlist}
+		\vskip 0.1cm 
+		
+		$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^x) $$
+		$$\Sigma = g^x$$
+	\end{frame}
+	
+	\begin{frame}
+		\begin{arrowlist}
+			\item Durch wiederholtes dividieren durch g lässt sich x berechnen.
+			\item x entspricht der Anzahl der Stellen, an welchen beide Bloom Filter null sind
+			\item Dann berechnen sich die Stellen, an denen zumindest einer der BF eine 1 hat $z = m - x$
+			\item Hieraus lässt nun wiederum auf die Gesamtgröße der Vereinigung der Bloom Filter schließen.
+		\end{arrowlist}
+		$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
+	\end{frame}
+	
+	\begin{frame}{Algorithmus - Anpassung} 
+		\begin{arrowlist}
+			\item Durch den Algorithmus wurde Set-Union berechnet, wir benötigen jedoch die Set-Intersection,da wir die Gemeinsamkeiten der DNAs bestimmen wollen.
+			\item Hierzu invertieren wir zu Beginn des Algorithmus die Bloom Filter der Teilnehmer.
+		\end{arrowlist}
+	\end{frame}
 
 
 % Uncomment these lines for an automatically generated outline.
