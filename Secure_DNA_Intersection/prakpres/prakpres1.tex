@@ -113,15 +113,15 @@
 	\section{Algorithmus}
 	
 	
-	\begin{frame}{Algorithmus - In a Nutshell}
+	\begin{frame}{Algorithmus basierend auf Elgamal - In a Nutshell}
 		\footnotesize
 		\vskip 0.3cm
 		\tikzoverlay (n1) at (-0.5cm,3cm) {
 			\begin{minipage}{0.45\textwidth}
-				\begin{block}{\textbf{Alice} }
+				\begin{block}{\textbf{Client} }
 					\begin{arrowlist}
-						\item Erstellt Bloom Filter ihrer Daten
-						\item Verschlüsselt jede Stelle ihres Bloom Filters mittels ElGamal
+						\item Erstellt Bloom Filter der Daten
+						\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
 						
 					\end{arrowlist}
 					\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
@@ -131,12 +131,12 @@
 		
 		\tikzoverlay (n2) at (6.7cm,3.5cm) {
 			\begin{minipage}{0.45\textwidth}
-				\begin{block}{\textbf{Bob}}
+				\begin{block}{\textbf{Server}}
 					\begin{arrowlist}
 						
-						\item Erstellt Bloom Filter seiner Daten
-						\item Selektiert jene Stellen Stellen in seinem BF die den Eintrag null besitzen.
-						\item Multipliziert an diesen Stellen die Werte des Ciphertextes von Alice auf 
+						\item Erstellt Bloom Filter der Daten
+						\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
+						\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
 						\item Rerandomisiert die entstandenen Ergebnisse
 						\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
 						$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
@@ -150,9 +150,9 @@
 			\begin{minipage}{0.45\textwidth}
 				\begin{block}{}
 					\begin{arrowlist}
-						\item Alice entschlüsselt mit sk Ciphertext von Bob
+						\item Client entschlüsselt mit sk Ciphertext von Server
 						\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
-						\item Berechnet die Set-Union der BF
+						\item Schätzt hieraus die Gesamtmenge an SNPs
 					\end{arrowlist}
 				\end{block}
 			\end{minipage}
@@ -168,7 +168,6 @@
 		
 		
 	\end{frame}
-	
 	
 	
 	\begin{frame}{Algorithmus - Step 1}
@@ -197,7 +196,7 @@
 			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
 			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
 		\end{arrowlist}	
-		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i[j]} )$$
 		$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
 		
 		
@@ -250,6 +249,29 @@
 		$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
 	\end{frame}
 	
+	
+	
+	
+	\begin{frame}{Herleitung der Abschätzung}
+		
+		\begin{arrowlist}
+			\item Wahrscheinlichkeit, dass ein Bloomfilterbit Null ist $ z' = (1 -\frac{1}{m})\textsuperscript{k* X} $
+			\newline
+			\item Mit der Abschätzung $ (1 -\frac{t}{k})^{k} \approx e^{-t} $ gilt :
+			\newline
+			\newline
+			$ (1-\frac{1}{m}) ^{k*x} = (1-\frac{(k*x/m)}{k*x})^{k*x} \approx e^{\frac{-k*x}{m}}$ 
+			\newline
+			\item Da binomialverteielt ist der Erwartungswert:
+			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}\approx m*e^{\frac{-k*x}{m}} $ 
+			\newline
+			\item Durch Umformung nach $ x $ erhält man:  $ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$
+		\end{arrowlist}
+		
+		
+	\end{frame}
+	
+	
 	\begin{frame}{Algorithmus - Anpassung} 
 		\begin{arrowlist}
 			\item Durch den Algorithmus wurde Set-Union berechnet, wir benötigen jedoch die Set-Intersection,da wir die Gemeinsamkeiten der DNAs bestimmen wollen.
@@ -262,82 +284,8 @@
 %\begin{frame}{Outline}
 %  \tableofcontents
 %\end{frame}
-\begin{frame}{Algorithmus basierend auf Elgamal}
-	\footnotesize
-	\vskip 0.3cm
-	\tikzoverlay (n1) at (-0.5cm,3cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Client} }
-				\begin{arrowlist}
-					\item Erstellt Bloom Filter der Daten
-					\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
-					
-				\end{arrowlist}
-				\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
-			\end{block}
-		\end{minipage}
-	};
-	
-	\tikzoverlay (n2) at (6.7cm,3.5cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{\textbf{Server}}
-				\begin{arrowlist}
-					
-					\item Erstellt Bloom Filter der Daten
-					\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
-					\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
-					\item Rerandomisiert die entstandenen Ergebnisse
-					\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
-					$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
-					
-				\end{arrowlist}
-			\end{block}
-		\end{minipage}
-	};
-	
-	\tikzoverlay (n3) at (-0.5cm,0cm) {
-		\begin{minipage}{0.45\textwidth}
-			\begin{block}{}
-				\begin{arrowlist}
-					\item Alice entschlüsselt mit sk Ciphertext von Bob
-					\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
-					\item Schätzt hieraus die Gesamtmenge an SNPs
-				\end{arrowlist}
-			\end{block}
-		\end{minipage}
-	};
-	
-	\begin{tikzpicture}[overlay]
-	
-	\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
-	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
-	
-	
-	\end{tikzpicture}
-	
-	
-\end{frame}
 
 
-\begin{frame}{Abschätzung der Elemente in einem Bloomfilter}
-	$$ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$$
-	
-\end{frame}
-
-\begin{frame}
-		\begin{arrowlist}
-			\item Wahrscheinlichkeit, dass ein Bloomfilterbit Null ist $ z' = (1 -\frac{1}{m})\textsuperscript{k* X} $
-			\newline
-			\item Mit der Abschätzung $ (1 -\frac{t}{k})^{k} \approx e^{-t} $ gilt :
-			\newline
-				\newline
-			 $ (1-\frac{1}{m}) ^{k*x} = (1-\frac{(k*x/m)}{k*x})^{k*x} \approx e^{\frac{-k*x}{m}}$ 
-			\newline
-			\item Da binomialverteielt ist der Erwartungswert:
-			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}\approx m*e^{\frac{-k*x}{m}} $ 
-			
-		\end{arrowlist}
-\end{frame}
 
 \section{Algorithmus}
 
@@ -365,7 +313,7 @@
 			\item Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $
 		\end{arrowlist}
 		
-
+[j]
 		\textbf{Entschlüsselung:}
 		\begin{arrowlist}
 			\item Benötigt zunächst $ L(x)= \frac{(x-1)}{n} $
@@ -379,7 +327,7 @@
 		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
 \end{frame}
 
-\begin{frame}{Algorithmus basierend auf Paillier}
+\begin{frame}{Algorithmus basierend auf Paillier - In a Nutshell}
 	\footnotesize
 	\vskip 0.3cm
 	\tikzoverlay (n1) at (-0.5cm,3cm) {
@@ -433,6 +381,76 @@
 	
 	
 \end{frame}
+
+
+	\begin{frame}{Algorithmus - Step 1}
+		$$c_i = (g \textsuperscript{IBF[i]}  * r_{i}\textsuperscript{n})$$
+		
+		
+		\[
+		C\textsubscript{i} = r_{i}^{n} \ * \ \left\{
+		\begin{array}{ll}
+		g^{0} = 1 \ bei \  BF\textsubscript{1}[i]=1\\
+		g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
+		\end{array}
+		\right.
+		\]
+		
+		\begin{block}{Legende}
+			pk: public key, sk: private key, g: Generator $r_i$: Zufallszahlen aus $Z_q$ 
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}{Algorithmus - Step 2}
+		
+		\begin{arrowlist}
+			\item Für jedes Element des Datensatzes des Servers wird ein Bloomfilter erstellt.
+			\item Aufmultiplikation  von $c_i$  an jenen Stellen, an welchen $BF_{s[j]}= 1$ ist.
+			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
+			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
+		\end{arrowlist}	
+		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+		
+		
+		\begin{block}{Legende}
+			pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}
+		\begin{arrowlist}
+			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
+			
+		\end{arrowlist}
+		
+		$$ V_{j} = (g^{ IBF_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}})$$
+		
+		\[
+		W =\left\{
+		\begin{array}{ll}
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
+		\end{array}
+		\right.
+		\]
+		
+		$$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
+		
+	\end{frame}
+	
+	
+	\begin{frame}{Algorithmus - Step 3}
+		$$\Sigma = W * V^{-sk}$$
+		\begin{arrowlist}
+			\item V, W aus vorherigem Schritt einsetzen und für $pk$ = $g^{sk}$ 
+		\end{arrowlist}
+		\vskip 0.1cm 
+		
+		$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^x) $$
+		$$\Sigma = g^x$$
+	\end{frame}
 
 \begin{frame}{Beispiel}
 	
