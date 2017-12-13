@@ -313,7 +313,7 @@
 			\item Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $
 		\end{arrowlist}
 		
-[j]
+
 		\textbf{Entschlüsselung:}
 		\begin{arrowlist}
 			\item Benötigt zunächst $ L(x)= \frac{(x-1)}{n} $
@@ -407,39 +407,37 @@
 		\begin{arrowlist}
 			\item Für jedes Element des Datensatzes des Servers wird ein Bloomfilter erstellt.
 			\item Aufmultiplikation  von $c_i$  an jenen Stellen, an welchen $BF_{s[j]}= 1$ ist.
+		\end{arrowlist}
+		
+		
+			$$ V_{j} = (g^{ IBF_{i_{1}} + IBF_{i_{2}} + \ ...\ +IBF_{i_{k}}} \ * \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n})$$
+			
+			\[
+			V_{j} = \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n} \* \ \left\{
+			\begin{array}{ll}
+			g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
+			g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
+			\end{array}
+			\right.
+			\]
+			
+			
+			\begin{block}{Legende}
+				pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
+			\end{block}
+			
+		\end{frame}
+	
+	\begin{frame}
+		
+		\begin{arrowlist}
+			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
 			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
 			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
 		\end{arrowlist}	
 		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
-		
-		
-		\begin{block}{Legende}
-			pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
-		\end{block}
-		
 	\end{frame}
-	
-	\begin{frame}
-		\begin{arrowlist}
-			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
-			
-		\end{arrowlist}
-		
-		$$ V_{j} = (g^{ IBF_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}})$$
-		
-		\[
-		W =\left\{
-		\begin{array}{ll}
-		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
-		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
-		\end{array}
-		\right.
-		\]
-		
-		$$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
-		
-	\end{frame}
-	
+
 	
 	\begin{frame}{Algorithmus - Step 3}
 		$$\Sigma = W * V^{-sk}$$
