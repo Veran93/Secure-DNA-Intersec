@@ -40,7 +40,7 @@
 	\tikz[baseline,overlay]\node[every overlay node]
 }%
 
-\title[Privatly computing Set-Intersection]{Privatly computing Set-Intersection using Bloom Filters}
+\title[Privatly computing Set-Intersection]{Privatly computing DNA Set-Intersection cardinality using Bloom Filters}
 \author{Niklas Jobst}
 \institute{TCS - Universität zu Lübeck}
 \date{\today}
@@ -413,10 +413,10 @@
 			$$ V_{j} = (g^{ IBF_{i_{1}} + IBF_{i_{2}} + \ ...\ +IBF_{i_{k}}} \ * \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n})$$
 			
 			\[
-			V_{j} = \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n} \* \ \left\{
+			V_{j} = \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n} \ \left\{
 			\begin{array}{ll}
-			g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
-			g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
+			g^{1 + 1 + 1 + \ ...\ +1} \ wenn \ BF_{c} = 0,BF_{s[j]} = 1 \\
+			g^{0 + 0 + 0 + \ ...\ +0} \ wenn \ BF_{c} = BF_{s[j]} = 1\\
 			\end{array}
 			\right.
 			\]
@@ -431,7 +431,7 @@
 	\begin{frame}
 		
 		\begin{arrowlist}
-			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
+			\item $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
 			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
 			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
 		\end{arrowlist}	
