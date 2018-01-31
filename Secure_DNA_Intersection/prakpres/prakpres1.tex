@@ -170,6 +170,62 @@
 	\end{frame}
 	
 	
+		\begin{frame}{Algorithm based on Elgamal - In a Nutshell}
+			\footnotesize
+			\vskip 0.3cm
+			\tikzoverlay (n1) at (-0.5cm,3cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{\textbf{Client} }
+						\begin{arrowlist}
+							\item Creates Bloom Filter over his data
+							\item Encrypts every single bit of the Bloom Filter seperatly using Elgamal 
+							
+						\end{arrowlist}
+						\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{client}[i]})$
+					\end{block}
+				\end{minipage}
+			};
+			
+			\tikzoverlay (n2) at (6.7cm,3.5cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{\textbf{Server}}
+						\begin{arrowlist}
+							
+							\item Creates Bloom Filter over his data
+							\item Selects those positions in his Bloom Filter which have a value of zero
+							\item Multiplies at the corresponding position the values of the ciphertext of the client 
+							\item Rerandomies the results 
+							Rerandomisiert die entstandenen Ergebnisse
+							\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{server}[i] = 0} R_{i} )$$
+							$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{server}[i] = 0} S_{i} )$$ \\
+							
+						\end{arrowlist}
+					\end{block}
+				\end{minipage}
+			};
+			
+			\tikzoverlay (n3) at (-0.5cm,0cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{}
+						\begin{arrowlist}
+							\item Client decrypts the ciphertext with the secret key
+							\item Identifies the number of Bloomfilter entries at which both participants have the value zero.
+							\item Estimates the total number of shared data
+						\end{arrowlist}
+					\end{block}
+				\end{minipage}
+			};
+			
+			\begin{tikzpicture}[overlay]
+			
+			\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
+			\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
+			
+			
+			\end{tikzpicture}
+			
+			
+		\end{frame}
 	\begin{frame}{Algorithmus - Step 1}
 		$$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
 		
