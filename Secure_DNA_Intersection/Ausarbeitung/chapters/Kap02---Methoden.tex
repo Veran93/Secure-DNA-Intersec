@@ -1,5 +1,7 @@
 \chapter{Methoden}
 \label{sec:Chapter2}
+Im Zuge dieses Praktikums habe ich zwei Methoden 
+
 \section{Bloom Filter}
 \label{sec:Sec1.2}
 
@@ -169,7 +171,7 @@ $$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk 
 Nach dem Kürzen erhält man:
 $$\Sigma = g^x$$
 
-$ z $ entspricht hierbei der Anzahl  an Positionen an denen sowohl der Client als auch der Server einen Nulleintag in ihren Bloomfiltern haben.
+$ z $ entspricht hierbei der Anzahl an Positionen an denen sowohl der Client als auch der Server einen Nulleintag in ihren Bloomfiltern haben.
 
 Der approximierte Betrag der im Bloomfilter gespeicherten Elemente errechnet sich dann durch:
 
@@ -180,8 +182,53 @@ $$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
 \subsection{Algorithmus 2 - Paillier}
 \label{sec:Sec2.3}
 
+Zunächst erstellt der Client einen Bloomfilter über seine Daten.
+Mittels des Pailier Kryptosystems wird wird jede Stelle des Bloomfilters einzeln verschlüsselt: 
+
+$$c_i = (g \textsuperscript{IBF[i]}  * r_{i}\textsuperscript{n})$$
+
+\[
+C\textsubscript{i} = r_{i}^{n} \ * \ \left\{
+\begin{array}{ll}
+g^{0} = 1 \ bei \  BF\textsubscript{1}[i]=1\\
+g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
+\end{array}
+\right.
+\]
 
 
+pk: public key, sk: private key, g: Generator $r_i$: Zufallszahlen aus $Z_q$ 
+
+Der Server erstellt nun für jede Stelle einen eigen Bloomfilter.
+Daraufhin multipliziert er für jeden seiner Bloomfilter den Ciphertext des Clients an jenen Stellen auf, an welchen  $BF_{server[j]} = 1$.	
+
+$$ V_{j} = (g^{ IBF_{i_{1}} + IBF_{i_{2}} + \ ...\ +IBF_{i_{k}}} \ * \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n})$$
+
+\[
+V_{j} = \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n} \ \left\{
+\begin{array}{ll}
+g^{1 + 1 + 1 + \ ...\ +1} \ wenn \ BF_{c} = 0,BF_{s[j]} = 1 \\
+g^{0 + 0 + 0 + \ ...\ +0} \ wenn \ BF_{c} = BF_{s[j]} = 1\\
+\end{array}
+\right.
+\]
+
+
+
+
+$$\Sigma = W * V^{-sk}$$
+
+V, W aus vorherigem Schritt einsetzen und für $pk$ = $g^{sk}$ 
+
+\vskip 0.1cm 
+
+$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^x) $$
+$$\Sigma = g^x$$
+
+
+
+
+The number of hash functions has distinct less influence 
 
 \subsection{Algorithmus 3 - Goldwasser-Micali}
 \label{sec:Sec2.4}
