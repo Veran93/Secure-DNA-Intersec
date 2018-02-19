@@ -1,0 +1,643 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+   
+  \usetheme{IMI} 
+  %\usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\newlist{arrowlist}{itemize}{1}
+\setlist[arrowlist]{label=$\Rightarrow$}
+\usepackage{tikz}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\tikzset{
+	every overlay node/.style={
+		%draw=black,fill=white,rounded corners,
+		anchor=north west,
+	},
+}
+% Usage:
+% \tikzoverlay at (-1cm,-5cm) {content};
+% or
+% \tikzoverlay[text width=5cm] at (-1cm,-5cm) {content};
+\def\tikzoverlay{%
+	\tikz[baseline,overlay]\node[every overlay node]
+}%
+
+\title[Privatly computing Set-Intersection]{Privatly computing DNA Set-Intersection cardinality using Bloom Filters}
+\author{Niklas Jobst}
+\institute{TCS - Universität zu Lübeck}
+\date{\today}
+
+\begin{document}
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+	
+	% Uncomment these lines for an automatically generated outline.
+	%\begin{frame}{Outline}
+	%  \tableofcontents
+	%\end{frame}
+	
+	\section{Introduction}
+	
+	\begin{frame}{Motivation}
+		
+		\begin{arrowlist}
+			\item  Ziel dieses Projektes ist es verschiedene Methoden vergleichen, mit denen es möglich ist privacy preserving die Übereinstimmung der DNA einer Person zu einer anderen bzw. zu einem Referenz Exom zu ermitteln
+			\item Hierzu vergleichen wir die SNP Profile dieser Exome.	
+			(Unter Umständen wären auch Satelliten-Repeats möglich)
+			
+		\end{arrowlist}
+		
+		
+		
+	\end{frame}
+	
+	\begin{frame}
+		
+		\begin{arrowlist}
+			
+			\item Viele Therapien in der Personalisierten Medizin sind an bestimmte SNP Profile gekoppelt.
+			\item Durch einen solchen Vergleich wäre es möglich festzustellen, ob für einen Patienten ein bestimmtes Medikament wirksam wäre oder nicht. 
+			\item Die Grundlage aller dieser Methoden bilden sogenannte Bloom Filter
+		\end{arrowlist}
+		
+		
+		
+	\end{frame}
+	\subsection{Bloom Filter}
+	
+	\begin{frame}{Bloom Filter}
+		
+		\begin{arrowlist}
+			\item Technik um festzustellen, ob bestimmte Daten in einem Datensatz vorhanden sind oder nicht.
+			\item  Aufbau:\\
+			- Ein mit Nullen initialisiertem m Bit langes Array \\ 
+			- k Hashfunktionen\\
+			\item Initialisierung\\
+			- Auf jedes Element des Datensatzes werden alle k Hashfunktionen angewendet.\\ 
+			- Jede der Hashfunktionen bildet auf das Array ab\\
+			- Die Positionen im Array die den Ausgaben entsprechen werden auf 1 gesetzt.\\
+			
+		\end{arrowlist}
+		
+	\end{frame}
+	\begin{frame}{Bloom Filter}
+		\begin{arrowlist}
+			
+			\item Datenprüfung:\\
+			- Auf ein zu überprüfendes Datenelement d werden wieder alle k Hashfunktionen angewendet\\
+			- Nur wenn alle Positionen im BF an den Punkten der Ausgabe 1 sind wird angenommen, dass sich d im Datensatz befindet
+		\end{arrowlist}
+		
+	\end{frame}
+	
+	\section{Algorithmus}
+	
+	
+	\begin{frame}{Algorithmus basierend auf Elgamal - In a Nutshell}
+		\footnotesize
+		\vskip 0.3cm
+		\tikzoverlay (n1) at (-0.5cm,3cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{\textbf{Client} }
+					\begin{arrowlist}
+						\item Erstellt Bloom Filter der Daten
+						\item Verschlüsselt jede Stelle des Bloom Filters mittels ElGamal
+						
+					\end{arrowlist}
+					\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{1}[i]})$
+				\end{block}
+			\end{minipage}
+		};
+		
+		\tikzoverlay (n2) at (6.7cm,3.5cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{\textbf{Server}}
+					\begin{arrowlist}
+						
+						\item Erstellt Bloom Filter der Daten
+						\item Selektiert jene Stellen Stellen in dem BF die den Eintrag null besitzen.
+						\item Multipliziert an diesen Stellen die Werte des Ciphertextes vom Client auf 
+						\item Rerandomisiert die entstandenen Ergebnisse
+						\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+						$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+						
+					\end{arrowlist}
+				\end{block}
+			\end{minipage}
+		};
+		
+		\tikzoverlay (n3) at (-0.5cm,0cm) {
+			\begin{minipage}{0.45\textwidth}
+				\begin{block}{}
+					\begin{arrowlist}
+						\item Client entschlüsselt mit sk Ciphertext von Server
+						\item Bestimmt Anzahl der Einträge  an denen beide Bloom Filter null sind
+						\item Schätzt hieraus die Gesamtmenge an SNPs
+					\end{arrowlist}
+				\end{block}
+			\end{minipage}
+		};
+		
+		\begin{tikzpicture}[overlay]
+		
+		\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
+		\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
+		
+		
+		\end{tikzpicture}
+		
+		
+	\end{frame}
+	
+	
+		\begin{frame}{Algorithm based on Elgamal - In a Nutshell}
+			\footnotesize
+			\vskip 0.3cm
+			\tikzoverlay (n1) at (-0.5cm,3cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{\textbf{Client} }
+						\begin{arrowlist}
+							\item Creates Bloom Filter over his data
+							\item Encrypts every single bit of the Bloom Filter seperatly using Elgamal 
+							
+						\end{arrowlist}
+						\quad  \ \ $(R_i, S_i)=(g \textsuperscript{r\textsubscript{i}},pk\textsuperscript{r\textsubscript{i}}*g\textsuperscript{1-BF\textsubscript{client}[i]})$
+					\end{block}
+				\end{minipage}
+			};
+			
+			\tikzoverlay (n2) at (6.7cm,3.5cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{\textbf{Server}}
+						\begin{arrowlist}
+							
+							\item Creates Bloom Filter over his data
+							\item Selects those positions in his Bloom Filter which have a value of zero
+							\item Multiplies at the corresponding position the values of the ciphertext of the client 
+							\item Rerandomies the results 
+							Rerandomisiert die entstandenen Ergebnisse
+							\quad  \ \	$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{server}[i] = 0} R_{i} )$$
+							$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{server}[i] = 0} S_{i} )$$ \\
+							
+						\end{arrowlist}
+					\end{block}
+				\end{minipage}
+			};
+			
+			\tikzoverlay (n3) at (-0.5cm,0cm) {
+				\begin{minipage}{0.45\textwidth}
+					\begin{block}{}
+						\begin{arrowlist}
+							\item Client decrypts the ciphertext with the secret key
+							\item Identifies the number of Bloomfilter entries at which both participants have the value zero.
+							\item Estimates the total number of shared data
+						\end{arrowlist}
+					\end{block}
+				\end{minipage}
+			};
+			
+			\begin{tikzpicture}[overlay]
+			
+			\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $ \ [pk, (R_i, S_i)] \ \ $};
+			\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ (V,W) \ \ $};
+			
+			
+			\end{tikzpicture}
+			
+			
+		\end{frame}
+	\begin{frame}{Algorithmus - Step 1}
+		$$(R_i, S_i) = (g \textsuperscript{r\textsubscript{i}} , pk\textsuperscript{r\textsubscript{i}} * g\textsuperscript{1-BF\textsubscript{1}[i]})$$
+		
+		
+		\[
+		S\textsubscript{i} = pk^{r_{i}} \ * \ \left\{
+		\begin{array}{ll}
+		g^{0} = 1 \ bei \  BF\textsubscript{1}[i]=1\\
+		g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
+		\end{array}
+		\right.
+		\]
+		
+		\begin{block}{Legende}
+			pk: public key, sk: private key, g: Generator $r_i$: Zufallszahlen aus $Z_q$ 
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}{Algorithmus - Step 2}
+		
+		\begin{arrowlist}
+			\item Aufmultiplikation  von $R_i$ bzw $S_i$ an jenen Stellen, an welchen $BF_2 = 0$ ist.
+			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
+			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
+		\end{arrowlist}	
+		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i[j]} )$$
+		$$ W = (pk \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} S_{i} )$$ \\
+		
+		
+		\begin{block}{Legende}
+			pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}
+		\begin{arrowlist}
+			\item 	 $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
+			
+		\end{arrowlist}
+		
+		$$ V = (g^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}})$$
+		
+		\[
+		W =\left\{
+		\begin{array}{ll}
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{l}}}*1 \ falls \ BF_{1} = 1,BF_{2} = 0 \\
+		pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{m}}}*g^{x} \ falls \ BF_{1} = BF_{2} = 0\\
+		\end{array}
+		\right.
+		\]
+		
+		$$ W= (pk^{s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}}* g^x)$$
+		
+	\end{frame}
+	
+	
+	\begin{frame}{Algorithmus - Step 3}
+		$$\Sigma = W * V^{-sk}$$
+		\begin{arrowlist}
+			\item V, W aus vorherigem Schritt einsetzen und für $pk$ = $g^{sk}$ 
+		\end{arrowlist}
+		\vskip 0.1cm 
+		
+		$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^x) $$
+		$$\Sigma = g^x$$
+	\end{frame}
+	
+	\begin{frame}
+		\begin{arrowlist}
+			\item Durch wiederholtes dividieren durch g lässt sich x berechnen.
+			\item x entspricht der Anzahl der Stellen, an welchen beide Bloom Filter null sind
+			\item Dann berechnen sich die Stellen, an denen zumindest einer der BF eine 1 hat $z = m - x$
+			\item Hieraus lässt nun wiederum auf die Gesamtgröße der Vereinigung der Bloom Filter schließen.
+		\end{arrowlist}
+		$$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
+	\end{frame}
+	
+	
+	
+	
+	\begin{frame}{Herleitung der Abschätzung}
+		
+		\begin{arrowlist}
+			\item Wahrscheinlichkeit, dass ein Bloomfilterbit Null ist $ z' = (1 -\frac{1}{m})\textsuperscript{k* X} $
+			\newline
+			\item Mit der Abschätzung $ (1 -\frac{t}{k})^{k} \approx e^{-t} $ gilt :
+			\newline
+			\newline
+			$ (1-\frac{1}{m}) ^{k*x} = (1-\frac{(k*x/m)}{k*x})^{k*x} \approx e^{\frac{-k*x}{m}}$ 
+			\newline
+			\item Da binomialverteielt ist der Erwartungswert:
+			$ z = m*(1 -\frac{1}{m})\textsuperscript{k* X}\approx m*e^{\frac{-k*x}{m}} $ 
+			\newline
+			\item Durch Umformung nach $ x $ erhält man:  $ |X| = \frac{ln( \frac{z}{m})}{k* ln(1- \frac{1}{m})}$
+		\end{arrowlist}
+		
+		
+	\end{frame}
+	
+	
+	\begin{frame}{Algorithmus - Anpassung} 
+		\begin{arrowlist}
+			\item Durch den Algorithmus wurde Set-Union berechnet, wir benötigen jedoch die Set-Intersection,da wir die Gemeinsamkeiten der DNAs bestimmen wollen.
+			\item Hierzu invertieren wir zu Beginn des Algorithmus die Bloom Filter der Teilnehmer.
+		\end{arrowlist}
+	\end{frame}
+
+
+% Uncomment these lines for an automatically generated outline.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+
+
+\section{Algorithmus}
+
+
+\begin{frame}{Paillier - Verfahren}
+
+	\textbf{Schlüsselerzeugung:}\\
+	
+	\begin{arrowlist}
+	\item Client wählt zwei Primzahlen p,q , mit $ ggt(pq, (p-1)(q-1))= 1 und n =pq $  
+	\item Der Generator g so gewählt, sodass $ g \in (\mathbb{Z} n^{2} \mathbb{Z}) $ und$ n $ die Ordnung von g teilt.	
+	\item Secrect key: $ \lambda = kgV(p-1, q-1) $
+	\item Public Key: $(n,g)$	
+	\end{arrowlist}
+	
+	
+
+\end{frame}
+
+\begin{frame}
+		\textbf{Verschlüsselung:}
+		\begin{arrowlist}
+			\item Nachricht  $ m \in \mathbb{Z}_{n}^{*} $
+			\item Client wählt Zufallszahl $ r  \in \mathbb{Z}_{n^{2}}^{*} $ 
+			\item Ciphertext $ c = g^{m}*r^{n} \mod\ n^{2} $
+		\end{arrowlist}
+		
+
+		\textbf{Entschlüsselung:}
+		\begin{arrowlist}
+			\item Benötigt zunächst $ L(x)= \frac{(x-1)}{n} $
+			\item Plaintext $ m = \frac{L(c^{\lambda} \ mod \ n^{2}) }{L(g^{\lambda} \ mod \ n^{2})} \ mod \ n $
+		\end{arrowlist}
+
+
+		\textbf{Homomorphie:}
+		Paillier ist homomorph gegenüber der Addition.
+		
+		$$ E(m \textsubscript{1} + m \textsubscript{2}) = (E(m \textsubscript{1}) * E(m \textsubscript{2}))$$
+\end{frame}
+
+\begin{frame}{Algorithmus basierend auf Paillier - In a Nutshell}
+	\footnotesize
+	\vskip 0.3cm
+	\tikzoverlay (n1) at (-0.5cm,3cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{\textbf{Client} }
+				\begin{arrowlist}
+						\item Erstellt Bloomfilter der Daten und invertiert jede Stelle des Bloomfilters.
+						\item Verschlüsselt jede Stelle des Bloomfilters mittels Paillier
+						
+					\end{arrowlist}
+					\quad  \ \ $ \ c_{i} =(g^{IBF[i]}*r^{n}) \ mod \ n^{2} $
+			\end{block}
+		\end{minipage}
+	};
+	
+	\tikzoverlay (n2) at (6.7cm,3.5cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{\textbf{Server}}
+				\begin{arrowlist}
+					
+						\item Erstellt für jedes Element des Datensatzes einen Bloomfilter seiner Daten
+						\item Selektiert in jedem Blommfilter jene Stellen die den Eintrag Eins besitzen.
+						\item Multipliziert an diesen Stellen die Werte des Ciphertextes des Clients auf 
+						\item Rerandomisiert die entstandenen Ergebnisse mit verschlüsselter Null
+						\quad  \ \	$$ Rerand \ e_{j} = (ej \ *  \ enc_{pailier}(0) )$$
+
+					
+				\end{arrowlist}
+			\end{block}
+		\end{minipage}
+	};
+	
+	\tikzoverlay (n3) at (-0.5cm,0cm) {
+		\begin{minipage}{0.45\textwidth}
+			\begin{block}{}
+				\begin{arrowlist}
+					\item Client entschlüsselt mit sk Ciphertexte von Server
+					\item Anzahl der entschlüsselten Nullen entspricht der Anzahl der sich überschneidenden Elemente
+				\end{arrowlist}
+			\end{block}
+		\end{minipage}
+	};
+	
+	\begin{tikzpicture}[overlay]
+	
+	\draw[->,>=latex, line width=0.1cm] (4.8, 1)--(6.9, 1) node[above left] { $  [pk, c] \ \ \ \ $};
+	\draw[->,>=latex, line width=0.1cm] (6.9, -1)--(4.8, -1) node[above right] {  $ \ \ rerand(e_{1-j}) \ \ $};
+	
+	
+	\end{tikzpicture}
+	
+	
+\end{frame}
+
+
+	\begin{frame}{Algorithmus - Step 1}
+		$$c_i = (g \textsuperscript{IBF[i]}  * r_{i}\textsuperscript{n})$$
+		
+		
+		\[
+		C\textsubscript{i} = r_{i}^{n} \ * \ \left\{
+		\begin{array}{ll}
+		g^{0} = 1 \ bei \  BF\textsubscript{1}[i]=1\\
+		g^{1} = g \ bei \ BF\textsubscript{1}[i]=0\\
+		\end{array}
+		\right.
+		\]
+		
+		\begin{block}{Legende}
+			pk: public key, sk: private key, g: Generator $r_i$: Zufallszahlen aus $Z_q$ 
+		\end{block}
+		
+	\end{frame}
+	
+	\begin{frame}{Algorithmus - Step 2}
+		
+		\begin{arrowlist}
+			\item Für jedes Element des Datensatzes des Servers wird ein Bloomfilter erstellt.
+			\item Aufmultiplikation  von $c_i$  an jenen Stellen, an welchen $BF_{s[j]}= 1$ ist.
+		\end{arrowlist}
+		
+		
+			$$ V_{j} = (g^{ IBF_{i_{1}} + IBF_{i_{2}} + \ ...\ +IBF_{i_{k}}} \ * \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n})$$
+			
+			\[
+			V_{j} = \ r_{i_{1}}^{n} \ * \ r_{i_{2}}^{n} \ * \ ...\ * \  r_{i_{k}}^{n} \ \left\{
+			\begin{array}{ll}
+			g^{1 + 1 + 1 + \ ...\ +1} \ wenn \ BF_{c} = 0,BF_{s[j]} = 1 \\
+			g^{0 + 0 + 0 + \ ...\ +0} \ wenn \ BF_{c} = BF_{s[j]} = 1\\
+			\end{array}
+			\right.
+			\]
+			
+			
+			\begin{block}{Legende}
+				pk: Public key, sk: private key, g: Generator s: Zufallszahl aus $Z_q$
+			\end{block}
+			
+		\end{frame}
+	
+	\begin{frame}
+		
+		\begin{arrowlist}
+			\item $R_{i}, \  S_{i}$ aus vorherigem Schritt in V,W einsetzen.
+			\item Rerandomisierung mit $g^s$ bzw. $pk^s$ 
+			\item Diese Berechnungen sind ohne Datenverlust aufgrund der Homomorphie Eigenschaft von Elgamal möglich
+		\end{arrowlist}	
+		$$ V = (g \textsuperscript{s} * \Pi_{i:BF_{2}[i] = 0} R_{i} )$$
+	\end{frame}
+
+	
+	\begin{frame}{Algorithmus - Step 3}
+		$$\Sigma = W * V^{-sk}$$
+		\begin{arrowlist}
+			\item V, W aus vorherigem Schritt einsetzen und für $pk$ = $g^{sk}$ 
+		\end{arrowlist}
+		\vskip 0.1cm 
+		
+		$$\Sigma = (g^{sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^{-sk * s + r_{i_{1}} + r_{i_{2}} + \ ...\ +r_{i_{k}}} \ * \ g^x) $$
+		$$\Sigma = g^x$$
+	\end{frame}
+
+\begin{frame}{Beispiel}
+	
+	Sei $ X_{client} = {rs12323, rs23453, rs34564} $ und $ X_{server} = {rs98787, rs87676, rs76565}  $. Der Bloomfilter BF sei definiert mit dem Array $ m = {0,0,0,0,0,0,0,0,0,0,0,0}  $ und den Hashfunktionen $ k_{1-3} $.
+	Zunächst wendet der Client die Hashfunktionen auf alle SNPs seines Datensatzes an: $ k_{1 (rs12323)} =1 ,k_{2 (rs12323)} = 2 , k_{3 (rs12323)} = 5; k_{1 (rs23453)} =2 ,k_{2 (rs23453)} = 7 , k_{3 (rs23453)} = 0; $
+	
+	 
+\end{frame}
+
+\begin{frame}{Ergebnisse - Elgamal }
+	
+	\begin{arrowlist}
+		\item Dauer für Vergleich des gesamten Exomes bei wenigen Minuten.
+		\item Laufzeit Unabhängig davon wie stark die Überschneidung zwischen zwischen den Datensätzen ist. 
+	\end{arrowlist}
+
+ \begin{table}[h]
+	\begin{tabular}{c|c|c|c|c}
+		Überschneidung&14000&7500&5000&2000\\
+		\hline
+		Runtime (sec)& 221&247&211&222\\
+		Abw. zur Überschn.& 0.01\%& 3.3\%&8.8\%&36.8\%\\
+			 		
+	\end{tabular}
+	\caption{Hashfunktionen : 14, Anzahl Bloomfilter Bits:3029660, Größe der Datensätze: 15000 SNPs }
+	\label{tab:meinetabelle1}
+	
+	
+\end{table}
+
+
+\end{frame}	
+\begin{frame}
+\begin{table}[h]
+			 	
+	\begin{tabular}{c|c|c|c|c}
+	    Array& 1442696&1009887&577079&144270\\
+	    \hline
+		Runtime (sec)& 108&83&47&11\\
+		Abweichung&4\%&6\%&13\%&51\%\\
+
+			 		
+	\end{tabular}
+	\caption{Datensatz 1000 SNPs, Überschneidung 100, Hashfunktionen: 10 }
+	\label{tab:meinetabelle2}
+\end{table}
+
+\begin{arrowlist}
+	\item Die Laufzeit ist linear abhängig zur Anzahl der Bloomfilterbits
+	\item Die Stärke der Abweichung ist ebenfalls linear abhängig zur Anzahl der Bloomfilter Bits
+\end{arrowlist}
+\end{frame}			 
+	
+\begin{frame}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Hashf.&1&4&7&10&14\\
+			\hline
+			Runtime (sec)&7&27&44&62&104\\
+			Abweichung&11\%&13\%&10\%&9\%&9\%\\
+			
+			
+		\end{tabular}
+		\caption{Datensatz 1000 SNPs, Überschneidung 100, Array: 504944 }
+		\label{tab:meinetabelle4}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Anzahl der Hashfunktionen hat deutlich weniger Einfluss, jedoch kommt es bei hoher Anzahl zu vermehrt Falsch positiven Ergebnissen.
+	\end{arrowlist}
+\end{frame}
+
+
+\begin{frame}{Ergebnisse-Paillier}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Array&14139&12119&10099&8080\\
+			\hline
+			Runtime (sec)&219&194&183&163\\
+			Abweichung&1\%&4\%&6\%&24\%\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 100, SNPs 1000 }
+		\label{tab:meinetabelle5}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Paillier deutlich langsamer als Elgamal
+		\item Benötigt deutlich kleinere Bloomfilter für selbe Genauigkeit, jedoch ist die Bitweise Verschlüsselung sehr langsam
+	\end{arrowlist}
+\end{frame}
+\begin{frame}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Array&141385&100989&75742\\
+			\hline
+			Runtime (sec)&2420&2318&2007\\
+			Abweichung&1\%&4\%& 13\%\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 7500, SNPs 15000 }
+		\label{tab:meinetabelle6}
+	\end{table}
+	
+	\begin{arrowlist}
+		\item Zum Vergleich von gesamten Exomen ca. 40 min
+ 
+
+		
+	\end{arrowlist}
+
+\end{frame}
+
+\begin{frame}{Vergleich}
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c|c}
+			Abweichung&0.1\%&0.6\%&2\%&3\%&4\%&6\%\\
+			\hline
+			Runtime elgamal&467&150&17&15&11&6\\
+			Runtime paillier&510&340&150&150&135&120\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 100, SNPs 1000 }
+		\label{tab:meinetabelle7}
+	\end{table}
+
+	
+\end{frame}
+\end{document}
