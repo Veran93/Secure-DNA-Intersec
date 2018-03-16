@@ -1,0 +1,51 @@
+\chapter{Ergebnisse}
+
+Zum Test der Algorithmen habe ich verschiedene Mengen an Test SNPs erstellt, die sich zu unterschiedlichen Graden überschneiden.
+
+
+Beide Algorithmen konnten selbst große Datensätze schnell vergleichen.
+
+\section{Algo elga}
+
+ \begin{table}[h]
+ 	\begin{tabular}{c|c|c|c|c}
+ 		Überschneidung&14000&7500&5000&2000\\
+ 		\hline
+ 		Runtime (sec)& 221&247&211&222\\
+ 		Abw. zur Überschn.& 0.01\%& 3.3\%&8.8\%&36.8\%\\
+ 		
+ 	\end{tabular}
+ 	\caption{Hashfunktionen : 14, Anzahl Bloomfilter Bits:3029660, Größe der Datensätze: 15000 SNPs }
+ 	\label{tab:meinetabelle1}
+ 	
+ 	
+ \end{table}
+ 
+ \begin{table}[h]
+ 	
+ 	\begin{tabular}{c|c|c|c|c}
+ 		Array& 1442696&1009887&577079&144270\\
+ 		\hline
+ 		Runtime (sec)& 108&83&47&11\\
+ 		Abweichung&4\%&6\%&13\%&51\%\\
+ 		
+ 		
+ 	\end{tabular}
+ 	\caption{Datensatz 1000 SNPs, Überschneidung 100, Hashfunktionen: 10 }
+ 	\label{tab:meinetabelle2}
+ \end{table}
+\section{Algo 1}
+
+	\begin{table}[h]
+		
+		\begin{tabular}{c|c|c|c|c|c}
+			Array&14139&12119&10099&8080\\
+			\hline
+			Runtime (sec)&219&194&183&163\\
+			Abweichung&1\%&4\%&6\%&24\%\\
+			
+			
+		\end{tabular}
+		\caption{Hashf.7, Überschneidung 100, SNPs 1000 }
+		\label{tab:meinetabelle5}
+	\end{table}
