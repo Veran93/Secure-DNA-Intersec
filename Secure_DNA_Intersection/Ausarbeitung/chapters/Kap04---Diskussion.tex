@@ -1,1 +1,27 @@
-\chapter{Disskussion}
+\chapter{Diskussion}
+
+Um die Genauigkeit und Effizienz der Algorithmen zu ermitteln und zu vergleichen, wurden diese auf drei unterschiedlich große Test Datensätze angewendet. 
+Der größte dieser Datensätze entspricht dabei 15000 SNPs, was ungefähr der Anzahl an SNPs in einem menschlichen Exom entspricht.
+Der mittlere Datensatz enthält 1000 SNPs und der kleinste besitzt eine Größe von 100 SNPs. 
+
+Bei den Tests wurde wurden verschiedenen Parameter verschoben um deren Einfluss auf die Ergebnisse zu bestimmen.
+Hierunter befinden sich die Größe des gewählten Boomfilters, der Anzahl der Hash-Funktionen sowie die Überschneidung der der gewählten Datensätze.
+
+\section{Elgamal basierter Algorithmus}
+
+Die Tabelle zeigt wie sich die Laufzeit und Genauigkeit bei unterschiedlichen großem Bloomfilter Array. 
+Zu beiden Parametern ist ein linearer Zusammenhang zu erkennen.
+
+Anders sieht es bei unterschiedlicher Anzahl der Hashfunktionen aus. 
+Wie in der Tabelle zu sehen ist, deren Anzahl kaum Einfluss auf die Genauigkeit des Algorithmus.
+
+Bei Anwendung auf den Exom Großen Datensatz benötigte der Algorithmus durchgehend eine Laufzeit von ca. 3,7 Minuten.
+Da dies die die wohl größten zu erwartenden Datensätze sind, lassen sich alle nötigen Vergleiche in annehmbarer Zeit berechnen. 
+
+
+\section{Paillier basierter Algorithmus}
+
+
+\section{Vergleich der Algorithmen}
+
+Paillier deutlich langsamer als Elgamal. Benötigt kleinere Bloomfilter bei selber Genauigkeit, jedoch ist die Bitweise Verschlüsselung sehr langsam.
