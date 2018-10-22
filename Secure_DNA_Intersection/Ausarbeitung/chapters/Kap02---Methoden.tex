@@ -1,13 +1,14 @@
 \chapter{Methoden}
 \label{sec:Chapter2}
-Im Zuge dieses Praktikums habe ich zwei Methoden 
+
 
 \section{Bloom Filter}
 \label{sec:Sec1.2}
 
-Alle diese Methoden basieren auf sogenannten Bloomfiltern.
-Hierbei handelt es sich um eine  Technik um festzustellen, ob bestimmte Daten in einem Datensatz vorhanden sind oder nicht.
-Sie bestehen aus einem mit Nullen vorinitialisiertem m Bit langen Array und k Hashfunktionen, welche auf die Positionen des Arrays abbilden.
+
+Alle in diesem Praktikum vorgestellten Algorithmen basieren auf Bloomfiltern.
+Hierbei handelt es sich um eine Technik, welche dazu dient festzustellen, ob bestimmte Daten in einem Datensatz enthalten sind oder nicht.
+Bloomfilter setzen sich zusammen  aus einem mit Nullen vorinitialisiertem $m$ Bit langen Array und einer Anzahl von k Hashfunktionen, welche auf die Positionen des Arrays abbilden.
 
 Zur Initialisierung werden auf jedes Element des Datensatzes alle k Hashfunktionen angewendet.
 Die zur Ausgabe der Hashfunktionen korrespondierenden Bits im Array werden darauf hin auf Eins gesetzt.
@@ -15,7 +16,13 @@ Die zur Ausgabe der Hashfunktionen korrespondierenden Bits im Array werden darau
 Soll für ein Datenelement geprüft werden, ob dieses Teil des Datensatzes ist, werden  alle Hashfunktionen auf dieses angewendet.\\
 Nur wenn alle Positionen im Array an den korrespondierenden Punkten der Ausgabe dem Wert Eins entsprechen wird angenommen das sich das Element im Datensatz befindet.
 
-Diese Überprüfung ist jedoch nicht resistent gegenüber Falsch Positiven Ergebnissen, da diese Positionen auch durch mehrere 
+Diese Überprüfung ist jedoch nicht resistent gegenüber Falsch Positiven Ergebnissen, da diese Positionen auch durch mehrere Funktionen beschrieben werden kann
+\begin{figure}[htbp] 
+	\centering
+	\includegraphics[width=1.2\textwidth]{Graphics/bloomfilter2.png}
+	\caption{Initialisierung eines Bloomfilter Q vom 3 SNPs, k=3 Hashfunktionen und einem m=12 Bit langem Array }
+	\label{fig:Bild2}
+\end{figure}
 
 \section{Kryptosysteme}
 \label{sec:Sec1.3}
@@ -27,7 +34,8 @@ Ein Kryptosystem ist genau dann homomorph gegenüber einer mathematischen Operat
 \subsection{Elgamal}
 \label{sec:Sec1.3.1}
 
-Bei Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann
+
+Bei dem Kryptosystem Elgamal handelt es sich um ein im Jahr 1985 vom Kryptologen Taher Elgamal entwickeltes Public-Key-Verschlüsselungsverfahren. Elgamal ist eine Erweiterung des Diffie-Hellmann
 Schlüsselaustausches.
 
 \textbf{Verfahren}\\
@@ -51,7 +59,7 @@ Elgamal ist IND-CPA sicher, falls das
 
 
 
-Dann gibt es einen Algorithmus, der in polyn. Zeit DH-Schlussel gab von zufalligen Gruppenelementen unterscheidet.
+Dann gibt es einen Algorithmus, der in polyn. Zeit DH-Schlussel gab von zufälligen Gruppenelementen unterscheidet.
 Widerspruch:
 Nach Annahme gibt es keinen effizienten
 Algorithmus zum Entscheiden von DH-Schlusselngab.
@@ -60,6 +68,7 @@ Daher kann es auch keinen polynomiellen Angreifer A geben.
 
 
 \subsection{Pailier}
+
 \label{sec:Sec1.3.2}
 
 \textbf{Verfahren}\\
@@ -115,6 +124,13 @@ Paillier ist homomorph gegenüber der Addition.
 \section{Implementierte Algorithmen}
 
 \subsection{Algorithmus 1 - Elgamal}
+\begin{figure}[htbp] 
+	\centering
+	\includegraphics[width=0.7\textwidth]{Graphics/elgamal.png}
+	\caption{Erstes Bild}
+	\label{fig:Bild1}
+\end{figure}
+
 
 Dieser Algorithmus wurde zunächst im ... veröffentlicht. Es wurden Algorithmen für unterschiedliche Konstellationen postuliert. 
 
@@ -181,6 +197,13 @@ $$ |X| = \frac{ln( \frac{z}{m})}{k* \ ln(1- \frac{1}{m})}$$
 
 \subsection{Algorithmus 2 - Paillier}
 \label{sec:Sec2.3}
+ Information Security and Privacy
+\begin{figure}[htbp] 
+	\centering
+	\includegraphics[width=0.7\textwidth]{Graphics/Paillier.PNG}
+	\caption{Erstes Bild}
+	\label{fig:Bild2}
+\end{figure}
 
 Zunächst erstellt der Client einen Bloomfilter über seine Daten.
 Mittels des Pailier Kryptosystems wird wird jede Stelle des Bloomfilters einzeln verschlüsselt: 

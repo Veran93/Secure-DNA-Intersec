@@ -9,7 +9,7 @@ public class Bloom_Filter {
 	
 	public static BloomFilter bloom_Filter() throws IOException {
 	
-		//Der Bloomfilter muss für diesen Anwendungsfall so gewählt werden, dass relativ wenig Hashfunktionen ein sehr großes Array füllen.
+		//Der Bloomfilter muss fuer diesen Anwendungsfall so gewaehlt werden, dass relativ wenig Hashfunktionen ein sehr grosses Array fuellen.
 		
 		double falsePositiveProbability = 0.0001;
 		int expectedNumberOfElements = 1000;

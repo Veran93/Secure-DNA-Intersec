@@ -1,11 +1,15 @@
 \chapter{Ergebnisse}
 
-Zum Test der Algorithmen habe ich verschiedene Mengen an Test SNPs erstellt, die sich zu unterschiedlichen Graden überschneiden.
+Zum Test der Algorithmen habe ich verschiedene Mengen an Test SNPs aus der dbsnp gewählt, welche sich zu unterschiedlichen Graden überschneiden.
+
+Insgesamt wurden zwei Datensätze benutzt. Einer mit tausend SNPs und einer mit 14000 SNPs, welcher in der Größe in etwa der Anzahl an SNPs im menschlichen Exom entspricht.
+
+Die Überschneidungen der Datensätze wurde schrittweise zwischen 10 und 93 Prozent gewählt.
+Des weiteren wurde auch der Einfluss Menge an Hashfunktionen sowie der Blooomfilter Größe geprüft.
 
 
-Beide Algorithmen konnten selbst große Datensätze schnell vergleichen.
 
-\section{Algo elga}
+\section{Algo elgamal}
 
  \begin{table}[h]
  	\begin{tabular}{c|c|c|c|c}
